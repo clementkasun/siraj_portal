@@ -150,12 +150,12 @@ class VacancyRepository implements VacancyInterface
         $vacancyArr = array();
 
         $vacancy = Vacancy::where('deleted_at', null);
-
-        $vacancy = $vacancy->when(isset($request->keyword), function ($v) use ($request) {
-            $v->where('vacancies.title', 'like', '%' . $request->keyword . '%');
-            $v->where('vacancies.salary', 'like', '%' . $request->keyword . '%');
-            $v->where('vacancies.period', 'like', '%' . $request->keyword . '%');
-            return $v->where('vacancies.location', 'like', '%' . $request->keyword . '%');
+       
+        $vacancy = $vacancy->when(isset($request->key_word), function ($v) use ($request) {
+            return $v->where('vacancies.title', 'like', '%' . $request->key_word . '%')
+                ->orWhere('vacancies.location', 'like', '%' . $request->key_word . '%')
+                ->orWhere('vacancies.salary', 'like', '%' . $request->key_word . '%')
+                ->orWhere('vacancies.period', 'like', '%' . $request->key_word . '%');
         });
         $vacancy = $vacancy->when(isset($request->title), function ($v) use ($request) {
             return $v->where('vacancies.title', 'like', '%' . $request->title . '%');

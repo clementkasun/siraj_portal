@@ -27,8 +27,46 @@
                             <input type="text" id="period" name="period" class="form-control" placeholder="Please enter the period" required>
                         </div>
                         <div class="form-group col-2">
-                            <label for="location">Location *</label>
-                            <input type="text" id="location" name="location" class="form-control" placeholder="Please enter the location" required>
+                            <label for="location">Country *</label>
+                            <select class="form-select form-control" aria-label="Select the country" id="location" name="location">
+                                <option selected value="">Choose Country</option>
+                                <option value="srilanka">Sri Lanka</option>
+                                <option value="india">India</option>
+                                <option value="bangladesh">Bangladesh</option>
+                                <option value="maldives">Maldives</option>
+                                <option value="singapore">Singapore</option>
+                                <option value="malaysia">Malaysia</option>
+                                <option value="thailand">Thailand</option>
+                                <option value="china">China</option>
+                                <option value="kuwait">Kuwait</option>
+                                <option value="quatar">Quatar</option>
+                                <option value="lebonon">Lebanon</option>
+                                <option value="turkey">Turkey</option>
+                                <option value="uae">UAE</option>
+                                <option value="dubai">Dubai</option>
+                                <option value="baharen">Baharen</option>
+                                <option value="iran">Iran</option>
+                                <option value="syria">Syria</option>
+                                <option value="afghanisthan">Afghnisthan</option>
+                                <option value="ishrael">Ishrael</option>
+                                <option value="pakisthan">Pakisthan</option>
+                                <option value="nepal">Nepal</option>
+                                <option value="russia">Russia</option>
+                                <option value="usa">USA</option>
+                                <option value="spain">Spain</option>
+                                <option value="france">France</option>
+                                <option value="germany">Germaney</option>
+                                <option value="ukraine">Ukraine</option>
+                                <option value="poland">Poland</option>
+                                <option value="italy">Italy</option>
+                                <option value="uk">UK</option>
+                                <option value="brazil">Brazil</option>
+                                <option value="panama">Panama</option>
+                                <option value="cuba">Cuba</option>
+                                <option value="westindies">West Indies</option>
+                                <option value="Austrailia">Austrailia</option>
+                                <option value="Newzealand">New Zealand</option>
+                            </select>
                         </div>
                         <div class="form-group col-3">
                             <label for="vacancy_image">Vacancy Image *</label>

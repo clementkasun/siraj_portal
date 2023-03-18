@@ -65,15 +65,6 @@ class VacancyController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getFilPagedVacancies(Request $request){
-        return $this->vacancyRepository->getFilPagedVacancies($request);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
