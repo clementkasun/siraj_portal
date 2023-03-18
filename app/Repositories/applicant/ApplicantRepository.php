@@ -45,7 +45,7 @@ class ApplicantRepository implements ApplicantInterface
                 'number_of_children' => 'nullable|sometimes|string|max: 2',
                 'applied_post' => 'nullable|sometimes|string|max: 255',
                 'applied_country' => 'nullable|sometimes|string|max: 255',
-                'applied_status' => 'nullable|sometimes|string|max: 1',
+                'post_status' => 'nullable|sometimes|string|max: 1',
                 'passport_pdf' => 'nullable|sometimes',
                 'nic_pdf' => 'nullable|sometimes',
                 'police_record_pdf' => 'nullable|sometimes',
@@ -88,7 +88,7 @@ class ApplicantRepository implements ApplicantInterface
                 'number_of_children' => $request->number_of_children,
                 'applied_post' => $request->applied_post,
                 'applied_country' => $request->applied_country,
-                'applied_status' => $request->applied_status,
+                'post_status' => $request->post_status,
                 'commision_price' => $request->commision_price,
                 'decorating' => ($request->decorating == 'true') ? 1 : 0,
                 'baby_sitting' => ($request->baby_sitting == 'true') ? 1 : 0,
@@ -189,7 +189,7 @@ class ApplicantRepository implements ApplicantInterface
                 'number_of_children' => 'nullable|sometimes|string|max: 2',
                 'applied_post' => 'nullable|sometimes|string|max: 255',
                 'applied_country' => 'nullable|sometimes|string|max: 255',
-                'applied_status' => 'nullable|sometimes|string|max: 1',
+                'post_status' => 'nullable|sometimes|string|max: 1',
                 'passport_pdf' => 'nullable|sometimes',
                 'nic_pdf' => 'nullable|sometimes',
                 'police_record_pdf' => 'nullable|sometimes',
@@ -231,7 +231,7 @@ class ApplicantRepository implements ApplicantInterface
             $applicant->number_of_children = $request->number_of_children;
             $applicant->applied_post = $request->applied_post;
             $applicant->applied_country = $request->applied_country;
-            $applicant->applied_status = $request->applied_status;
+            $applicant->post_status = $request->post_status;
             $applicant->commision_price = $request->commision_price;
             $applicant->decorating = ($request->decorating == 'true') ? 1 : 0;
             $applicant->baby_sitting = ($request->baby_sitting == 'true') ? 1 : 0;
