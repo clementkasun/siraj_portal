@@ -13,8 +13,11 @@ use App\Http\Controllers\ApplicantEducationalQualificationController;
 use App\Http\Controllers\ApplicantLanguagesController;
 use App\Http\Controllers\ApplicantPreviousEmployeementController;
 use App\Http\Controllers\ApplicationStaffResponseController;
+use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OnlineApplicantController;
+use App\Models\OnlineApplicant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -115,4 +118,15 @@ Route::delete('/delete_comission/id/{applicant_id}', [CommissionController::clas
 
 //dashboard api's
 Route::get('/get_counts', [DashboardController::class, 'getCounts']);
+
+//online applicant api's
+Route::post('/save_online_applicant', [OnlineApplicantController::class, 'store']);
+
+//blog post api's
+Route::post('/save_blog_post', [BlogPostController::class, 'store']);
+Route::post('/update_blog_post/id/{blog_post_id}', [BlogPostController::class, 'update']);
+Route::get('/get_blog_posts', [BlogPostController::class, 'show']);
+Route::get('/get_blog_post/id/{blog_post_id}', [BlogPostController::class, 'getBlogPost']);
+Route::delete('/delete_blog_post/id/{blog_post_id}', [BlogPostController::class, 'destroy']);
+
   // });

@@ -55,44 +55,17 @@ class User extends Authenticatable {
         'two_factor_secret',
     ];
 
-    // /**
-    //  * The attributes that should be cast to native types.
-    //  *
-    //  * @var array
-    //  */
-    // protected $casts = [
-    //     'email_verified_at' => 'datetime',
-    // ];
-
-
     public function Role() {
         return $this->belongsTo(Role::class);
     }
 
-    // public function privileges() {
-    //     return $this->belongsToMany(Privilege::class)->withPivot('is_read', 'is_create', 'is_update', 'is_delete');
-    // }
-    
-    // public function authentication($id) {
-    //     $pre = $this->privileges;
-    //     foreach ($pre as $p) {
-    //         if ($p['id'] == $id) {
-    //             return $p['pivot'];
-    //         }
-    //     }
-    //     return null;
-    // }
+    public function BlogPost()
+    {
+        return $this->hasMany(BlogPost::class);
+    }
 
-    // public function hasPrivillage($privilege){
-    //     return null !== $this->privilege()->where('name', $privilege)->first();
-    // }
-
-    // public function Contact(){
-    //     return $this->hasOne('Contact');
-    // }
-
-    // public function Vacancy(){
-    //     return $this->hasMany('Vacancy');
-    // }
-
+    public function OnlineApplicant()
+    {
+        return $this->belongsTo(OnlineApplicant::class);
+    }
 }

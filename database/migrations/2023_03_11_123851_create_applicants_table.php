@@ -15,7 +15,7 @@ class CreateApplicantsTable extends Migration
     {
         Schema::create('applicants', function (Blueprint $table) {
             $table->id();
-            $table->string('reff_name', 255)->nullable();
+            $table->string('reff_no', 255)->nullable();
             $table->string('full_name', 255)->nullable();
             $table->text('address')->nullable();
             $table->string('phone_no_01', 12)->nullable();

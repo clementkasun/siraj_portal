@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\applicant\ApplicantRepository;
 use App\Models\Applicant;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
 class ApplicantController extends Controller
@@ -23,6 +24,9 @@ class ApplicantController extends Controller
      */
     public function index()
     {
+        if (Gate::denies('create-applicant', auth()->user())) {
+            return array('status' => 0, 'msg' => 'You are not authorised to create applicant!');
+        }
         return view('applicant.registration');
     }
 
@@ -33,11 +37,17 @@ class ApplicantController extends Controller
      */
     public function registeredApplicants(Applicant $applicant)
     {
+        if (Gate::denies('view-applicant', auth()->user())) {
+            return array('status' => 0, 'msg' => 'You are not authorised to view applicant details!');
+        }
         return view('applicant.registered_applicants', array('applicants' => $applicant->all()));
     }
 
 
     public function viewApplication($id){
+        if (Gate::denies('view-applicant', auth()->user())) {
+            return array('status' => 0, 'msg' => 'You are not authorised to view applicant application!');
+        }
         return $this->applicantRepository->viewApplication($id);
     }
 
@@ -83,6 +93,9 @@ class ApplicantController extends Controller
      */
     public function editApplicant($id)
     {
+        if (Gate::denies('update-applicant', auth()->user())) {
+            return array('status' => 0, 'msg' => 'You are not authorised to update applicant details!');
+        }
         return $this->applicantRepository->editApplicant($id);
     }
 
@@ -95,6 +108,9 @@ class ApplicantController extends Controller
      */
     public function applicantProfile($id)
     {
+        if (Gate::denies('view-applicant', auth()->user())) {
+            return array('status' => 0, 'msg' => 'You are not authorised to view applicant profile!');
+        }
         return $this->applicantRepository->applicantProfile($id);
     }
 

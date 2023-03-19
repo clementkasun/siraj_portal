@@ -72,7 +72,7 @@
                             <label for="vacancy_image">Vacancy Image *</label>
                             <div class="input-group">
                                 <div class="custom-file">
-                                    <input type="file" id="vacancy_image" name="vacancy_image" class="form-control" accept=".jpeg, .jpg, .png" required>
+                                    <input type="file" id="vacancy_image" name="vacancy_image" class="form-control" accept=".jpeg, .jpg, .png">
                                     <label class="custom-file-label" for="vacancy_image">Applicant Image</label>
                                 </div>
                             </div>

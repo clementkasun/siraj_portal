@@ -79,7 +79,7 @@ class VacancyRepository implements VacancyInterface
         //     return array('status' => 0, 'msg' => 'You are not authorised to update vacancy!');
         // }
         $log = [
-            'route' => '/api/update_contact',
+            'route' => '/api/update_vacancy/id/'.$id,
         ];
         try {
 
@@ -117,7 +117,7 @@ class VacancyRepository implements VacancyInterface
             $log['msg'] = 'Updating vacancy is successful!';
             Log::channel('daily')->info(json_encode($log));
 
-            return array('status' => 1, 'msg' => 'Saving vacancy is successful!');
+            return array('status' => 1, 'msg' => 'Updating vacancy is successful!');
         } catch (Exception $e) {
             $log['msg'] = 'Updating vacancy was unsuccessful!';
             $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();

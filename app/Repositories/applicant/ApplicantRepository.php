@@ -14,9 +14,14 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\SystemNotification;
+use Nette\Utils\Random;
 
 class ApplicantRepository implements ApplicantInterface
 {
+    public function getZeroPaddedNumber($value, $padding, $pad_type = STR_PAD_LEFT) {
+        return str_pad($value, $padding, "0", STR_PAD_LEFT);
+    }
+
     public function store($request)
     {
         // if (Gate::denies('create-applicant', auth()->user())) {
@@ -99,7 +104,10 @@ class ApplicantRepository implements ApplicantInterface
                 'driving' => ($request->driving == 'true') ? 1 : 0
             ]);
 
-            $images = [
+            $applicant->reff_no = $this->getZeroPaddedNumber($applicant->id,10);
+            $applicant->save();
+
+            $documents = [
                 'passport_pdf' => $request->passport_pdf,
                 'nic_pdf' => $request->nic_pdf,
                 'police_record_pdf' => $request->police_record_pdf,
@@ -114,7 +122,7 @@ class ApplicantRepository implements ApplicantInterface
                 'agency_aggrement_pdf' => $request->agency_aggrement_pdf
             ];
 
-            foreach ($images as $key => $image) {
+            foreach ($documents as $key => $document) {
                 if ($request->hasFile($key)) {
                     $path = '/applicant/' . $applicant->id;
                     Storage::disk('public')->makeDirectory($path);
@@ -241,7 +249,8 @@ class ApplicantRepository implements ApplicantInterface
             $applicant->washing = ($request->washing == 'true') ? 1 : 0;
             $applicant->driving = ($request->driving == 'true') ? 1 : 0;
             $applicant->save();
-            $images = [
+            
+            $documents = [
                 'passport_pdf' => $request->passport_pdf,
                 'nic_pdf' => $request->nic_pdf,
                 'police_record_pdf' => $request->police_record_pdf,
@@ -256,7 +265,7 @@ class ApplicantRepository implements ApplicantInterface
                 'agency_aggrement_pdf' => $request->agency_aggrement_pdf
             ];
 
-            foreach ($images as $key => $image) {
+            foreach ($documents as $key => $document) {
                 if ($request->hasFile($key)) {
                     $path = '/applicant/' . $applicant->id;
                     Storage::disk('public')->makeDirectory($path);

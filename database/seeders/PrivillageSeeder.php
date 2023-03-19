@@ -25,6 +25,8 @@ class PrivillageSeeder extends Seeder {
             ['id' => 9, 'name' => 'vacancy'],
             ['id' => 10, 'name' => 'applicant'],
             ['id' => 11, 'name' => 'application_staff_response'],
+            ['id' => 12, 'name' => 'blog_post'],
+            ['id' => 13, 'name' => 'blog_post_staff_response'],
         ];
         \DB::table('privillages')->insert($privileges);
     }

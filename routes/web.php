@@ -7,6 +7,7 @@ use App\Http\Controllers\RollController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\CandidateResponseController;
 use App\Http\Controllers\ContactController;
@@ -78,5 +79,8 @@ Route::get('/registered_contacts', [ContactController::class, 'index']);
 
 //contact response web routes
 Route::get('/contact_response/id/{contact_id}', [ContactResponseController::class, 'index']);
+
+//blog post registration
+Route::get('/blog_post_registration', [BlogPostController::class, 'index']);
 
 
