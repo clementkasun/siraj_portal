@@ -400,7 +400,7 @@ class AuthServiceProvider extends ServiceProvider
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'application_staff_response' && $role_privillage->is_read == 1) {
+                    if ($role_privillage->privillage[0]->name == 'applicant' && $role_privillage->is_read == 1) {
                         return true;
                     }
                 }
@@ -441,6 +441,86 @@ class AuthServiceProvider extends ServiceProvider
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
                     if ($role_privillage->privillage[0]->name == 'application_staff_response' && $role_privillage->is_read == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('create-blog-post', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'blog_post' && $role_privillage->is_create == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('update-blog-post', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'blog_post' && $role_privillage->is_update == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('delete-blog-post', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'blog_post' && $role_privillage->is_delete == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('view-blog-post', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'blog_post' && $role_privillage->is_read == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('create-blog-post-staff-response', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'blog_post_staff_response' && $role_privillage->is_create == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('update-blog-post-staff-response', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'blog_post_staff_response' && $role_privillage->is_update == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('delete-blog-post-staff-response', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'blog_post_staff_response' && $role_privillage->is_delete == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('view-blog-post-staff-response', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'blog_post_staff_response' && $role_privillage->is_read == 1) {
                         return true;
                     }
                 }

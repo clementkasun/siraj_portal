@@ -17,6 +17,7 @@ class Applicant extends Model
      * @var array
      */
     protected $fillable = [
+        'reff_no',
         'full_name',
         'address',
         'phone_no_01',

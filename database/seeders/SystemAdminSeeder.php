@@ -34,6 +34,8 @@ class SystemAdminSeeder extends Seeder
             ['privillage_id' => 9, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
             ['privillage_id' => 10, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
             ['privillage_id' => 11, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
+            ['privillage_id' => 12, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
+            ['privillage_id' => 13, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
         ];
 
         \DB::table('role_privillages')->insert($role_privillage);

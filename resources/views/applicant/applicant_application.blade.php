@@ -92,7 +92,7 @@
         }
     </style>
 
-<body class="container text-center page" style="background-color: #ffe6e6">
+<body class="container text-center page">
     <div class="row">
         <div class="col-2">
             <img class="img-responsive mt-4" src="/dist/img/logo1.png" width="100%" height="150px" />
@@ -116,10 +116,10 @@
         <div class="col-5">
             <div class="row mt-1">
                 <div class="col-5 cell-border">
-                    <label><b>Refference No:</b></label>
+                    <label><b>Reff No:</b></label>
                 </div>
                 <div class="col-7 cell-border">
-                    <label>{{(isset($applicant_details->reff_no)) ? $applicant_details->reff_no : '-'}}</label>
+                    <label>#{{(isset($applicant_details->reff_no)) ? $applicant_details->reff_no : '-'}}</label>
                 </div>
             </div>
             <div class="row">
@@ -510,7 +510,7 @@
             @endforelse
         </div>
         <div class="col-6">
-            <img src="{{ (isset($applicant_details->applicant_image)) ? $applicant_details->applicant_image : '/dist/img/no-image.jpg' }}" width="100%" height="720px" />
+            <img class="img-responsive" src="{{ (isset($applicant_details->applicant_image)) ? $applicant_details->applicant_image : '/dist/img/no-image.jpg' }}" width="100%" height="720px" />
         </div>
     </div>
 </body>

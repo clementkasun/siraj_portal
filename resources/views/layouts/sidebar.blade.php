@@ -51,6 +51,25 @@
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-user-graduate"></i>
                 <p>
+                    Blog Post Item
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                @can('create-blog-post')
+                <li class="nav-item">
+                    <a href="{{ url('/blog_post_registration') }}" class="nav-link {{ Request::is('blog_post_registration') ? 'active' : '' }}">
+                        <i class="fas fa-bookmark nav-icon"></i>
+                        <p>Blog Post Registration</p>
+                    </a>
+                </li>
+                @endcan
+            </ul>
+        </li>
+        <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-user-graduate"></i>
+                <p>
                     Applicant
                     <i class="right fas fa-angle-left"></i>
                 </p>
