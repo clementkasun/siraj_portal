@@ -34,7 +34,7 @@ class BlogPostRepository implements BlogPostInterface
         try {
         $request->validate([
             'post_name' => 'required|string|max: 255',
-            'description' => 'required|string|max: 255',
+            'description' => 'required|string|max: 3000',
             'post_image' => 'required|image|mimes:jpeg,png,jpg ',
             'user_id' => 'required'
         ]);
@@ -62,9 +62,8 @@ class BlogPostRepository implements BlogPostInterface
         }
 
         // $user = auth()->user();
-        // $msg = $log['msg'];
-        // Notification::send($user, new SystemNotification($user, $msg));
         $log['msg'] = 'Saving blog post is successful!';
+        // Notification::send($user, new SystemNotification($user, $log['msg']));
         Log::channel('daily')->info(json_encode($log));
 
             return array('status' => 1, 'msg' => 'Saving blog post is successful!');
@@ -89,7 +88,7 @@ class BlogPostRepository implements BlogPostInterface
 
             $request->validate([
                 'post_name' => 'required|string|max: 255',
-                'description' => 'required|string|max: 255',
+                'description' => 'required|string|max: 3000',
                 'post_image' => 'required|image|mimes:jpeg,png,jpg ',
                 'user_id' => 'required',
             ]);
@@ -116,9 +115,8 @@ class BlogPostRepository implements BlogPostInterface
             $blog_post->save();
 
             // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
             $log['msg'] = 'Updating blog post is successful!';
+            // Notification::send($user, new SystemNotification($user, $log['msg']));
             Log::channel('daily')->info(json_encode($log));
 
             return array('status' => 1, 'msg' => 'Updating blog post is successful!');
