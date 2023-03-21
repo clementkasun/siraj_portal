@@ -8,7 +8,8 @@ use Illuminate\Notifications\Notification;
 class SystemNotification extends Notification
 {
     use Queueable;
-
+    public $user;
+    public $msg;
     /**
      * Create a new notification instance.
      *
@@ -28,7 +29,7 @@ class SystemNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail'];
     }
 
     /**
@@ -41,7 +42,6 @@ class SystemNotification extends Notification
     {
         return [
             'name' => $this->user->name,
-            'email' => $this->user->email,
             'msg' => $this->msg
         ];
     }

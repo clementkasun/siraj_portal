@@ -111,7 +111,7 @@ abstract class AbstractAsset
      * Every non-namespaced element is prefixed with the default namespace
      * name which is passed as argument to this method.
      *
-     * @deprecated Use {@link getNamespaceName()} and {@link getName()} instead.
+     * @deprecated Use {@see getNamespaceName()} and {@see getName()} instead.
      *
      * @param string $defaultNamespaceName
      *
@@ -123,7 +123,7 @@ abstract class AbstractAsset
             'doctrine/dbal',
             'https://github.com/doctrine/dbal/pull/4814',
             'AbstractAsset::getFullQualifiedName() is deprecated.'
-            . ' Use AbstractAsset::getNamespaceName() and ::getName() instead.'
+            . ' Use AbstractAsset::getNamespaceName() and ::getName() instead.',
         );
 
         $name = $this->getName();
