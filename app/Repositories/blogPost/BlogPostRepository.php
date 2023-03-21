@@ -87,9 +87,9 @@ class BlogPostRepository implements BlogPostInterface
         try {
 
             $request->validate([
-                'post_name' => 'required|string|max: 255',
-                'description' => 'required|string|max: 3000',
-                'post_image' => 'required|image|mimes:jpeg,png,jpg ',
+                'post_name' => 'sometimes|nullable|string|max: 255',
+                'description' => 'sometimes|nullable|string|max: 3000',
+                'post_image' => 'sometimes|nullable',
                 'user_id' => 'required',
             ]);
 

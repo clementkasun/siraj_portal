@@ -25,9 +25,6 @@ $('#save_blog_post').click(function() {
 });
 
 $('#update_blog_post').click(function() {
-    if (!jQuery("#blog_post_form").valid()) {
-        return false;
-    }
     let data = {
         'post_name': $('#post_name').val(),
         'description': $('#description').val(),
