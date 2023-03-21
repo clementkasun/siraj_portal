@@ -124,7 +124,7 @@ class ApplicantRepository implements ApplicantInterface
 
             foreach ($documents as $key => $document) {
                 if ($request->hasFile($key)) {
-                    $path = '/applicant/' . $applicant->id;
+                    $path = 'applicant/' . $applicant->id;
                     Storage::disk('public')->makeDirectory($path);
                     $path = Storage::disk('public')->put($path . '/', $request->file($key));
                     $applicant->$key = $path;
@@ -230,7 +230,7 @@ class ApplicantRepository implements ApplicantInterface
             $applicant->passport_issue_date = $request->passport_issue_date;
             $applicant->passport_exp_date = $request->passport_exp_date;
             $applicant->birth_date = $request->birth_date;
-            $applicant->sex = $request->sex;
+            $applicant->sex = $request->gender;
             $applicant->weight = $request->weight;
             $applicant->complexion = $request->complexion;
             $applicant->nationality = $request->nationality;
@@ -291,9 +291,9 @@ class ApplicantRepository implements ApplicantInterface
                 $applicant->save();
             }
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
+            $user = auth()->user();
+            $msg = $log['msg'];
+            Notification::send($user, new SystemNotification($user, $msg));
             $log['msg'] = 'Updating applicant is successful!';
             Log::channel('daily')->info(json_encode($log));
 

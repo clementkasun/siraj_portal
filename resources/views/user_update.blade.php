@@ -53,8 +53,8 @@
                                 <input id="prefferedName" name="prefferedName" type="text" class="form-control form-control-sm" placeholder="Enter the Preffered Name" value="{{ $user->preffered_name }}">
                             </div>
                             <div class="form-group">
-                                <label>Email*</label>
-                                <input id="email" name="email" type="text" class="form-control form-control-sm" placeholder="Enter the Email Address" value="{{ $user->email }}">
+                                <label>Email</label>
+                                <input id="email" name="email" type="text" class="form-control form-control-sm" placeholder="Enter the Email Address" value="{{ $user->email }}" disabled>
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
@@ -70,7 +70,7 @@
                             </div>
                             <div class="form-group">
                                 <label>NIC</label>
-                                <input id="nic" name="nic" type="text" maxlength="12" class="form-control form-control-sm" placeholder="Enter the nic no" value="{{ $user->nic }}">
+                                <input id="nic" name="nic" type="text" maxlength="12" class="form-control form-control-sm" placeholder="Enter the nic no" value="{{ $user->nic }}" disabled>
                             </div>
                             <div class="form-group">
                                 <label>Birth Date</label>
@@ -251,6 +251,7 @@
 @section('pageScripts')
 <script src="{{ asset('js/userjs/get.js') }}"></script>
 <script src="{{ asset('js/userjs/submit.js') }}"></script>
+<script src="{{ asset('js/userjs/user_nic_validation.js') }}"></script>
 <script>
     $(function() {
         //Initialize Select2 Elements
@@ -429,72 +430,25 @@
                 'lastName': $('#firstName').val(),
                 'fullName': $('#fullName').val(),
                 'prefferedName': $('#prefferedName').val(),
-                'email': $('#email').val(),
                 'address': $('#address').val(),
                 'mobileNo': $('#mobileNo').val(),
                 'landNo': $('#landNo').val(),
-                'nic': $('#nic').val(),
                 'nicFrontImg': $('#nicImageFront')[0].files[0],
                 'nicBackImg': $('#nicImageFront')[0].files[0],
                 'userImg': $('#userImage')[0].files[0],
                 'birthDate': $('#birthDate').val(),
             };
-
-            is_email_or_nic_exist(data, function(response) {
-                if (response == true) {
-                    toastr.error('Email or NIC already exist, Please check and correct it!')
-                    return false;
+            ulploadFileWithData('/api/update_user/id/' + userId, data, function(result) {
+                if (result.status == 1) {
+                    toastr.success('User details have successfully updated!')
+                    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                        callBack();
+                    }
                 } else {
-                    ulploadFileWithData('/api/update_user/id/' + userId, data, function(result) {
-                        if (result.status == 1) {
-                            toastr.success('User details have successfully updated!')
-                            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                                callBack();
-                            }
-                        } else {
-                            Swal.fire(
-                                'Update user',
-                                result.msg,
-                                'warning'
-                            );
-                            toastr.error('User Updating was failed! due to ' + result.msg);
-                        }
-                    });
+                    toastr.error('User Updating was failed! due to ' + result.msg);
                 }
             });
         });
-
-        var status = false;
-        is_email_or_nic_exist = (data, callBack) => {
-            ajaxRequest('post', '/api/is_nic_or_email_exist', data, function(result) {
-                if (result == 1) {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Record will be updated without nic and email, due to nic or email already exist! please check them!",
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes!'
-                    }).then((result) => {
-                        if (result.value) {
-                            data.nic = null;
-                            data.email = null;
-                            status = false;
-                        } else {
-                            status = true;
-                        }
-                        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                            callBack(status);
-                        }
-                    });
-                } else {
-                    status = false;
-                    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                        callBack(status);
-                    }
-                }
-            });
-        }
 
         $("#user_update_form").validate({
             errorClass: "invalid",

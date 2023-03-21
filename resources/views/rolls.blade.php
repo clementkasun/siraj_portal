@@ -166,8 +166,7 @@
                 'role_name': $('#role_name').val(),
                 'level': $('#level').val()
             };
-
-            ajaxRequest('post', '/api/save_roles', data, function(result) {
+            ulploadFileWithData('/api/save_roles', data, function (result) {  
                 if(result.status == 1){
                     Toast.fire({
                         type: 'success',
