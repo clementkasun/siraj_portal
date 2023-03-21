@@ -274,7 +274,7 @@
                     ulploadFileWithData('/api/save_user', data, function(result) {
                         if (result.status == 1) {
                             toastr.success('User saving is successful!');
-                            $('#user_registration_form').trigger("reset");
+                            location.reload();
                             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                                 callBack();
                             }
