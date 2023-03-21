@@ -166,14 +166,17 @@
                 'role_name': $('#role_name').val(),
                 'level': $('#level').val()
             };
-            ulploadFileWithData('/api/save_roles', data, function (result) {  
-                if(result.status == 1){
+            ulploadFileWithData('/api/save_roles', data, function(result) {
+                if (result.status == 1) {
                     Toast.fire({
                         type: 'success',
                         title: 'Agency Management System</br> Role has created'
                     });
                     $('#role_form').trigger("reset");
-                }else{
+                    loadRoles($('.levelCombo').val(), 'rollCombo', function() {
+                        $('.rollCombo').change();
+                    });
+                } else {
                     Toast.fire({
                         type: 'error',
                         title: 'Agency Management System</br> Role creation was failed'

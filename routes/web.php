@@ -12,6 +12,7 @@ use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\CandidateResponseController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactResponseController;
+use App\Http\Controllers\OnlineApplicantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,5 +83,8 @@ Route::get('/contact_response/id/{contact_id}', [ContactResponseController::clas
 
 //blog post registration
 Route::get('/blog_post_registration', [BlogPostController::class, 'index']);
+
+//registered online applicants 
+Route::get('/online_registration', [OnlineApplicantController::class, 'index']);
 
 

@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Storage;
 
 class OnlineApplicantRepository implements OnlineApplicantInterface
 {
+    public function index(){
+        return view('applicant.online_applicants', ['online_applicants' => OnlineApplicant::all()]);
+    }
+
     public function store($request)
     {
         // if (Gate::denies('create-online-applicant', auth()->user())) {

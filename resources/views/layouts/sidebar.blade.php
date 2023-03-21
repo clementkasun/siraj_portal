@@ -15,7 +15,11 @@
                 <img src="{{ (isset(auth()->user()->user_image)) ? auth()->user()->user_image : '/dist/img/no-image.jpg' }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{auth()->user()->first_name.' '.auth()->user()->last_name}}</a>
+                <?php
+                $first_name = (isset(auth()->user()->first_name)) ? auth()->user()->first_name : '';
+                $last_name = (isset(auth()->user()->last_name)) ? auth()->user()->last_name : '';
+                ?>
+                <a href="#" class="d-block">{{  $first_name .' '. $last_name }}</a>
             </div>
         </div>
 
@@ -144,7 +148,7 @@
                 </li>
                 @endcan
                 <?php
-                use App\Models\Applicant;
+                use App\Models\OnlineApplicant;
                 use App\Models\Contact;
                 use App\Models\Candidate;
                 ?>
@@ -152,7 +156,7 @@
                 <li class="nav-item">
                     <a href="{{ url('/online_registration') }}" class="nav-link {{ url('/online_registration') }}">
                         <i class="nav-icon fas fa-portrait"></i>
-                        <p>Online Applicants</p> <span class="badge badge-info right">{{Applicant::all()->count()}}</span>
+                        <p>Online Applicants</p> <span class="badge badge-info right">{{OnlineApplicant::all()->count()}}</span>
                     </a>
                 </li>
                 @endcan
@@ -174,7 +178,7 @@
                 @endcan
                 <li class="nav-header">SETTINGS</li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="/users/id/{{ auth()->user()->id }}" class="nav-link">
                         <i class="nav-icon fas fa-user-circle"></i>
                         <p>Profile</p>
                     </a>
