@@ -7,18 +7,14 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 /**
  * Marker interface for constraints.
  *
- * @deprecated Use {@link ForeignKeyConstraint}, {@link Index} or {@link UniqueConstraint} instead.
+ * @deprecated Use {@see ForeignKeyConstraint}, {@see Index} or {@see UniqueConstraint} instead.
  */
 interface Constraint
 {
-    /**
-     * @return string
-     */
+    /** @return string */
     public function getName();
 
-    /**
-     * @return string
-     */
+    /** @return string */
     public function getQuotedName(AbstractPlatform $platform);
 
     /**

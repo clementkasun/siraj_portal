@@ -294,6 +294,7 @@
     var APPLICANT_ID = "{{ isset($applicant_data->id) ? $applicant_data->id : '' }}";
     var GENDER = "{{ isset($applicant_data->sex) ? $applicant_data->sex : '' }}";
     var MARITIAL_STATUS = "{{ isset($applicant_data->maritial_status) ? $applicant_data->maritial_status : '' }}";
+    var POST_STATUS = "{{ isset($applicant_data->post_status) ? $applicant_data->post_status : '' }}";
     var DECORATING = "{{ isset($applicant_data->decorating) ? $applicant_data->decorating : ''  }}";
     var BABY_SITTING = "{{ isset($applicant_data->baby_sitting) ? $applicant_data->baby_sitting : '' }}";
     var CLEANING = "{{ isset($applicant_data->cleaning) ? $applicant_data->cleaning : '' }}";
@@ -309,6 +310,7 @@
         if (APPLICANT_ID != '') {
             $('#sex').val(GENDER);
             $('#maritial_status').val(MARITIAL_STATUS);
+            $('#post_status').val(POST_STATUS);
             $('#save_applicant').addClass('d-none');
             $('#update_applicant').removeClass('d-none');
 

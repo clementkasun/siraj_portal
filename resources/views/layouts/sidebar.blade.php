@@ -1,8 +1,11 @@
 @section('sidebar')
-<!-- Sidebar user panel (optional) -->
+<!-- Sidebar user (optional) -->
 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="image">
+        <img src="{{ (isset(auth()->user()->user_image)) ? auth()->user()->user_image : '/dist/img/no-image.jpg' }}" class="img-circle elevation-2" alt="user_image">
+    </div>
     <div class="info">
-        <a href="#" class="d-block">Welcome, ! {{ auth()->user()->first_name.' '.auth()->user()->last_name }}</a>
+        <a href="#" class="d-block">Alexander Pierce</a>
     </div>
 </div>
 
@@ -30,7 +33,7 @@
         </li>
         <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-user-graduate"></i>
+                <i class="nav-icon fas fa-list"></i>
                 <p>
                     Vacancy
                     <i class="right fas fa-angle-left"></i>
@@ -49,7 +52,7 @@
         </li>
         <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-user-graduate"></i>
+                <i class="nav-icon fas fa-blog"></i>
                 <p>
                     Blog Post Item
                     <i class="right fas fa-angle-left"></i>
@@ -68,7 +71,7 @@
         </li>
         <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-user-graduate"></i>
+                <i class="nav-icon fas fa-user"></i>
                 <p>
                     Applicant
                     <i class="right fas fa-angle-left"></i>
@@ -95,7 +98,7 @@
         </li>
         <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-user-graduate"></i>
+                <i class="nav-icon fas fa-user"></i>
                 <p>
                     Candidates
                     <i class="right fas fa-angle-left"></i>
@@ -114,7 +117,7 @@
         </li>
         <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-user-graduate"></i>
+                <i class="nav-icon fas fa-phone"></i>
                 <p>
                     Contacts
                     <i class="right fas fa-angle-left"></i>

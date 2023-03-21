@@ -27,12 +27,12 @@
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
-                                <label>First Name</label>
-                                <input id="firstName" name="firstName" type="text" class="form-control form-control-sm" placeholder="Enter First Name" value="{{old('firstName')}}">
+                                <label>First Name*</label>
+                                <input id="firstName" name="firstName" type="text" class="form-control form-control-sm" placeholder="Enter First Name" value="{{old('firstName')}}" required>
                             </div>
                             <div class="form-group">
-                                <label>Last Name</label>
-                                <input id="lastName" name="lastName" type="text" class="form-control form-control-sm" placeholder="Enter Last Name" value="{{old('lastName')}}">
+                                <label>Last Name*</label>
+                                <input id="lastName" name="lastName" type="text" class="form-control form-control-sm" placeholder="Enter Last Name" value="{{old('lastName')}}" required>
                             </div>
                             <div class="form-group">
                                 <label>Full Name</label>
@@ -44,7 +44,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Email*</label>
-                                <input id="email" name="email" type="text" class="form-control form-control-sm" placeholder="Enter Email" value="{{old('email')}}">
+                                <input id="email" name="email" type="text" class="form-control form-control-sm" placeholder="Enter Email" value="{{old('email')}}" required>
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
@@ -59,8 +59,8 @@
                                 <input id="landNo" name="landNo" type="text" maxlength="12" class="form-control form-control-sm" placeholder="Enter land no" value="{{old('landNo')}}">
                             </div>
                             <div class="form-group">
-                                <label>NIC</label>
-                                <input id="nic" name="nic" type="text" maxlength="12" class="form-control form-control-sm" placeholder="Enter nic no" value="{{old('nic')}}">
+                                <label>NIC*</label>
+                                <input id="nic" name="nic" type="text" maxlength="12" class="form-control form-control-sm" placeholder="Enter nic no" value="{{old('nic')}}" required>
                             </div>
                             <div class="form-group">
                                 <label>Birth Date</label>
@@ -206,6 +206,7 @@
 @section('pageScripts')
 <script src="{{ asset('js/userjs/get.js') }}"></script>
 <script src="{{ asset('js/userjs/submit.js') }}"></script>
+<script src="{{ asset('js/userjs/user_nic_validation.js') }}"></script>
 <!-- Page script -->
 <script>
     $(function() {
@@ -236,6 +237,7 @@
         $('.levelCombo').change(function() {
             loadRoles(this.value, 'rollCombo');
         });
+
         $(document).on('click', '.btnAction', function() {
             //var row = JSON.parse(decodeURIComponent($(this).data('row')));
             if (confirm('Are you sure you want to restore this user ?')) {
@@ -247,33 +249,31 @@
             if (!jQuery("#user_registration_form").valid() || !password_confirmation()) {
                 return false;
             }
-
-            is_email_or_nic_exist(function(response) {
+            let data = {
+                'firstName': $('#firstName').val(),
+                'lastName': $('#firstName').val(),
+                'fullName': $('#fullName').val(),
+                'prefferedName': $('#prefferedName').val(),
+                'email': $('#email').val(),
+                'address': $('#address').val(),
+                'mobileNo': $('#mobileNo').val(),
+                'landNo': $('#landNo').val(),
+                'nic': $('#nic').val(),
+                'nicFrontImg': $('#nicImageFront')[0].files[0],
+                'nicBackImg': $('#nicImageFront')[0].files[0],
+                'userImg': $('#userImage')[0].files[0],
+                'birthDate': $('#birthDate').val(),
+                'level': $('#level').val(),
+                'role': $('#role').val(),
+                'password': $('#user_password').val(),
+            };
+            is_user_email_or_nic_exist(data, function(response) {
                 if (response == true) {
-                    toastr.error('Email or Nic already exist!')
                     return false;
                 } else {
-                    let data = {
-                        'firstName': $('#firstName').val(),
-                        'lastName': $('#firstName').val(),
-                        'fullName': $('#fullName').val(),
-                        'prefferedName': $('#prefferedName').val(),
-                        'email': $('#email').val(),
-                        'address': $('#address').val(),
-                        'mobileNo': $('#mobileNo').val(),
-                        'landNo': $('#landNo').val(),
-                        'nic': $('#nic').val(),
-                        'nicFrontImg': $('#nicImageFront')[0].files[0],
-                        'nicBackImg': $('#nicImageFront')[0].files[0],
-                        'userImg': $('#userImage')[0].files[0],
-                        'birthDate': $('#birthDate').val(),
-                        'level': $('#level').val(),
-                        'role': $('#role').val(),
-                        'password': $('#user_password').val(),
-                    };
                     ulploadFileWithData('/api/save_user', data, function(result) {
                         if (result.status == 1) {
-                            toastr.success('User saving is successful!')
+                            toastr.success('User saving is successful!');
                             $('#user_registration_form').trigger("reset");
                             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                                 callBack();
@@ -294,24 +294,6 @@
             } else {
                 return true;
             }
-        }
-
-        var status = false;
-        is_email_or_nic_exist = (callBack) => {
-            let data = {
-                'email': $('#email').val(),
-                'nic': $('#nic').val(),
-            };
-            ajaxRequest('post', '/api/is_nic_or_email_exist', data, function(result) {
-                if (result == 1) {
-                    status = true;
-                } else {
-                    status = false;
-                }
-                if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                    callBack(status);
-                }
-            });
         }
 
         $("#user_registration_form").validate({
