@@ -37,8 +37,8 @@ class UserController extends Controller
         try {
             \DB::transaction(function () use ($request) {
                 request()->validate([
-                    'firstName' => 'required|max:50|string',
-                    'lastName' => 'required|nullable|max:50|string',
+                    'firstName' => 'required|string|max:50',
+                    'lastName' => 'required|string|max:50',
                     'fullName' => 'sometimes|nullable|max:255|string',
                     'prefferedName' => 'sometimes|nullable|max:50|string',
                     'address' => 'sometimes|nullable|string|max:255',
@@ -55,16 +55,16 @@ class UserController extends Controller
                 ]);
 
                 $user = User::create([
-                    'firstName' =>  $request->firstName,
-                    'lastName' => $request->lastName,
-                    'fullName' => $request->fullName,
+                    'first_name' =>  $request->firstName,
+                    'last_name' => $request->lastName,
+                    'full_name' => $request->fullName,
+                    'preffered_name' => $request->prefferedName,
                     'email' => $request->email,
                     'nic' => $request->nic,
-                    'prefferedName' => $request->prefferedName,
                     'address' => $request->address,
-                    'mobileNo' => $request->mobileNo,
-                    'landNo' => $request->landNo,
-                    'birthDate' => $request->birthDate,
+                    'mobile_no' => $request->mobileNo,
+                    'land_no' => $request->landNo,
+                    'birth_date' => $request->birthDate,
                     'role_id' => $request->role,
                     'password' => Hash::make($request->password)
                 ]);
@@ -175,14 +175,14 @@ class UserController extends Controller
 
             $user = User::findOrFail($id);
             $user->update([
-                'firstName' =>  $request->firstName,
-                'lastName' => $request->lastName,
-                'fullName' => $request->fullName,
-                'prefferedName' => $request->prefferedName,
+                'first_name' =>  $request->firstName,
+                'last_name' => $request->lastName,
+                'full_name' => $request->fullName,
+                'preffered_name' => $request->prefferedName,
                 'address' => $request->address,
-                'mobileNo' => $request->mobileNo,
-                'landNo' => $request->landNo,
-                'birthDate' => $request->birthDate,
+                'mobile_no' => $request->mobileNo,
+                'land_no' => $request->landNo,
+                'birth_date' => $request->birthDate,
             ]);
 
             if ($request->hasFile('nicFrontImg')) {
