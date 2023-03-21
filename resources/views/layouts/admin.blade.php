@@ -11,7 +11,7 @@
     @yield('styles')
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed text-sm">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
         <!-- Navbar -->
