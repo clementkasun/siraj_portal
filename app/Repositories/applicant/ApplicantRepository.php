@@ -126,8 +126,7 @@ class ApplicantRepository implements ApplicantInterface
                 if ($request->hasFile($key)) {
                     $path = 'applicant/' . $applicant->id;
                     Storage::disk('public')->makeDirectory($path);
-                    $path = Storage::disk('public')->put($path . '/', $request->file($key));
-                    $applicant->$key = $path;
+                    $applicant->$key = Storage::disk('public')->put($path . '/', $request->file($key));
                     $applicant->save();
                 }
             }
@@ -267,10 +266,9 @@ class ApplicantRepository implements ApplicantInterface
 
             foreach ($documents as $key => $document) {
                 if ($request->hasFile($key)) {
-                    $path = '/applicant/' . $applicant->id;
+                    $path = 'applicant/' . $applicant->id;
                     Storage::disk('public')->makeDirectory($path);
-                    $path = Storage::disk('public')->put($path . '/', $request->file($key));
-                    $applicant->$key = $path;
+                    $applicant->$key = Storage::disk('public')->put($path . '/', $request->file($key));
                     $applicant->save();
                 }
             }
