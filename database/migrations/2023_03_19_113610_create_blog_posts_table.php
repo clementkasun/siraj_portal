@@ -17,7 +17,7 @@ class CreateBlogPostsTable extends Migration
             $table->id();
             $table->string('post_name', 255);
             $table->string('post_image', 255);
-            $table->string('description', 255);
+            $table->text('description');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();

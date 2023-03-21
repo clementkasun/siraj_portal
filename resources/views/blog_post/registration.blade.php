@@ -23,7 +23,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="description"> Description * </label>
-                                        <textarea id="description" name="description" class="form-control" placeholder="Please enter the post description" maxlength="300" required></textarea>
+                                        <textarea id="description" name="description" class="form-control" placeholder="Please enter the post description" maxlength="3000" style="width: 100%;height: 150px;padding: 12px 20px;box-sizing: border-box;border: 2px solid #ccc;border-radius: 4px;" required></textarea>
                                     </div>
                                     <div class="form-group row">
                                         <label for="post_image"> Post Image *</label>
