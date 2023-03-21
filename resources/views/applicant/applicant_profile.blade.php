@@ -144,7 +144,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <?php $exp_array = ['Experienced', 'No Experience']; ?>
+                                                        <?php $exp_array = ['No Experience', 'Experience']; ?>
                                                         <div class="form-group mt-2">
                                                             <label>Decorating: </label>
                                                             <span class="ml-2">{{(isset($applicant_data->decorating)) ? $exp_array[$applicant_data->decorating] : ''}}</span>
