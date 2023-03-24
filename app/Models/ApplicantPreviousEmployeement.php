@@ -18,14 +18,17 @@ class ApplicantPreviousEmployeement extends Model
      */
     protected $fillable = [
         'job_type',
-        'period',
-        'monthly_salary',
-        'contract_period',
         'country',
+        'period',
+        'added_by',
         'applicant_id'
     ];
 
     public function Applicant(){
         return $this->belongsTo(Applicant::class);
+    }
+
+    public function AddedBy(){
+        return $this->belongsTo(User::class, 'added_by');
     }
 }

@@ -1,4 +1,4 @@
-$('#save_contact_reponse').click(function () {
+$('#save_contact_response').click(function () {
     if (!jQuery("#contact_response_form").valid()) {
         return false;
     }
@@ -9,11 +9,11 @@ $('#save_contact_reponse').click(function () {
         'contact_id': CONTACT_ID
     };
 
-    ulploadFileWithData('/api/save_contact_reponse', data, function (result) {
+    ulploadFileWithData('/api/save_contact_response', data, function (result) {
         if (result.status == 1) {
             toastr.success('Contact response saving is successful!');
             $('#contact_response_form').trigger("reset");
-            load_contact_reponse();
+            load_contact_response();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -23,8 +23,8 @@ $('#save_contact_reponse').click(function () {
     });
 });
 
-$('#update_contact_reponse').click(function () {
-    let contact_resp_id = $('#update_contact_reponse').attr('data-id');
+$('#update_contact_response').click(function () {
+    let contact_resp_id = $('#update_contact_response').attr('data-id');
     update_contact_response(contact_resp_id);
 });
 
@@ -43,7 +43,7 @@ update_contact_response = (contact_resp_id) => {
         if (result.status == 1) {
             toastr.success('Contact response updating is successful!');
             $('#contact_response_form').trigger("reset");
-            load_contact_reponse();
+            load_contact_response();
             reset_buttons();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
@@ -54,19 +54,19 @@ update_contact_response = (contact_resp_id) => {
     });
 }
 
-load_contact_reponse = () => {
+load_contact_response = () => {
     let index = 1;
     let html = '';
-    ajaxRequest('get', '/api/get_contact_reponses', null, function (result) {
+    ajaxRequest('get', '/api/get_contact_responses', null, function (result) {
         if (result != '') {
-            result.forEach(contact_reponse => {
+            result.forEach(contact_response => {
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
-                html += '<td style="width: 15em">' + contact_reponse.name + '</td>';
-                html += '<td>' + contact_reponse.designation + '</td>';
-                html += '<td>' + contact_reponse.response + '</td>';
-                html += '<td><button type="button" class="btn btn-primary edit m-1" data-id="' + contact_reponse.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger del m-1" data-id="' + contact_reponse.id + '"> Delete </button></td>';
+                html += '<td style="width: 15em">' + contact_response.name + '</td>';
+                html += '<td>' + contact_response.designation + '</td>';
+                html += '<td>' + contact_response.response + '</td>';
+                html += '<td><button type="button" class="btn btn-primary edit m-1" data-id="' + contact_response.id + '"> Edit </button>';
+                html += '<button type="button" class="btn btn-danger del m-1" data-id="' + contact_response.id + '"> Delete </button></td>';
             });
             $('#contact_resp_tbl tbody').html(html);
             $('#contact_resp_tbl').DataTable({
@@ -92,16 +92,16 @@ $(document).on('click', '.del', function () {
         if (result.value) {
             let id = $(this).attr('data-id');
             reset_buttons();
-            delete_contact_reponse(id);
+            delete_contact_response(id);
         }
     });
 });
 
-delete_contact_reponse = (id) => {
+delete_contact_response = (id) => {
     ajaxRequest('delete', '/api/delete_contact_response/id/' + id, null, function (result) {
         if (result.status == 1) {
             $('#contact_response_form').trigger("reset");
-            load_contact_reponse();
+            load_contact_response();
             toastr.success('Deleting contact response was successful!');
         } else {
             toastr.error('Deleting contact response was failed!');
@@ -110,8 +110,8 @@ delete_contact_reponse = (id) => {
 }
 
 reset_buttons = () => {
-    $('#save_contact_reponse').removeClass('d-none');
-    $('#update_contact_reponse').addClass('d-none');
+    $('#save_contact_response').removeClass('d-none');
+    $('#update_contact_response').addClass('d-none');
 }
 
 $(document).on('click', '.edit', function () {
@@ -125,9 +125,9 @@ edit_contact_response = (id) => {
         $('#name').val(result.name);
         $('#designation').val(result.designation);
         $('#response').val(result.response);
-        $('#save_contact_reponse').addClass('d-none');
-        $('#update_contact_reponse').removeClass('d-none');
-        $('#update_contact_reponse').attr('data-id', result.id);
+        $('#save_contact_response').addClass('d-none');
+        $('#update_contact_response').removeClass('d-none');
+        $('#update_contact_response').attr('data-id', result.id);
     });
 }
 

@@ -20,51 +20,54 @@ class BlogPostRepository implements BlogPostInterface
 {
     public function index()
     {
+        if (Gate::denies('view-blog_post', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view blog post!');
+        }
         return view('blog_post.registration');
     }
 
     public function store($request)
     {
-        // if (Gate::denies('create-blog_post', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to create blog post!');
-        // }
+        if (Gate::denies('create-blog_post', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to create blog post!');
+        }
         $log = [
             'route' => '/api/save_blog_post',
         ];
         try {
-        $request->validate([
-            'post_name' => 'required|string|max: 255',
-            'description' => 'required|string|max: 3000',
-            'post_image' => 'required|image|mimes:jpeg,png,jpg ',
-            'user_id' => 'required'
-        ]);
+            $request->validate([
+                'post_name' => 'required|string|max: 255',
+                'description' => 'required|string|max: 3000',
+                'post_image' => 'required|image|mimes:jpeg,png,jpg ',
+                'user_id' => 'required'
+            ]);
 
-        $blog_post = BlogPost::create([
-            'post_name' => $request->post_name,
-            'description' => $request->description,
-            'user_id' => $request->user_id
-        ]);
+            $blog_post = BlogPost::create([
+                'post_name' => $request->post_name,
+                'description' => $request->description,
+                'user_id' => $request->user_id
+            ]);
 
-        if ($request->hasFile('post_image')) {
-            $path = public_path('/storage/blog/posts/' . $blog_post->id . '/');
-            \File::exists($path) or \File::makeDirectory($path);
-            $random_name = uniqid($blog_post->id);
+            if ($request->hasFile('post_image')) {
+                $path = public_path('/storage/blog/posts/' . $blog_post->id . '/');
+                \File::exists($path) or \File::makeDirectory($path);
+                $random_name = uniqid($blog_post->id);
 
-            $blog_post_img     = $request->file('post_image');
-            $blog_post_img_ext    = $blog_post_img->extension();
+                $blog_post_img     = $request->file('post_image');
+                $blog_post_img_ext    = $blog_post_img->extension();
 
-            // I am saying to create the dir if it's not there.
-            $blog_post_img = \Image::make($blog_post_img->getRealPath())->resize(500, 500);
-            $blog_post_img->save($path . $random_name . '.' . $blog_post_img_ext);
-            $blog_post_img_path = '/storage/blog/posts/' . $blog_post->id . '/' . $random_name . '.' . $blog_post_img_ext;
-            $blog_post->post_image = $blog_post_img_path;
-            $blog_post->save();
-        }
+                // I am saying to create the dir if it's not there.
+                $blog_post_img = \Image::make($blog_post_img->getRealPath())->resize(500, 500);
+                $blog_post_img->save($path . $random_name . '.' . $blog_post_img_ext);
+                $blog_post_img_path = '/storage/blog/posts/' . $blog_post->id . '/' . $random_name . '.' . $blog_post_img_ext;
+                $blog_post->post_image = $blog_post_img_path;
+                $blog_post->save();
+            }
 
-        // $user = auth()->user();
-        $log['msg'] = 'Saving blog post is successful!';
-        // Notification::send($user, new SystemNotification($user, $log['msg']));
-        Log::channel('daily')->info(json_encode($log));
+            // $user = auth()->user();
+            $log['msg'] = 'Saving blog post is successful!';
+            // Notification::send($user, new SystemNotification($user, $log['msg']));
+            Log::channel('daily')->info(json_encode($log));
 
             return array('status' => 1, 'msg' => 'Saving blog post is successful!');
         } catch (Exception $e) {
@@ -78,9 +81,9 @@ class BlogPostRepository implements BlogPostInterface
 
     public function update($request, $id)
     {
-        // if (Gate::denies('update-blog-post', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to blog post!');
-        // }
+        if (Gate::denies('update-blog-post', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to blog post!');
+        }
         $log = [
             'route' => '/api/update_blog_post/id/' . $id,
         ];
@@ -144,8 +147,8 @@ class BlogPostRepository implements BlogPostInterface
 
     public function show()
     {
-        // if (Gate::denies('view-blog-posts', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view blog posts!');
+        // if (Gate::denies('view-blog-post', auth()->user())) {
+        //     return array('status' => 2, 'msg' => 'You are not authorised to view blog post!');
         // }
         $log = [
             'route' => '/api/get_blog_posts',
@@ -157,9 +160,9 @@ class BlogPostRepository implements BlogPostInterface
 
     public function destroy($id)
     {
-        // if (Gate::denies('delete-blog-post', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to delete blog post!');
-        // }
+        if (Gate::denies('delete-blog-post', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to delete blog post!');
+        }
         $log = [
             'route' => '/api/delete_blog_post/id/' . $id,
             'msg' => 'Successfully deleted the blog post!',

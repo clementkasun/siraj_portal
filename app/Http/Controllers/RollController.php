@@ -64,6 +64,11 @@ class RollController extends Controller
         return $role->RolePrivillage()->get();
     }
 
+    public function getRoleById($id)
+    {
+         return Role::findOrFail($id)->get();
+    }
+
     public function PrivillagesAdd()
     {
         \DB::transaction(function () {

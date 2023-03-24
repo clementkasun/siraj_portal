@@ -6,7 +6,6 @@ use App\Repositories\onlineApplicant\OnlineApplicantInterface;
 use Exception;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
-use App\Models\Contact;
 use App\Models\OnlineApplicant;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\SystemNotification;
@@ -15,13 +14,16 @@ use Illuminate\Support\Facades\Storage;
 class OnlineApplicantRepository implements OnlineApplicantInterface
 {
     public function index(){
+        if (Gate::denies('view-online-applicant', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to create online applicant!');
+        }
         return view('applicant.online_applicants', ['online_applicants' => OnlineApplicant::all()]);
     }
 
     public function store($request)
     {
         // if (Gate::denies('create-online-applicant', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to create online applicant!');
+        //     return array('status' => 2, 'msg' => 'You are not authorised to create online applicant!');
         // }
         $log = [
             'route' => '/api/save_online_applicant',
@@ -57,7 +59,7 @@ class OnlineApplicantRepository implements OnlineApplicantInterface
 
             return array('status' => 1, 'msg' => 'Saving online applicant is successful!');
         } catch (Exception $e) {
-            $log['msg'] = 'Saving Contact was unsuccessful!';
+            $log['msg'] = 'Saving  online applicant was unsuccessful!';
             $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
             Log::channel('daily')->error(json_encode($log));
 

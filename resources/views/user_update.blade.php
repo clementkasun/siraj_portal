@@ -28,7 +28,7 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="card card-success">
                     <div class="card-header">
                         <label>Update User Information</label>
@@ -88,6 +88,10 @@
                                 <label>User Image</label>
                                 <input id="userImage" type="file" name="userImage" class="form-control form-control-sm" accept=".png, .jpeg, .jpg">
                             </div>
+                            <div class="form-group">
+                                <label>User Role</label>
+                                <select id="role" class="form-control select2 select2-purple rollCombo" data-dropdown-css-class="select2-purple" style="width: 100%;" name="role"></select>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <button id="update_user" type="button" class="btn btn-warning">Update</button>
@@ -95,70 +99,7 @@
                     </form>
                 </div>
             </div>
-            <div class="col-md-7">
-                <div class="card card-success">
-                    <div class="card-header">
-                        <h3 class="card-title">Privileges</h3>
-                    </div>
-                    <div class="card-body">
-
-                        <div class="form-group">
-                            <label>User Level</label>
-                            <input name="nic" type="text" class="form-control form-control-sm" value="{{$level['name']}}" disabled="true">
-                        </div>
-                        <div class="form-group">
-                            <label>User Role</label>
-                            <select class="form-control select2 select2-purple roleCombo" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
-                                @foreach($roles as $role)
-                                @if ($user['role_id'] == $role['id'])
-                                <option value="{{$role['id']}}" selected>{{$role['name']}}</option>
-
-                                @else
-                                <option value="{{$role['id']}}">{{$role['name']}}</option>
-                                @endif
-                                @endforeach
-
-                            </select>
-                        </div>
-                        <table class="table table-condensed assignedPrivilages" id="as">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Privillage</th>
-                                    <th style="width: 20px">Read</th>
-                                    <th style="width: 20px">Write</th>
-                                    <th style="width: 20px">Update</th>
-                                    <th style="width: 20px">Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($privillages as $indexKey =>$privillage)
-                                <tr id="privillage{{$privillage['id']}}">
-                                    <td>{{$indexKey+1}}.</td>
-                                    <td>{{$privillage['name']}}</td>
-                                    <td align="center"><input class="form-check-input read" type="checkbox" value="option1">
-                                    </td>
-                                    <td align="center">
-                                        <input class="form-check-input write" type="checkbox" value="option1">
-                                    </td>
-                                    <td align="center">
-                                        <input class="form-check-input update" type="checkbox" value="option1">
-                                    </td>
-                                    <td align="center">
-                                        <input class="form-check-input delete" type="checkbox" value="option1">
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-primary" id="btnReset">Reset</button>
-                        <button type="button" class="btn btn-success" id="btnSetRollPrivilege">Default Privilege
-                        </button>
-                        <button type="button" class="btn btn-warning" id="btnAssign">Assign</button>
-                    </div>
-                </div>
+            <div class="col-md-8">
                 <form method="POST" action="/users/password/{{$user['id']}}">
                     <div class="card card-success">
                         <div class="card-header">
@@ -258,136 +199,13 @@
         var userId = "{{$user['id']}}";
         var roleId = "{{$user['role_id']}}";
         $('.select2').select2();
-        loadPrivillages(roleId);
 
-        // loading roll combo at page start
-        loadRoles($('.levelCombo').val(), 'rollCombo');
+        loadRolesById(roleId,'rollCombo');
 
         //Initialize Select2 Elements
         $('.select2').select2();
         $("#tblUsers").DataTable();
-        loadRoles($('.levelCombo').val(), 'rollCombo');
 
-        $('.levelCombo').change(function() {
-            loadRoles(this.value, 'rollCombo');
-        });
-
-        function loadPrivillages(id) {
-            $.ajax({
-                type: "GET",
-                headers: {
-                    "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-                    "Accept": "application/json"
-                },
-                url: "/rolls/rollPrivilege/" + id,
-                contentType: false,
-                dataType: "json",
-                cache: false,
-                processData: false,
-                success: function(result) {
-                    // alert(JSON.stringify(result));
-                    $('.read').prop('checked', false);
-                    $('.write').prop('checked', false);
-                    $('.update').prop('checked', false);
-                    $('.delete').prop('checked', false);
-                    if (result.length > 0) {
-                        $.each(result, function(key, value) {
-
-                            if ($("#privillage" + value.id).length == 1) {
-
-                                if (value.is_read == 1) {
-
-                                    $("#privillage" + value.id + " .read").prop('checked', true);
-                                } else {
-                                    $("#privillage" + value.id + " .read").prop('checked', false);
-                                }
-                                if (value.is_create == 1) {
-
-                                    $("#privillage" + value.id + " .write").prop('checked', true);
-                                } else {
-                                    $("#privillage" + value.id + " .write").prop('checked', false);
-                                }
-                                if (value.is_update == 1) {
-
-                                    $("#privillage" + value.id + " .update").prop('checked', true);
-                                } else {
-                                    $("#privillage" + value.id + " .update").prop('checked', false);
-                                }
-                                if (value.is_delete == 1) {
-
-                                    $("#privillage" + value.id + " .delete").prop('checked', true);
-                                } else {
-                                    $("#privillage" + value.id + " .delete").prop('checked', false);
-                                }
-                            } else {
-                                alert('Error Privillage table not found');
-                            }
-                        });
-                    } else {
-                        console.log('No Privillages');
-                    }
-                }
-            });
-        }
-
-        function loadUserPrivillages(id) {
-            $(".roleCombo").val(roleId);
-            $('.select2').select2();
-            $.ajax({
-                type: "GET",
-                headers: {
-                    "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-                    "Accept": "application/json"
-                },
-                url: "/user/Privileges/" + id,
-                contentType: false,
-                dataType: "json",
-                cache: false,
-                processData: false,
-                success: function(result) {
-                    // alert(JSON.stringify(result));
-                    $('.read').prop('checked', false);
-                    $('.write').prop('checked', false);
-                    $('.update').prop('checked', false);
-                    $('.delete').prop('checked', false);
-                    if (result.length > 0) {
-                        $.each(result, function(key, value) {
-                            if ($("#privillage" + value.id).length == 1) {
-                                if (value.is_read == 1) {
-                                    $("#privillage" + value.id + " .read").prop('checked', true);
-                                } else {
-                                    $("#privillage" + value.id + " .read").prop('checked', false);
-                                }
-                                if (value.is_create == 1) {
-                                    $("#privillage" + value.id + " .write").prop('checked', true);
-                                } else {
-                                    $("#privillage" + value.id + " .write").prop('checked', false);
-                                }
-                                if (value.is_update == 1) {
-                                    $("#privillage" + value.id + " .update").prop('checked', true);
-                                } else {
-                                    $("#privillage" + value.id + " .update").prop('checked', false);
-                                }
-                                if (value.is_delete == 1) {
-                                    $("#privillage" + value.id + " .delete").prop('checked', true);
-                                } else {
-                                    $("#privillage" + value.id + " .delete").prop('checked', false);
-                                }
-                            } else {
-                                alert('Error privillage table not found');
-                            }
-                        });
-                    } else {
-                        console.log('No privillages');
-                    }
-                }
-            });
-        }
-
-        $('.roleCombo').change(function() {
-            // load the default assigned privileges in a user roll
-            loadPrivillages(this.value);
-        });
         $('.activityCombo').change(function() {
             // alert(this.value);
             var data = {
@@ -399,24 +217,6 @@
                     type: 'success',
                     title: 'Agency Management System</br>User Changes to \'' + $(".activityCombo option:selected").html() + '\' status'
                 });
-            });
-        });
-        $('#btnSetRollPrivilege').click(function() {
-            loadPrivillages($('.roleCombo').val());
-        });
-        $('#btnReset').click(function() {
-            // rest un saved privileges
-            loadUserPrivillages(userId);
-        });
-        $('#btnAssign').click(function() {
-            // saving privileges
-            assignPrivillagesToUser(userId, function() {
-                roleId = $('.roleCombo').val();
-                Toast.fire({
-                    type: 'success',
-                    title: 'Agency Management System</br>Privillage changed successfully'
-                });
-                loadPrivillages(roleId);
             });
         });
 
@@ -437,10 +237,12 @@
                 'nicBackImg': $('#nicImageFront')[0].files[0],
                 'userImg': $('#userImage')[0].files[0],
                 'birthDate': $('#birthDate').val(),
+                'role': $('#role').val(),
             };
             ulploadFileWithData('/api/update_user/id/' + userId, data, function(result) {
                 if (result.status == 1) {
                     toastr.success('User details have successfully updated!')
+                    location.reload();
                     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                         callBack();
                     }

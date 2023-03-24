@@ -3,8 +3,6 @@ $('#save_comission').click(function() {
         return false;
     }
     let data = {
-        'staff_mem_name': $('#staff_mem_name').val(),
-        'com_designation': $('#com_designation').val(),
         'com_price': $('#com_price').val(),
         'com_response': $('#com_response').val(),
         'applicant_id': $('#save_comission').attr('data-id')
@@ -26,8 +24,6 @@ $('#save_comission').click(function() {
 
 $('#update_comission').click(function() {
     let data = {
-        'staff_mem_name': $('#staff_mem_name').val(),
-        'com_designation': $('#com_designation').val(),
         'com_price': $('#com_price').val(),
         'com_response': $('#com_response').val(),
         'applicant_id': $('#save_comission').attr('data-id')
@@ -92,8 +88,6 @@ $(document).on('click', '.edit-comission', function() {
 edit_comission = (id) => {
     let url = '/api/get_comission/id/' + id;
     ajaxRequest('get', url, null, function(result) {
-        $('#staff_mem_name').val(result.staff_mem_name);
-        $('#com_designation').val(result.designation);
         $('#com_price').val(result.price);
         $('#com_response').val(result.response);
         $('#save_comission').addClass('d-none');
@@ -110,8 +104,8 @@ load_comission_tbl = (id) => {
             result.forEach(comission => {
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
-                html += '<td style="width: 15em">' + comission.staff_mem_name + '</td>';
-                html += '<td>' + comission.designation + '</td>';
+                html += '<td>' + comission.staff_mem_name + '</td>';
+                html += '<td>' + comission.designation.name + '</td>';
                 html += '<td>' + comission.price + '</td>';
                 html += '<td>' + comission.response + '</td>';
                 html += '<td><button type="button" class="btn btn-primary edit-comission m-1" data-id="' + comission.id + '"> Edit </button>';

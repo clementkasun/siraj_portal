@@ -10,9 +10,11 @@ $('#save_applicant').click(function() {
         'nic': $('#nic').val(),
         'passport_number': $('#passport_number').val(),
         'passport_issue_date': $('#passport_issue_date').val(),
+        'passport_place_of_issue': $('#passport_place_of_issue').val(),
         'passport_exp_date': $('#passport_exp_date').val(),
         'birth_date': $('#birth_date').val(),
         'gender': $('#sex').val(),
+        'height': $('#height').val(),
         'weight': $('#weight').val(),
         'complexion': $('#complexion').val(),
         'nationality': $('#nationality').val(),
@@ -22,6 +24,8 @@ $('#save_applicant').click(function() {
         'applied_post': $('#applied_post').val(),
         'applied_country': $('#applied_country').val(),
         'post_status': $('#post_status').val(),
+        'edu_qualifications': $('#edu_qualifications').val(),
+        'monthly_sallary': $('#monthly_sallary').val(),
         'commision_price': $('#commision_price').val(),
         'decorating': $('#decorating').is(":checked"),
         'baby_sitting': $('#baby_sitting').is(":checked"),
@@ -37,12 +41,13 @@ $('#save_applicant').click(function() {
         'family_back_pdf': $('#family_back_pdf')[0].files[0],
         'visa_pdf': $('#visa_pdf')[0].files[0],
         'medical_pdf': $('#medical_pdf')[0].files[0],
-        'aggreement_pdf': $('#aggreement_pdf')[0].files[0],
+        'agreement_pdf': $('#agreement_pdf')[0].files[0],
         'personal_form_pdf': $('#personal_form_pdf')[0].files[0],
         'job_order_pdf': $('#job_order_pdf')[0].files[0],
         'ticket_pdf': $('#ticket_pdf')[0].files[0],
-        'agency_aggrement_pdf': $('#agency_aggrement_pdf')[0].files[0],
-        'applicant_image': $('#applicant_image')[0].files[0],
+        'agency_agreement_pdf': $('#agency_agreement_pdf')[0].files[0],
+        'applicant_image_passport': $('#applicant_image_passport')[0].files[0],
+        'applicant_image_full_size': $('#applicant_image_full_size')[0].files[0],
     };
 
     ulploadFileWithData('/api/save_applicant', data, function(result) {
@@ -70,9 +75,11 @@ $('#update_applicant').click(function() {
         'nic': $('#nic').val(),
         'passport_number': $('#passport_number').val(),
         'passport_issue_date': $('#passport_issue_date').val(),
+        'passport_place_of_issue': $('#passport_place_of_issue').val(),
         'passport_exp_date': $('#passport_exp_date').val(),
         'birth_date': $('#birth_date').val(),
         'gender': $('#sex').val(),
+        'height': $('#height').val(),
         'weight': $('#weight').val(),
         'complexion': $('#complexion').val(),
         'nationality': $('#nationality').val(),
@@ -82,6 +89,8 @@ $('#update_applicant').click(function() {
         'applied_post': $('#applied_post').val(),
         'applied_country': $('#applied_country').val(),
         'post_status': $('#post_status').val(),
+        'edu_qualifications': $('#edu_qualifications').val(),
+        'monthly_sallary': $('#monthly_sallary').val(),
         'commision_price': $('#commision_price').val(),
         'decorating': $('#decorating').is(":checked"),
         'baby_sitting': $('#baby_sitting').is(":checked"),
@@ -97,17 +106,19 @@ $('#update_applicant').click(function() {
         'family_back_pdf': $('#family_back_pdf')[0].files[0],
         'visa_pdf': $('#visa_pdf')[0].files[0],
         'medical_pdf': $('#medical_pdf')[0].files[0],
-        'aggreement_pdf': $('#aggreement_pdf')[0].files[0],
+        'agreement_pdf': $('#agreement_pdf')[0].files[0],
         'personal_form_pdf': $('#personal_form_pdf')[0].files[0],
         'job_order_pdf': $('#job_order_pdf')[0].files[0],
         'ticket_pdf': $('#ticket_pdf')[0].files[0],
-        'agency_aggrement_pdf': $('#agency_aggrement_pdf')[0].files[0],
-        'applicant_image': $('#applicant_image')[0].files[0],
+        'agency_agreement_pdf': $('#agency_agreement_pdf')[0].files[0],
+        'applicant_image_passport': $('#applicant_image_passport')[0].files[0],
+        'applicant_image_full_size': $('#applicant_image_full_size')[0].files[0],
     };
 
     ulploadFileWithData('/api/update_applicant/id/' + APPLICANT_ID, data, function(result) {
         if (result.status == 1) {
-            toastr.success('Applicant updating is successful!')
+            toastr.success('Applicant updating is successful!');
+            window.location.href = 'http://127.0.0.1:8000/registered_applicants';
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }

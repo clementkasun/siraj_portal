@@ -6,8 +6,6 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
-use function PHPSTORM_META\type;
-
 class SystemAdminSeeder extends Seeder
 {
 
@@ -18,24 +16,841 @@ class SystemAdminSeeder extends Seeder
      */
     public function run()
     {
-        $password = Hash::make('12345678');
-        $admin_user = array('first_name' => 'Admin',  'email' => 'cybercore@gmail.com', 'password' => $password, 'role_id' => 1);
+        $password = Hash::make('cyberadmin@#1234');
+        user::create(['first_name' => 'Admin',  'email' => 'cybercore@gmail.com', 'password' => $password, 'role_id' => 1]);
 
-        $user = user::create($admin_user);
         $role_privillage = [
-            ['privillage_id' => 1, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 2, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 3, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 4, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 5, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 6, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 7, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 8, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 9, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 10, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 11, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 12, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
-            ['privillage_id' => 13, 'role_id' => $user->role_id, 'is_read' => 1, 'is_create' => 1, 'is_update' => 1, 'is_delete' => 1],
+
+            //privillages for the admin
+            [
+                //user privillage done
+                'privillage_id' => 1,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+            [
+                //Online Applcant Privillage done
+                'privillage_id' => 2,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Application Staff Response Privillage done
+                'privillage_id' => 3,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Offline Applicant Privillage done 
+                'privillage_id' => 4,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Privillage done
+                'privillage_id' => 5,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Response Privillage done
+                'privillage_id' => 6,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Privillage done
+                'privillage_id' => 7,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Response Privillage done
+                'privillage_id' => 8,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 0
+            ],
+            [
+                //blog post Privillage done
+                'privillage_id' => 9,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+            [
+                //Vacancy Privillage done
+                'privillage_id' => 10,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+            [
+                //Commission Privillage done
+                'privillage_id' => 11,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 0
+            ],
+            [
+                //Previous Employeement done
+                'privillage_id' => 12,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+            [
+                //Apllicant Language Privillage done
+                'privillage_id' => 13,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+
+            //privillages for the owner
+            [
+                //user privillage done
+                'privillage_id' => 1,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 0
+            ],
+            [
+                //Online Applcant Privillage done
+                'privillage_id' => 2,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Application Staff Response Privillage done
+                'privillage_id' => 3,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Offline Applicant Privillage done 
+                'privillage_id' => 4,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Privillage done
+                'privillage_id' => 5,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Response Privillage done
+                'privillage_id' => 6,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Privillage done
+                'privillage_id' => 7,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Response Privillage done
+                'privillage_id' => 8,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //blog post Privillage done
+                'privillage_id' => 9,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+            [
+                //Vacancy Privillage done
+                'privillage_id' => 10,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+            [
+                //Commission Privillage done
+                'privillage_id' => 11,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Previous Employeement Privillage done
+                'privillage_id' => 12,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+            [
+                //Apllicant Language Privillage done
+                'privillage_id' => 13,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+
+            //privillages for the IT Officer
+            [
+                //user privillage done
+                'privillage_id' => 1,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 0
+            ],
+            [
+                //Online Applcant Privillage done
+                'privillage_id' => 2,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Application Staff Response Privillage done
+                'privillage_id' => 3,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Offline Applicant Privillage done 
+                'privillage_id' => 4,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Privillage done
+                'privillage_id' => 5,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Response Privillage done
+                'privillage_id' => 6,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Privillage done
+                'privillage_id' => 7,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Response Privillage done
+                'privillage_id' => 8,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //blog post Privillage done
+                'privillage_id' => 9,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+            [
+                //Vacancy Privillage done
+                'privillage_id' => 10,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+            [
+                //Commission Privillage done
+                'privillage_id' => 11,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Previous Employeement done
+                'privillage_id' => 12,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+            [
+                //Apllicant Language Privillage done
+                'privillage_id' => 13,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
+            ],
+
+            //privillages for the Manager
+            [
+                //user privillage done
+                'privillage_id' => 1,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Online Applcant Privillage done
+                'privillage_id' => 2,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Application Staff Response Privillage done
+                'privillage_id' => 3,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Offline Applicant Privillage done 
+                'privillage_id' => 4,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Privillage done
+                'privillage_id' => 5,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Response Privillage done
+                'privillage_id' => 6,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Privillage done
+                'privillage_id' => 7,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Response Privillage done
+                'privillage_id' => 8,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [ //Blog Post Privillage done
+                'privillage_id' => 9,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [ //Vacancy Privillage done
+                'privillage_id' => 10,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Commission Privillage done
+                'privillage_id' => 11,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Previous Employeement done
+                'privillage_id' => 12,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Apllicant Language Privillage done
+                'privillage_id' => 13,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+
+            //privillages for the supervisor
+            [
+                //user privillage done
+                'privillage_id' => 1,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Online Applcant Privillage done
+                'privillage_id' => 2,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Application Staff Response Privillage done
+                'privillage_id' => 3,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Offline Applicant Privillage done 
+                'privillage_id' => 4,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Privillage done
+                'privillage_id' => 5,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Response Privillage done
+                'privillage_id' => 6,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Privillage done
+                'privillage_id' => 7,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Response Privillage done
+                'privillage_id' => 8,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Blog Post Privillage done
+                'privillage_id' => 9,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Vacancy Privillage done
+                'privillage_id' => 10,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Commission Privillage done
+                'privillage_id' => 11,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Previous Employeement done
+                'privillage_id' => 12,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Apllicant Language Privillage done
+                'privillage_id' => 13,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+
+            //privillages for the call center
+            [
+                //user privillage done
+                'privillage_id' => 1,
+                'role_id' => 6,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Online Applcant Privillage done
+                'privillage_id' => 2,
+                'role_id' => 6,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Application Staff Response Privillage done
+                'privillage_id' => 3,
+                'role_id' => 6,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Offline Applicant Privillage done
+                'privillage_id' => 4,
+                'role_id' => 6,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Privillage done
+                'privillage_id' => 5,
+                'role_id' => 6,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Response Privillage done
+                'privillage_id' => 6,
+                'role_id' => 6,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Privillage done
+                'privillage_id' => 7,
+                'role_id' => 6,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Response Privillage done
+                'privillage_id' => 8,
+                'role_id' => 6,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Blog Post Privillage done
+                'privillage_id' => 9,
+                'role_id' => 6,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Vacancy Privillage done
+                'privillage_id' => 10,
+                'role_id' => 6,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Commission Privillage done
+                'privillage_id' => 11,
+                'role_id' => 6,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Previous Employeement done
+                'privillage_id' => 12,
+                'role_id' => 6,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Apllicant Language Privillage done
+                'privillage_id' => 13,
+                'role_id' => 6,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+
+            //privillages for the receptionist
+            [
+                //user privillage done
+                'privillage_id' => 1,
+                'role_id' => 7,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Online Applcant Privillage done
+                'privillage_id' => 2,
+                'role_id' => 7,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Application Staff Response Privillage done
+                'privillage_id' => 3,
+                'role_id' => 7,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Offline Applicant Privillage done
+                'privillage_id' => 4,
+                'role_id' => 7,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Privillage done
+                'privillage_id' => 5,
+                'role_id' => 7,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Phone Number Response Privillage done
+                'privillage_id' => 6,
+                'role_id' => 7,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Privillage done
+                'privillage_id' => 7,
+                'role_id' => 7,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Contact Us Response Privillage done
+                'privillage_id' => 8,
+                'role_id' => 7,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Blog Post Privillage done
+                'privillage_id' => 9,
+                'role_id' => 7,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Vacancy Privillage done
+                'privillage_id' => 10,
+                'role_id' => 7,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Commission Privillage done
+                'privillage_id' => 11,
+                'role_id' => 7,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Previous Employeement Privillage done
+                'privillage_id' => 12,
+                'role_id' => 7,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Apllicant Language Privillage done
+                'privillage_id' => 13,
+                'role_id' => 7,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
         ];
 
         \DB::table('role_privillages')->insert($role_privillage);

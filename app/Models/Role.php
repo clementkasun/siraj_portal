@@ -24,4 +24,13 @@ class Role extends Model
         return  $this->hasMany(RolePrivillage::class);
     }
 
+    public function ApplicationStaffResponse()
+    {
+        return  $this->hasMany(ApplicationStaffResponse::class);
+    }
+
+    public function PhoneNumberResponse()
+    {
+        return $this->hasMany(PhoneNumberResponse::class);
+    }
 }

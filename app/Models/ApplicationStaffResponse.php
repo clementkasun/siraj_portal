@@ -19,12 +19,15 @@ class ApplicationStaffResponse extends Model
     protected $fillable = [
         'staff_mem_name',
         'designation',
-        'price',
         'response',
         'applicant_id'
     ];
 
     public function Applicant(){
-        return $this->belongsTo(Applicant::class);
+        return $this->belongsTo(Applicant::class, 'applicant_id');
+    }
+
+    public function designation(){
+        return $this->belongsTo(Role::class, 'designation');
     }
 }

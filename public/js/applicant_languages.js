@@ -4,7 +4,9 @@ $('#save_language').click(function() {
     }
     let data = {
         'language': $('#language').val(),
-        'status': $('#status').val(),
+        'poor': $('#poor').is(':checked'),
+        'fair': $('#fair').is(':checked'),
+        'fluent': $('#fluent').is(':checked'),
         'applicant_id': $(this).attr('data-id')
     };
 
@@ -25,7 +27,9 @@ $('#save_language').click(function() {
 $('#update_language').click(function() {
     let data = {
         'language': $('#language').val(),
-        'status': $('#status').val(),
+        'poor': $('#poor').is(':checked'),
+        'fair': $('#fair').is(':checked'),
+        'fluent': $('#fluent').is(':checked'),
     };
 
     let url = '/api/update_applicant_language/id/' + $(this).attr('data-id');
@@ -87,7 +91,9 @@ edit_applicant_language = (id) => {
     let url = '/api/get_applicant_language/id/' + id;
     ajaxRequest('get', url, null, function(result) {
         $('#language').val(result.language_name);
-        $('#status').val(result.status);
+        $('#poor').val(result.poor);
+        $('#fair').val(result.fair);
+        $('#fluent').val(result.fluent);
         $('#save_language').addClass('d-none');
         $('#update_language').removeClass('d-none');
         $('#update_language').attr('data-id', result.id);
@@ -100,10 +106,18 @@ load_language_table = (id) => {
     ajaxRequest('get', '/api/get_applicant_languages/id/'+id, null, function(result) {
         if (result != '') {
             result.forEach(language => {
+                let yes_clause = '<span class="badge badge-info pl-2 pr-2">Yes</span>';
+                let no_clause = '<span class="badge badge-warning pl-2 pr-2">No</span>';
+                let poor_status = (language.poor) ?  yes_clause : no_clause;
+                let fair_status = (language.fair) ? yes_clause : no_clause;
+                let fluent_status = (language.fluent) ? yes_clause : no_clause;
+
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
-                html += '<td style="width: 15em">' + language.language_name + '</td>';
-                html += '<td>' + language.status + '</td>';
+                html += '<td>' + language.language_name + '</td>';
+                html += '<td>' + poor_status + '</td>';
+                html += '<td>' + fair_status + '</td>';
+                html += '<td>' + fluent_status + '</td>';
                 html += '<td><button type="button" class="btn btn-primary edit-app-lan m-1" data-id="' + language.id + '"> Edit </button>';
                 html += '<button type="button" class="btn btn-danger delete-app-lan m-1" data-id="' + language.id + '"> Delete </button></td>';
             });
@@ -114,7 +128,7 @@ load_language_table = (id) => {
                 "retrieve": true
             });
         } else {
-            $('#language_tbl tbody').html('<tr><td colspan="4" class="text-center text-bold"><span>No Data</span></td></tr>');
+            $('#language_tbl tbody').html('<tr><td colspan="6" class="text-center text-bold"><span>No Data</span></td></tr>');
         }
     });
 }

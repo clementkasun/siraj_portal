@@ -31,4 +31,9 @@ class OnlineApplicant extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function OnlineApplicantResponse()
+    {
+        return $this->hasMany(OnlineApplicantResponse::class);
+    }
 }

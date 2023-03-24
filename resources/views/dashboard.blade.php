@@ -73,11 +73,10 @@
             </div>
             <!-- ./col -->
             <div class="col-lg-3 col-6">
-                <!-- small card -->
                 <div class="small-box bg-dark">
                     <div class="inner">
-                        <h3><label>{{$counts['candidate_count']}}</label></h3>
-                        <p>Candidate Count</p>
+                        <h3><label>{{$counts['online_applicant_count']}}</label></h3>
+                        <p>Online Applicant Count</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-chart-pie"></i>
@@ -89,11 +88,10 @@
             </div>
             <!-- ./col -->
             <div class="col-lg-3 col-6">
-                <!-- small card -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3><label>{{$counts['candidate_resp_count']}}</label></h3>
-                        <p>Candidate Response Count</p>
+                        <h3><label>{{$counts['phone_number_count']}}</label></h3>
+                        <p>Phone Numbers Count</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-chart-pie"></i>
@@ -138,9 +136,9 @@
             <!-- ./col -->
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <div class="card">
-                    <div class="card-body" style="padding: 100px">
+                    <div class="card-body">
                         <div class="lockscreen-logo bg-dark p-5">
                             <p><b>Agency Management System</p></b>
                             <img style="width: 18%; height: 10%;" src="{{ asset('/dist/img/logo.png')}}">
@@ -150,7 +148,5 @@
             </div>
         </div>
     </div>
-</div>
-</div>
 </section>
 @endsection

@@ -15,13 +15,16 @@ class ContactRepository implements ContactInterface
 {
     public function index()
     {
+        if (Gate::denies('view-contact-us', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view contacts!');
+        }
         return view('contact.registered_contacts', ['contacts' => Contact::all()]);
     }
 
     public function store($request)
     {
-        // if (Gate::denies('create-contact', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to register contact!');
+        // if (Gate::denies('create-contact-us', auth()->user())) {
+        //     return array('status' => 2, 'msg' => 'You are not authorised to register contact!');
         // }
         $log = [
             'route' => '/api/save_contact',
@@ -72,9 +75,9 @@ class ContactRepository implements ContactInterface
 
     public function show()
     {
-        // if (Gate::denies('view-contact', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view view contacts!');
-        // }
+        if (Gate::denies('view-contact-us', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view contacts!');
+        }
         $log = [
             'route' => '/api/get_contacts',
             'msg' => 'Successfully accessed the contacts!',

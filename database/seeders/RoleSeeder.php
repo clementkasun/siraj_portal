@@ -15,8 +15,12 @@ class RoleSeeder extends Seeder
     {
         $rolls = [
             ['name' => 'Admin', 'level_id' => 1],
+            ['name' => 'Owner', 'level_id' => 1],
+            ['name' => 'IT Officer', 'level_id' => 2],
             ['name' => 'Manager', 'level_id' => 2],
-            ['name' => 'Staff Member', 'level_id' => 3],
+            ['name' => 'Supervisor', 'level_id' => 2],
+            ['name' => 'Call Center', 'level_id' => 3],
+            ['name' => 'Receptionist', 'level_id' => 3],
         ];
         \DB::table('roles')->insert($rolls);
     }

@@ -24,8 +24,8 @@ class ApplicantController extends Controller
      */
     public function index()
     {
-        if (Gate::denies('create-applicant', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to create applicant!');
+        if (Gate::denies('create-offline-applicant', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to create applicant!');
         }
         return view('applicant.registration');
     }
@@ -37,17 +37,17 @@ class ApplicantController extends Controller
      */
     public function registeredApplicants(Applicant $applicant)
     {
-        if (Gate::denies('view-applicant', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to view applicant details!');
+        if (Gate::denies('view-offline-applicant', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view applicant details!');
         }
-        return view('applicant.registered_applicants', array('applicants' => $applicant->all()));
+        return view('applicant.registered_applicants', array('applicants' => $applicant->orderBy('id', 'DESC')->get(), 'post_status_array' => $applicant->post_status_array));
     }
 
 
     public function viewApplication($id){
-        if (Gate::denies('view-applicant', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to view applicant application!');
-        }
+        // if (Gate::denies('view-offline-applicant', auth()->user())) {
+        //     return array('status' => 2, 'msg' => 'You are not authorised to view applicant application!');
+        // }
         return $this->applicantRepository->viewApplication($id);
     }
 
@@ -93,8 +93,8 @@ class ApplicantController extends Controller
      */
     public function editApplicant($id)
     {
-        if (Gate::denies('update-applicant', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to update applicant details!');
+        if (Gate::denies('update-offline-applicant', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to update applicant details!');
         }
         return $this->applicantRepository->editApplicant($id);
     }
@@ -108,8 +108,8 @@ class ApplicantController extends Controller
      */
     public function applicantProfile($id)
     {
-        if (Gate::denies('view-applicant', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to view applicant profile!');
+        if (Gate::denies('view-offline-applicant', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view applicant profile!');
         }
         return $this->applicantRepository->applicantProfile($id);
     }

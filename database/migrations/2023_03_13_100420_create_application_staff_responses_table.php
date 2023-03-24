@@ -16,9 +16,9 @@ class CreateApplicationStaffResponsesTable extends Migration
         Schema::create('application_staff_responses', function (Blueprint $table) {
             $table->id();
             $table->string('staff_mem_name', 255);
-            $table->string('designation', 255);
-            $table->string('price', 255);
             $table->string('response', 255);
+            $table->unsignedBigInteger('designation');
+            $table->foreign('designation')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->unsignedBigInteger('applicant_id')->nullable();
             $table->foreign('applicant_id')->references('id')->on('applicants')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();

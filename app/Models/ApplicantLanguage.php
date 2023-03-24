@@ -18,7 +18,9 @@ class ApplicantLanguage extends Model
      */
     protected $fillable = [
         'language_name',
-        'status',
+        'poor',
+        'fair',
+        'fluent',
         'applicant_id'
     ];
 

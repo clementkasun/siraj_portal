@@ -1,9 +1,14 @@
 @section('sidebar')
+<?php
+use App\Models\OnlineApplicant;
+use App\Models\Contact;
+use App\Models\Candidate;
+?>
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
-        <img src="/dist/img/sirajmanpower-round-logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="/dist/img/sirajmanpower-round-logo.png" alt="siraj manpower logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">SIRAJ - PORTAL</span>
     </a>
 
@@ -12,14 +17,14 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ (isset(auth()->user()->user_image)) ? auth()->user()->user_image : '/dist/img/no-image.jpg' }}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{ (isset(auth()->user()->user_image)) ? auth()->user()->user_image : url('/dist/img/avatar5.png') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <?php
                 $first_name = (isset(auth()->user()->first_name)) ? auth()->user()->first_name : '';
                 $last_name = (isset(auth()->user()->last_name)) ? auth()->user()->last_name : '';
                 ?>
-                <a href="#" class="d-block">{{  $first_name .' '. $last_name }}</a>
+                <a href="#" class="d-block">{{ $first_name .' '. $last_name }}</a>
             </div>
         </div>
 
@@ -41,7 +46,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+                    <a href="{{ url('./dashboard') }}" class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -58,7 +63,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @can('create-applicant')
+                        @can('create-offline-applicant')
                         <li class="nav-item">
                             <a href="{{ url('/applicant_registration') }}" class="nav-link  {{ Request::is('applicant_registration') ? 'active' : '' }}">
                                 <i class="fas fa-user-plus nav-icon"></i>
@@ -66,7 +71,7 @@
                             </a>
                         </li>
                         @endcan
-                        @can('view-applicant')
+                        @can('view-offline-applicant')
                         <li class="nav-item">
                             <a href="{{ url('/registered_applicants') }}" class="nav-link {{ Request::is('registered_applicants') ? 'active' : '' }}">
                                 <i class="fas fa-file-alt  nav-icon"></i>
@@ -85,22 +90,16 @@
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+                    @can('create-phone-number')
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
+                            <a href="{{ url('/phone_number_registration') }}" class="nav-link {{ Request::is('phone_number_registration') ? 'active' : '' }}">
                                 <i class="far fa-plus-square nav-icon"></i>
                                 <p>Insert Mobile Numbers</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                                <i class="fas fa-address-book nav-icon"></i>
-                                <p>All Mobile Numbers
-                                    <span class="badge badge-info right">2</span>
-                                </p>
-                            </a>
-                        </li>
                     </ul>
+                    @endcan
                 </li>
                 <li class="nav-header">USER MANAGEMENT</li>
                 <li class="nav-item">
@@ -117,14 +116,6 @@
                             <a href="/users_list" class="nav-link {{ Request::is('users_list') ? 'active' : '' }}">
                                 <i class="fas fa-users-cog nav-icon"></i>
                                 <p>All Users</p>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('create-role')
-                        <li class="nav-item">
-                            <a href="/rolls" class="nav-link">
-                                <i class="fas fa-user-lock nav-icon {{ Request::is('rolls') ? 'active' : '' }}"></i>
-                                <p>Role Management</p>
                             </a>
                         </li>
                         @endcan
@@ -147,20 +138,15 @@
                     </a>
                 </li>
                 @endcan
-                <?php
-                use App\Models\OnlineApplicant;
-                use App\Models\Contact;
-                use App\Models\Candidate;
-                ?>
-                @can('view-applicant')
+                @can('view-online-applicant')
                 <li class="nav-item">
-                    <a href="{{ url('/online_registration') }}" class="nav-link {{ url('/online_registration') }}">
+                    <a href="{{ url('/registered_online_applicants') }}" class="nav-link {{ url('/registered_online_applicants') }}">
                         <i class="nav-icon fas fa-portrait"></i>
                         <p>Online Applicants</p> <span class="badge badge-info right">{{OnlineApplicant::all()->count()}}</span>
                     </a>
                 </li>
                 @endcan
-                @can('view-contact')
+                @can('view-contact-us')
                 <li class="nav-item">
                     <a href="{{ url('/registered_contacts') }}" class="nav-link {{ Request::is('registered_contacts') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-envelope"></i>
@@ -168,21 +154,15 @@
                     </a>
                 </li>
                 @endcan
-                @can('view-candidate')
+                <li class="nav-header">SETTINGS</li>
+                @can('view-user')
                 <li class="nav-item">
-                    <a href="{{ url('/registered_candidates') }}" class="nav-link {{ Request::is('registered_candidates') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>Registered Candidates</p> <span class="badge badge-info right"> {{ Candidate::all()->count() }}</span>
+                    <a href="{{ url('/user_profile') }}" class="nav-link">
+                        <i class="nav-icon fas fa-user-circle"></i>
+                        <p>User Profile</p>
                     </a>
                 </li>
                 @endcan
-                <li class="nav-header">SETTINGS</li>
-                <li class="nav-item">
-                    <a href="/users/id/{{ auth()->user()->id }}" class="nav-link">
-                        <i class="nav-icon fas fa-user-circle"></i>
-                        <p>Profile</p>
-                    </a>
-                </li>
                 <li class="nav-item">
                     <a href="/logout" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>

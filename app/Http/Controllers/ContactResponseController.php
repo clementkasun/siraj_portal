@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactResponse;
 use App\Repositories\contactResponse\ContactResponseRepository;
 use Illuminate\Http\Request;
 
@@ -39,44 +40,35 @@ class ContactResponseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ContactResponse  $contactResponse
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        return $this->contactResponseRepository->update($request, $id);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ContactResponse  $contactResponse
+     * @param  \App\Models\Contact  $contact
      * @return \Illuminate\Http\Response
      */
     public function show()
     {
         return $this->contactResponseRepository->show();
     }
-
+    
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ContactResponse  $contactResponse
+     * @param  \App\Models\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function getContact($id)
+    public function getContactResponse($id)
     {
-        return $this->contactResponseRepository->getContact($id);
+        return $this->contactResponseRepository->getContactResponse($id);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ContactResponse  $contactResponse
+     * @param  \App\Models\Contact  $contact
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         return $this->contactResponseRepository->destroy($id);
     }
+
+
 }

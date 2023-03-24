@@ -9,6 +9,7 @@
     <!-- API Token -->
     <meta name="api-token" content="{{ (auth()->user() != null) ? auth()->user()->createToken('auth-token')->plainTextToken : '' }}" />
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" type="image/x-icon" href="{{url('./dist/img/favicon.png')}}">
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @livewireStyles
