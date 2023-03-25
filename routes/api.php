@@ -40,8 +40,8 @@ Route::get('/rolls/id/{id}', [RollController::class, 'getRoleById'])->name('getR
 Route::post('/save_roles', [RollController::class, 'create'])->name('create_system_Rolls');
 
 //user api's
-Route::post('/save_user', [UserController::class, 'create']);
-Route::post('/update_user/id/{user_id}', [UserController::class, 'update']);
+Route::middleware(['auth:sanctum'])->post('/save_user', [UserController::class, 'create']);
+Route::middleware(['auth:sanctum'])->post('/update_user/id/{user_id}', [UserController::class, 'update']);
 Route::post('/is_nic_or_email_exist', [UserController::class, 'is_nic_or_email_exist']);
 
 //contacts api's

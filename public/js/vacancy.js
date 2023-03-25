@@ -98,7 +98,8 @@ load_vacancy_table = () => {
             result.forEach(vacancy => {
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
-                html += '<td><img src="' + vacancy.vacancy_image + '" alt="vacancy image" style="width: 50px; height: 50px"/></td>';
+                let vacancy_image = (vacancy.vacancy_image != '') ? vacancy.vacancy_image : './dist/img/no-image.jpg';
+                html += '<td><img src="' + vacancy_image + '" alt="vacancy image" style="width: 100px; height: 100px"/></td>';
                 html += '<td style="width: 15em">' + vacancy.title + '</td>';
                 html += '<td style="width: 15em">' + vacancy.salary + '</td>';
                 html += '<td style="width: 15em">' + vacancy.period + '</td>';

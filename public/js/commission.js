@@ -12,7 +12,7 @@ $('#save_comission').click(function() {
         if (result.status == 1) {
             toastr.success('Comission saving is successful!')
             $('#comission_form').trigger("reset");
-            load_comission_tbl($('#save_comission').attr('data-id'));
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -34,7 +34,7 @@ $('#update_comission').click(function() {
         if (result.status == 1) {
             toastr.success('Comission updating is successful!')
             $('#comission_form').trigger("reset");
-            load_comission_tbl($('#save_comission').attr('data-id'));
+            location.reload();
             reset_comission_buttons();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();

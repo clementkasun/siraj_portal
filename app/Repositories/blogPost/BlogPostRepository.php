@@ -20,7 +20,7 @@ class BlogPostRepository implements BlogPostInterface
 {
     public function index()
     {
-        if (Gate::denies('view-blog_post', auth()->user())) {
+        if (Gate::denies('create-blog-post', auth()->user())) {
             return array('status' => 2, 'msg' => 'You are not authorised to view blog post!');
         }
         return view('blog_post.registration');
@@ -28,7 +28,7 @@ class BlogPostRepository implements BlogPostInterface
 
     public function store($request)
     {
-        if (Gate::denies('create-blog_post', auth()->user())) {
+        if (Gate::denies('create-blog-post', auth()->user())) {
             return array('status' => 2, 'msg' => 'You are not authorised to create blog post!');
         }
         $log = [

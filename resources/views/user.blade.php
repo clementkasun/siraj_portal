@@ -110,6 +110,7 @@
                 </div>
             </div>
             <div class="col-md-8">
+                <?php $status_color_array = ['Active' => 'badge badge-success', 'Inactive' => 'badge badge-danger', 'Archived' => 'badge badge-secondary'] ?>
                 <div class="card card-success">
                     <div class="card-header">
                         <h3 class="card-title">All Users</h3>
@@ -119,6 +120,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
+                                    <th style="width: 200px">Image</th>
                                     <th style="width: 200px">First Name</th>
                                     <th style="width: 200px">Last Name</th>
                                     <th style="width: 200px">Roll</th>
@@ -132,11 +134,12 @@
                                 @if(isset($user->role_id ))
                                 <tr>
                                     <td>{{$indexKey+1}}.</td>
+                                    <td><img src="{{(isset($user['user_image'])) ? $user['user_image'] : url('/dist/img/avatar5.png')}}" width="100px" height="100px" alt="User Image"/></td>
                                     <td>{{$user['first_name']}}</td>
                                     <td>{{$user['last_name']}}</td>
                                     <td>{{$user['Role']['name']}}</td>
                                     <td>{{$user['email']}}</td>
-                                    <td>{{$user['activeStatus']}}</td>
+                                    <td><span class="p-2 {{ $status_color_array[$user['status']] }}">{{$user['status']}}</span></td>
                                     <td>
                                         <a href="/users/id/{{$user['id']}}" class="btn btn-sm btn-success">Select</a>
                                     </td>
