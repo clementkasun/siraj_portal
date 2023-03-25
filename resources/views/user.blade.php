@@ -130,17 +130,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{dd($users)}}
                                 @foreach($users as $indexKey=>$user)
                                 @if(isset($user->role_id ))
                                 <tr>
                                     <td>{{$indexKey+1}}.</td>
-                                    <td><img src="{{(isset($user['user_image'])) ? $user['user_image'] : url('/dist/img/avatar5.png')}}" width="100px" height="100px" alt="User Image"/></td>
+                                    <td><img src="{{($user->user_image != null) ? $user->user_image : url('/dist/img/avatar5.png')}}" width="100px" height="100px" alt="User Image"/></td>
                                     <td>{{$user['first_name']}}</td>
                                     <td>{{$user['last_name']}}</td>
                                     <td>{{$user['Role']['name']}}</td>
                                     <td>{{$user['email']}}</td>
-                                    <td><span class="p-2 {{ (isset($user['status'])) ? $status_color_array[$user['status']] : '' }}">{{ (isset($user['status'])) ? $user['status'] : '' }}</span></td>
+                                    <td><span class="p-2 {{ ($user->status != '') ? $status_color_array[$user->status] : '' }}">{{ ($user->status != '') ? $user->status : '' }}</span></td>
                                     <td>
                                         <a href="/users/id/{{$user['id']}}" class="btn btn-sm btn-success">Select</a>
                                     </td>
