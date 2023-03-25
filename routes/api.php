@@ -117,8 +117,9 @@ Route::middleware(['auth:sanctum'])->post('/save_online_applicant_resp', [Online
 //blog post api's
 Route::middleware(['auth:sanctum'])->post('/save_blog_post', [BlogPostController::class, 'store']);
 Route::middleware(['auth:sanctum'])->post('/update_blog_post/id/{blog_post_id}', [BlogPostController::class, 'update']);
-Route::middleware(['auth:sanctum'])->get('/get_blog_posts', [BlogPostController::class, 'show']);
-Route::middleware(['auth:sanctum'])->get('/get_blog_post/id/{blog_post_id}', [BlogPostController::class, 'getBlogPost']);
+Route::get('/get_blog_posts', [BlogPostController::class, 'show']);
+Route::post('/get_paginated_blog_posts', [BlogPostController::class, 'getPaginatedBlogPosts']);
+Route::get('/get_blog_post/id/{blog_post_id}', [BlogPostController::class, 'getBlogPost']);
 Route::middleware(['auth:sanctum'])->delete('/delete_blog_post/id/{blog_post_id}', [BlogPostController::class, 'destroy']);
 
 //phone number api's

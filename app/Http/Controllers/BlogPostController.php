@@ -45,6 +45,16 @@ class BlogPostController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getPaginatedBlogPosts(Request $request)
+    {
+        return $this->blogPostRepository->getPaginatedBlogPosts($request);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @return \Illuminate\Http\Response

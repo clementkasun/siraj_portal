@@ -35,7 +35,8 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
                 'country' => $request->country,
                 'period' => $request->period,
                 'added_by' => auth()->user()->id,
-                'applicant_id' => $request->applicant_id
+                'applicant_id' => $request->applicant_id,
+                'added_by' => auth()->user()->id
             ]);
 
             // $user = auth()->user();
@@ -76,6 +77,7 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
             $previous_emp->period = $request->period;
             $previous_emp->added_by = auth()->user()->id;
             $previous_emp->applicant_id = $request->applicant_id;
+            $previous_emp->updated_by = auth()->user()->id;
             $previous_emp->save();
 
             // $user = auth()->user();
@@ -130,7 +132,11 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
             'msg' => 'Successfully deleted the previous employeement!',
         ];
         Log::channel('daily')->info(json_encode($log));
-        $status = ApplicantPreviousEmployeement::find($id)->delete();
+        $delete_record = ApplicantPreviousEmployeement::find($id);
+        $delete_record->deleted_by = auth()->user()->id;
+        $delete_record->save();
+
+        $status = $delete_record->delete();
         if($status == true){
             return array('status' => 1, 'msg' => 'Successfully deleted the previous employeement!');
         }else{

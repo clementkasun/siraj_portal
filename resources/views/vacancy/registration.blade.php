@@ -116,10 +116,21 @@
 <!-- bs-custom-file-input -->
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('js/vacancy.js')}}"></script>
+<script src="{{ asset('plugins/checkImageSize/jquery.checkImageSize.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         bsCustomFileInput.init();
         load_vacancy_table();
     });
+
+    $("#vacancy_image").checkImageSize({
+        minWidth: 850,
+        minHeight: 540,
+        maxWidth: 850,
+        maxHeight: 540,
+        showError: true,
+        ignoreError: false
+    });
+
 </script>
 @endsection

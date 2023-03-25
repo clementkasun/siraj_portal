@@ -45,7 +45,8 @@ class BlogPostRepository implements BlogPostInterface
             $blog_post = BlogPost::create([
                 'post_name' => $request->post_name,
                 'description' => $request->description,
-                'user_id' => $request->user_id
+                'user_id' => $request->user_id,
+                'added_by' => auth()->user()->id
             ]);
 
             if ($request->hasFile('post_image')) {
@@ -100,6 +101,7 @@ class BlogPostRepository implements BlogPostInterface
             $blog_post->post_name = $request->post_name;
             $blog_post->description = $request->description;
             $blog_post->user_id = $request->user_id;
+            $blog_post->updated_by = auth()->user()->id;
 
             if ($request->hasFile('post_image')) {
                 $path = public_path('/storage/blog/posts/' . $blog_post->id . '/');
@@ -158,6 +160,30 @@ class BlogPostRepository implements BlogPostInterface
         return BlogPost::with(['User'])->get();
     }
 
+    public function getPaginatedBlogPosts($request)
+    {
+        // if (Gate::denies('view-blog-post', auth()->user())) {
+        //     return array('status' => 2, 'msg' => 'You are not authorised to view blog post!');
+        // }
+        $page = $request->page;
+        $limit = 6;
+        $offset = ($page - 1) * $limit;
+        $blogPostArr = array();
+
+        $blog_post = BlogPost::where('deleted_at', null);
+
+        $itemCount = $blog_post->count();
+        $pages = ceil($itemCount / $limit);
+
+        $blog_posts = $blog_post->offset($offset)->limit($limit)->get();
+
+        $blogPostArr["body"] = $blog_posts;
+        $blogPostArr["itemCount"] = $itemCount;
+        $blogPostArr["pages"] = $pages;
+        $blogPostArr["current_page"] =  $page;
+        return $blogPostArr;
+    }
+
     public function destroy($id)
     {
         if (Gate::denies('delete-blog-post', auth()->user())) {
@@ -167,8 +193,13 @@ class BlogPostRepository implements BlogPostInterface
             'route' => '/api/delete_blog_post/id/' . $id,
             'msg' => 'Successfully deleted the blog post!',
         ];
+        $delete_record = BlogPost::find($id);
+        $delete_record->deleted_by = auth()->user()->id;
+        $delete_record->save();
+        
+        $status = $delete_record->delete();
         Log::channel('daily')->info(json_encode($log));
-        $status = BlogPost::find($id)->delete();
+
         if ($status == true) {
             return array('status' => 1, 'msg' => 'Successfully deleted the blog post!');
         } else {

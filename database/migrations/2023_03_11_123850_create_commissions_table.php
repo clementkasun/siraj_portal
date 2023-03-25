@@ -21,6 +21,8 @@ class CreateCommissionsTable extends Migration
             $table->string('response', 255);
             $table->unsignedBigInteger('applicant_id')->nullable();
             $table->foreign('applicant_id')->references('id')->on('commissions')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('added_by')->nullable();
+            $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

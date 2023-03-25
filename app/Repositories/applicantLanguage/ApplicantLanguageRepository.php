@@ -35,6 +35,7 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
                 'fair' => ($request->fair == 'true') ? 1 : 0,
                 'fluent' => ($request->fluent == 'true') ? 1 : 0,
                 'applicant_id' => $request->applicant_id,
+                'added_by' => auth()->user()->id
             ]);
 
             // $user = auth()->user();
@@ -74,6 +75,7 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
             $applicant_language->poor = ($request->poor == 'true') ? 1 : 0;
             $applicant_language->fair = ($request->fair == 'true') ? 1 : 0;
             $applicant_language->fluent = ($request->fluent == 'true') ? 1 : 0;
+            $applicant_language->updated_by = auth()->user()->id;
             $applicant_language->save();
 
             // $user = auth()->user();
@@ -128,7 +130,12 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
             'msg' => 'Successfully deleted the applicant language!',
         ];
         Log::channel('daily')->info(json_encode($log));
-        $status = ApplicantLanguage::find($id)->delete();
+        $delete_record = ApplicantLanguage::find($id);
+        $delete_record->deleted_by = auth()->user()->id;
+        $delete_record->save();
+
+        $status = $delete_record->delete();
+
         if ($status == true) {
             return array('status' => 1, 'msg' => 'Successfully deleted the applicant language!');
         } else {

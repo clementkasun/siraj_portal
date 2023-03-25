@@ -61,6 +61,8 @@ class CreateApplicantsTable extends Migration
             $table->string('applicant_image_passport', 255)->nullable();
             $table->string('applicant_image_full_size', 255)->nullable();
             $table->string('commision_price', 255)->nullable();//promissed commission price
+            $table->unsignedBigInteger('added_by')->nullable();
+            $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

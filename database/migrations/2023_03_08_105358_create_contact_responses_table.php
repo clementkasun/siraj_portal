@@ -18,8 +18,10 @@ class CreateContactResponsesTable extends Migration
             $table->string('name', 255);
             $table->string('designation', 255);
             $table->string('response', 255);
-            $table->unsignedBigInteger('contact_id')->nullable();
+            $table->unsignedBigInteger('contact_id');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('added_by')->nullable();
+            $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

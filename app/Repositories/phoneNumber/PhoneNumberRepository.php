@@ -77,7 +77,7 @@ class PhoneNumberRepository implements PhoneNumberInterface
             $phone_number = PhoneNumber::find($id);
             $phone_number->phone_number = $request->phone_number;
             $phone_number->name = $request->name;
-            $phone_number->added_by = auth()->user()->id;
+            $phone_number->updated_by = auth()->user()->id;
             $phone_number->save();
 
             // $user = auth()->user();
@@ -147,8 +147,13 @@ class PhoneNumberRepository implements PhoneNumberInterface
         if (Gate::denies('delete-phone-number', auth()->user())) {
             return array('status' => 2, 'msg' => 'You are not authorised to delete phone number!');
         }
-        $phone_number = PhoneNumber::find($id)->delete();
-        if ($phone_number) {
+        $phone_number = PhoneNumber::find($id);
+        $phone_number->deleted_by = auth()->user()->id;
+        $phone_number->save();
+
+        $status = $phone_number->delete();
+
+        if ($status) {
             return array('status' => 1, 'msg' => 'Successfully deleted the phone number!');
         } else {
             return array('status' => 0, 'msg' => 'Phone number deletion is successful!');

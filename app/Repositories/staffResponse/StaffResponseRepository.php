@@ -31,6 +31,7 @@ class StaffResponseRepository implements StaffResponseInterface
                 'designation' => auth()->user()->role_id,
                 'response' => $request->response,
                 'applicant_id' => $request->applicant_id,
+                'added_by' => auth()->user()->id
             ]);
 
             // $user = auth()->user();

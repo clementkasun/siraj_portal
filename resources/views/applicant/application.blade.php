@@ -9,6 +9,7 @@
     <meta name="api-token" content="{{ (auth()->user() != null) ? auth()->user()->createToken('auth-token')->plainTextToken : '' }}" />
     <title>{{ config('app.name', 'Laravel') }}</title>
     <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="{{url('./dist/img/favicon.png')}}">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css')}}">
@@ -70,8 +71,11 @@
 
         .img1 {
             position: absolute;
-            right: 18px;
-            bottom: 50px;
+            right: 5px;
+            bottom: 45px;
+            border-style:groove;
+            border-width: 5px;
+            border-color: red
         }
 
         td:nth-child(even) {
@@ -98,7 +102,12 @@
         .img2 {
             position: relative;
             left: 10px;
-            top: -5px;
+            top: -6px;
+            width: 480px;
+            height: 800px;
+            border-style:groove;
+            border-width: 5px;
+            border-color: red
         }
 
         .comp3 {
@@ -138,7 +147,7 @@
 <body>
     <div style="border-width: 5px; border-style: solid; border-color: blue">
         <div style="border-width: 5px; border-style: solid; border-color: green">
-            <div style="border-width: 5px; border-style: solid; border-color: red;" class="pl-2 pt-2 pr-2">
+            <div style="border-width: 10px; border-style: solid; border-color: red;" class="pl-2 pt-2 pr-2">
                 <img src="{{url('./dist/img/SirajWebLogo.png')}}" alt="logo" width="800px">
                 <div id="h1">
                     <h3 class="title">APPLICATION FOR EMPLOYMENT</h3>
@@ -276,12 +285,11 @@
                             </table>
                         </div>
                         <div>
-                            <img src="{{ (isset($applicant_details->applicant_image_full_size)) ? $applicant_details->applicant_image_full_size : url('/dist/img/no-image.jpg') }}" alt="standing image" width="480px" height="500px"  class="img2">
+                            <img src="{{ (isset($applicant_details->applicant_image_full_size)) ? $applicant_details->applicant_image_full_size : url('/dist/img/no-image.jpg') }}" alt="standing image" width="480px" height="500px" class="img2">
                         </div>
                     </div>
                 </div>
-
-                <div class="comp3">
+                <div class="comp3" style="top: -580px;">
                     <div class="comp3-L">
                         <h5>KNOWLEDGE OF LANGUAGES</h5>
                         <table>

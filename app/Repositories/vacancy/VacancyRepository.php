@@ -43,6 +43,7 @@ class VacancyRepository implements VacancyInterface
                 'salary' => $request->salary,
                 'period' => $request->period,
                 'location' => $request->location,
+                'added_by' => auth()->user()->id
             ]);
 
             if ($request->hasFile('vacancy_image')) {
@@ -99,6 +100,7 @@ class VacancyRepository implements VacancyInterface
             $vacancy->salary = $request->salary;
             $vacancy->period = $request->period;
             $vacancy->location = $request->location;
+            $vacancy->updated_by = auth()->user()->id;
 
             if ($request->hasFile('vacancy_image')) {
                 $path = public_path('/storage/vacancy/vacancy_img' . $vacancy->id . '/');
@@ -330,9 +332,13 @@ class VacancyRepository implements VacancyInterface
             'msg' => 'Successfully deleted the vacancy!',
         ];
         Log::channel('daily')->info(json_encode($log));
-        $vacancy =  Vacancy::find($id)->delete();
+        $vacancy =  Vacancy::find($id);
+        $vacancy->deleted_by = auth()->user()->id;
+        $vacancy->save();
 
-        if ($vacancy == true) {
+        $status = $vacancy->delete();
+
+        if ($status == true) {
             return array('status' => 1, 'msg' => 'Successfully deleted the vacancy!');
         } else {
             return array('status' => 0, 'msg' => 'Vacancy record deletion was unsuccessful!');

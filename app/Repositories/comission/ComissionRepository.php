@@ -33,6 +33,7 @@ class ComissionRepository implements ComissionInterface
                 'price' => $request->com_price,
                 'response' => $request->com_response,
                 'applicant_id' => $request->applicant_id,
+                'added_by' => auth()->user()->id
             ]);
 
             // $user = auth()->user();

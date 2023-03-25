@@ -480,11 +480,10 @@
                                                         <th>Name</th>
                                                         <th>Designation</th>
                                                         <th>Response</th>
-                                                        <th>action</th>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td colspan="5" class="text-center text-bold"><span>No Data</span></td>
+                                                            <td colspan="4" class="text-center text-bold"><span>No Data</span></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -559,7 +558,6 @@
     var APPLICANT_ID = '{{ $applicant_data->id }}';
 
     $(document).ready(function() {
-        load_edu_qualifications_table(APPLICANT_ID);
         load_previous_employeement_table(APPLICANT_ID);
         load_language_table(APPLICANT_ID);
         load_application_staff_table(APPLICANT_ID);

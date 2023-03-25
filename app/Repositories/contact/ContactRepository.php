@@ -30,38 +30,38 @@ class ContactRepository implements ContactInterface
             'route' => '/api/save_contact',
         ];
         try {
-        $request->validate([
-            'contact_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'companey_name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:10',
-            'subject' => 'required|string|max:255',
-            'file' => 'sometimes|nullable',
-            'message' => 'required|string|max:255',
-        ]);
+            $request->validate([
+                'contact_name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'companey_name' => 'sometimes|nullable|string|max:255',
+                'phone_number' => 'required|string|max:10',
+                'subject' => 'required|string|max:255',
+                'file' => 'required',
+                'message' => 'required|string|max:255',
+            ]);
 
-        $contact = Contact::create([
-            'contact_name' => $request->contact_name,
-            'email' => $request->email,
-            'companey_name' => $request->companey_name,
-            'phone_number' => $request->phone_number,
-            'subject' => $request->subject,
-            'message' => $request->message
-        ]);
+            $contact = Contact::create([
+                'contact_name' => $request->contact_name,
+                'email' => $request->email,
+                'companey_name' => $request->companey_name,
+                'phone_number' => $request->phone_number,
+                'subject' => $request->subject,
+                'message' => $request->message,
+            ]);
 
-        if ($request->hasFile('file')) {
-            $path = '/contact/' . $contact->id;
-            Storage::disk('public')->makeDirectory($path);
-            $path = Storage::disk('public')->put($path . '/', $request->file);
-            $contact->file = $path;
-            $contact->save();
-        }
+            if ($request->hasFile('file')) {
+                $path = '/contact/' . $contact->id;
+                Storage::disk('public')->makeDirectory($path);
+                $path = Storage::disk('public')->put($path . '/', $request->file);
+                $contact->file = $path;
+                $contact->save();
+            }
 
-        // $user = auth()->user();
-        // $msg = $log['msg'];
-        // Notification::send($user, new SystemNotification($user, $msg));
-        $log['msg'] = 'Saving contact is successful!';
-        Log::channel('daily')->info(json_encode($log));
+            // $user = auth()->user();
+            // $msg = $log['msg'];
+            // Notification::send($user, new SystemNotification($user, $msg));
+            $log['msg'] = 'Saving contact is successful!';
+            Log::channel('daily')->info(json_encode($log));
 
             return array('status' => 1, 'msg' => 'Saving contact is successful!');
         } catch (Exception $e) {

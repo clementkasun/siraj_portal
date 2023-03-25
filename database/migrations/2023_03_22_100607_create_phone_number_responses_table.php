@@ -22,6 +22,8 @@ class CreatePhoneNumberResponsesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->unsignedBigInteger('phone_number_id');
             $table->foreign('phone_number_id')->references('id')->on('phone_numbers')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('added_by')->nullable();
+            $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

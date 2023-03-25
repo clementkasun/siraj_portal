@@ -17,8 +17,12 @@ class CreatePhoneNumbersTable extends Migration
             $table->id();
             $table->string('phone_number', 12);
             $table->string('name', 255);
-            $table->unsignedBigInteger('added_by');
+            $table->unsignedBigInteger('added_by')->nullable();
             $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('deleted_by')->nullable();
+            $table->foreign('deleted_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->unsignedBigInteger('assigned_staff_member')->nullable();
             $table->foreign('assigned_staff_member')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();

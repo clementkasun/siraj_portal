@@ -104,8 +104,8 @@ load_application_staff_table = (id) => {
                 html += '<td>' + app_staff_resp.staff_mem_name + '</td>';
                 html += '<td>' + app_staff_resp.designation.name + '</td>';
                 html += '<td>' + app_staff_resp.response + '</td>';
-                html += '<td><button type="button" class="btn btn-primary edit-app-staff m-1" data-id="' + app_staff_resp.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger delete-app-staff m-1" data-id="' + app_staff_resp.id + '"> Delete </button></td>';
+                // html += '<td><button type="button" class="btn btn-primary edit-app-staff m-1" data-id="' + app_staff_resp.id + '"> Edit </button>';
+                // html += '<button type="button" class="btn btn-danger delete-app-staff m-1" data-id="' + app_staff_resp.id + '"> Delete </button></td>';
             });
             $('#app_staff_resp_tbl tbody').html(html);
             $('#app_staff_resp_tbl').DataTable({
@@ -114,7 +114,7 @@ load_application_staff_table = (id) => {
                 "retrieve": true
             });
         } else {
-            $('#app_staff_resp_tbl tbody').html('<tr><td colspan="5" class="text-center text-bold"><span>No Data</span></td></tr>');
+            $('#app_staff_resp_tbl tbody').html('<tr><td colspan="4" class="text-center text-bold"><span>No Data</span></td></tr>');
         }
     });
 }

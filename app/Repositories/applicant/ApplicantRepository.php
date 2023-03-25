@@ -107,7 +107,8 @@ class ApplicantRepository implements ApplicantInterface
                 'cooking' => ($request->cooking == 'true') ? 1 : 0,
                 'sewing' => ($request->sewing == 'true') ? 1 : 0,
                 'washing' => ($request->washing == 'true') ? 1 : 0,
-                'driving' => ($request->driving == 'true') ? 1 : 0
+                'driving' => ($request->driving == 'true') ? 1 : 0,
+                'added_by' => auth()->user()->id,
             ]);
             
             $applicant->reff_no = $this->getZeroPaddedNumber($applicant->id, 5);
@@ -169,7 +170,7 @@ class ApplicantRepository implements ApplicantInterface
             
             $user = auth()->user();
             $log['msg'] = 'Saving applicant is successful!';
-            // Notification::send($user, new SystemNotification($user, $log['msg']));
+            Notification::send($user, new SystemNotification($user, $log['msg']));
             Log::channel('daily')->info(json_encode($log));
             
             return array('status' => 1, 'msg' => 'Saving applicant is successful!');

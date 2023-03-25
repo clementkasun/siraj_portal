@@ -8,5 +8,6 @@ interface BlogPostInterface{
    public function getBlogPost($id);
    public function update($request, $id);
    public function show();
+   public function getPaginatedBlogPosts($request);
    public function destroy($id);
 }
