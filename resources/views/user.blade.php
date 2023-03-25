@@ -130,6 +130,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{dd($user)}}
                                 @foreach($users as $indexKey=>$user)
                                 @if(isset($user->role_id ))
                                 <tr>
