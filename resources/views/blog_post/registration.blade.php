@@ -26,7 +26,7 @@
                                         <textarea id="description" name="description" class="form-control" placeholder="Please enter the post description" maxlength="3000" style="width: 100%;height: 150px;padding: 12px 20px;box-sizing: border-box;border: 2px solid #ccc;border-radius: 4px;" required></textarea>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="post_image"> Post Image *</label>
+                                        <label for="post_image"> Post Image * <code>(805  pixel x 520 pixel)</code></label>
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" id="post_image" name="post_image" class="form-control image" accept=".jpeg, .jpg, .png" required>
@@ -71,11 +71,21 @@
 <!-- bs-custom-file-input -->
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('js/blog_post.js')}}"></script>
+<script src="{{ asset('plugins/checkImageSize/jquery.checkImageSize.min.js') }}"></script>
 <script>
     var USER_ID = '{{auth()->user()->id}}';
     $(function() {
         bsCustomFileInput.init();
         load_blog_posts();
+
+        $("#post_image").checkImageSize({
+            minWidth: 805,
+            minHeight: 520,
+            maxWidth: 805,
+            maxHeight: 520,
+            showError: true,
+            ignoreError: false
+        });
     });
 </script>
 @endsection
