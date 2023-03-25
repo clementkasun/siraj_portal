@@ -12,4 +12,6 @@
 <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
 <!-- Theme style -->
 <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+<!-- overlayScrollbars -->
+<link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 @endsection

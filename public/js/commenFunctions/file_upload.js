@@ -77,8 +77,10 @@ function responseMsg(jqXHR, exception) {
 }
 
 $("input[type='file']").on("change", function () {
-    if (this.files[0].size > 30000000) {
-        alert("Please upload file less than 20MB.");
-        $(this).val('');
+    if(this.files[0] != null){
+        if (this.files[0].size > 30000000) {
+            alert("Please upload file less than 20MB.");
+            $(this).val('');
+        }
     }
 });

@@ -143,15 +143,11 @@
                                 <label>Active Status</label>
                                 <select class="form-control select2 select2-purple activityCombo" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
                                     @foreach($activitys as $key=>$activity)
-                                    <option value="{{$key}}">{{$activity}}</option>
+                                    <?php $current_status = (strtoupper($user->status) == $key) ? 'selected' : ''; ?>
+                                    <option <?php echo $current_status; ?> value="{{$key}}">{{$activity}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger">
-                                Delete User
-                            </button>
                         </div>
                     </div>
                 </form>
@@ -200,7 +196,7 @@
         var roleId = "{{$user['role_id']}}";
         $('.select2').select2();
 
-        loadRolesById(roleId,'rollCombo');
+        loadRolesById(roleId, 'rollCombo');
 
         //Initialize Select2 Elements
         $('.select2').select2();

@@ -71,7 +71,8 @@ class UserController extends Controller
                     'land_no' => $request->landNo,
                     'birth_date' => $request->birthDate,
                     'role_id' => $request->role,
-                    'password' => Hash::make($request->password)
+                    'password' => Hash::make($request->password),
+                    'status' => 'Active'
                 ]);
 
                 if ($request->hasFile('nicFrontImg')) {
