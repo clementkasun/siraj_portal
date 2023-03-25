@@ -14,19 +14,19 @@
             <div class="card-body">
                 <form id="vacancy_form">
                     <div class="row">
-                        <div class="form-group col-3">
+                        <div class="form-group col-md-3 col-12">
                             <label for="title">Title *</label>
                             <input type="text" id="title" name="title" class="form-control" placeholder="Please enter the vacancy title" required>
                         </div>
-                        <div class="form-group col-2">
+                        <div class="form-group col-md-2 col-12">
                             <label for="salary">Salary *</label>
                             <input type="text" id="salary" name="salary" class="form-control" placeholder="Please enter the salary" required>
                         </div>
-                        <div class="form-group col-2">
+                        <div class="form-group col-md-2 col-12">
                             <label for="period">Period *</label>
                             <input type="text" id="period" name="period" class="form-control" placeholder="Please enter the period" required>
                         </div>
-                        <div class="form-group col-2">
+                        <div class="form-group col-md-2 col-12">
                             <label for="location">Country *</label>
                             <select class="form-select form-control" aria-label="Select the country" id="location" name="location">
                                 <option selected value="">Choose Country</option>
@@ -68,7 +68,7 @@
                                 <option value="Newzealand">New Zealand</option>
                             </select>
                         </div>
-                        <div class="form-group col-3">
+                        <div class="form-group col-md-3 col-12">
                             <label for="vacancy_image">Vacancy Image * <code> ( 850 pixel x 540 pixel ) </code> </label>
                             <div class="input-group">
                                 <div class="custom-file">
