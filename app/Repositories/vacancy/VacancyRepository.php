@@ -14,14 +14,17 @@ class VacancyRepository implements VacancyInterface
 {
     public function index()
     {
+        if (Gate::denies('view-vacancy', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
+        }
         return view('vacancy.registration');
     }
 
     public function store($request)
     {
-        // if (Gate::denies('create-vacancy', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to create vacancy!');
-        // }
+        if (Gate::denies('create-vacancy', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to create vacancy!');
+        }
         $log = [
             'route' => '/api/save_vacancy',
         ];
@@ -40,6 +43,7 @@ class VacancyRepository implements VacancyInterface
                 'salary' => $request->salary,
                 'period' => $request->period,
                 'location' => $request->location,
+                'added_by' => auth()->user()->id
             ]);
 
             if ($request->hasFile('vacancy_image')) {
@@ -75,9 +79,9 @@ class VacancyRepository implements VacancyInterface
 
     public function update($request, $id)
     {
-        // if (Gate::denies('update-vacancy', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to update vacancy!');
-        // }
+        if (Gate::denies('update-vacancy', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to update vacancy!');
+        }
         $log = [
             'route' => '/api/update_vacancy/id/'.$id,
         ];
@@ -96,6 +100,7 @@ class VacancyRepository implements VacancyInterface
             $vacancy->salary = $request->salary;
             $vacancy->period = $request->period;
             $vacancy->location = $request->location;
+            $vacancy->updated_by = auth()->user()->id;
 
             if ($request->hasFile('vacancy_image')) {
                 $path = public_path('/storage/vacancy/vacancy_img' . $vacancy->id . '/');
@@ -129,6 +134,9 @@ class VacancyRepository implements VacancyInterface
 
     public function getVacancy($id)
     {
+        // if (Gate::denies('view-vacancy', auth()->user())) {
+        //     return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
+        // }
         $log = [
             'route' => '/api/get_vacancy/id/' . $id,
             'msg' => 'Successfully accessed the vacancy record!',
@@ -139,6 +147,9 @@ class VacancyRepository implements VacancyInterface
 
     public function getPaginatedVacancy($request)
     {
+        // if (Gate::denies('view-vacancy', auth()->user())) {
+        //     return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
+        // }
         $log = [
             'route' => '/api/get_paginated_vacancy',
             'msg' => 'Successfully accessed the vacancy record!',
@@ -300,6 +311,9 @@ class VacancyRepository implements VacancyInterface
 
     public function show()
     {
+        if (Gate::denies('view-vacancy', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
+        }
         $log = [
             'route' => '/api/get_vacancies',
             'msg' => 'Successfully accessed the vacancies!',
@@ -310,17 +324,21 @@ class VacancyRepository implements VacancyInterface
 
     public function destroy($id)
     {
-        // if (Gate::denies('delete-vacancy', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to delete vacancies!');
-        // }
+        if (Gate::denies('delete-vacancy', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to delete vacancies!');
+        }
         $log = [
             'route' => '/api/delete_vacancy/id/' . $id,
             'msg' => 'Successfully deleted the vacancy!',
         ];
         Log::channel('daily')->info(json_encode($log));
-        $vacancy =  Vacancy::find($id)->delete();
+        $vacancy =  Vacancy::find($id);
+        $vacancy->deleted_by = auth()->user()->id;
+        $vacancy->save();
 
-        if ($vacancy == true) {
+        $status = $vacancy->delete();
+
+        if ($status == true) {
             return array('status' => 1, 'msg' => 'Successfully deleted the vacancy!');
         } else {
             return array('status' => 0, 'msg' => 'Vacancy record deletion was unsuccessful!');

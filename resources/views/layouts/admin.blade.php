@@ -8,6 +8,7 @@
     <!-- API Token -->
     <meta name="api-token" content="{{ (auth()->user() != null) ? auth()->user()->createToken('auth-token')->plainTextToken : '' }}" />
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" type="image/x-icon" href="{{url('./dist/img/favicon.png')}}">
     @yield('styles')
 </head>
 
@@ -23,7 +24,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevaprimarytion-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-                <img src="{{ (isset(auth()->user()->user_image)) ? auth()->user()->user_image : '/dist/img/no-image.jpg' }}" alt="user_image" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="{{ (isset(auth()->user()->user_image)) ? auth()->user()->user_image : url('/dist/img/avatar5.png') }}" alt="user_image" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light"> Agency Management System </span>
             </a>
 

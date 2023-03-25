@@ -1,0 +1,78 @@
+//Gate for user
+create-user
+update-user
+delete-user
+view-user
+
+//Gate for online applicant
+create-online-applicant * no need validation yet
+update-online-applicant
+delete-online-applicant
+view-online-applicant
+
+//Gate for application staff response
+create-application-staff-resp
+update-application-staff-resp
+delete-application-staff-resp
+view-application-staff-resp
+
+//Gate for offline applicant
+create-offline-applicant
+update-offline-applicant
+delete-offline-applicant
+view-offline-applicant
+
+//Gate for the phone number
+create-phone-number
+update-phone-number
+delete-phone-number
+view-phone-number
+
+//Define Gate Privillages for the phone number reponses
+create-phone-number-resp
+update-phone-number-resp
+delete-phone-number-resp
+view-phone-number-resp
+
+//Define Gate Privillages for the contact us
+create-contact-us * no need validation yet
+update-contact-us
+delete-contact-us
+view-contact-us
+
+//Define Gate Privillages for the contact us response
+create-contact-us-resp
+update-contact-us-resp
+delete-contact-us-resp
+view-contact-us-resp
+
+//Define Gate Privillages for the blog post
+create-blog-post
+update-blog-post
+delete-blog-post
+view-blog-post * no need validation yet
+
+//Define Gate Privillages for the vacancy
+create-vacancy
+update-vacancy
+delete-vacancy
+view-vacancy * no need validation yet
+
+//Define Gate Privillages for the commission
+create-commission
+update-commission
+delete-commission
+view-commission
+
+
+//Define Gate Privillages for the previous employeements
+create-previous-emp
+update-previous-emp
+delete-previous-emp
+view-previous-emp
+
+//Define Gate Privillages for the applicant languages
+create-applicant-language
+update-applicant-language
+delete-applicant-language
+view-applicant-language

@@ -17,12 +17,11 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="card card-success">
                     <div class="card-header">
                         <label>User Register</label>
                     </div>
-
                     <form id="user_registration_form">
                         @csrf
                         <div class="card-body">
@@ -110,7 +109,7 @@
                     </form>
                 </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <div class="card card-success">
                     <div class="card-header">
                         <h3 class="card-title">All Users</h3>

@@ -68,4 +68,19 @@ class User extends Authenticatable {
     {
         return $this->belongsTo(OnlineApplicant::class);
     }
+
+    public function PhoneNumber()
+    {
+        return $this->hasMany(PhoneNumber::class);
+    }
+
+    public function ApplicantPreviousEmployeeDetails()
+    {
+        return $this->hasMany(ApplicantPreviousEmployeement::class);
+    }
+
+    public function PhoneNumberResponse()
+    {
+        return $this->hasMany(PhoneNumberResponse::class);
+    }
 }

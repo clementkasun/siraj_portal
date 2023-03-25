@@ -4,10 +4,7 @@ namespace App\Repositories\applicant;
 
 use Exception;
 use App\Models\Applicant;
-use App\Models\ApplicantEducationalQualification;
-use App\Models\ApplicantLanguage;
-use App\Models\ApplicantPreviousEmployeement;
-use App\Models\ApplicationStaffResponse;
+use App\Models\Commission;
 use App\Repositories\applicant\ApplicantInterface;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
@@ -18,15 +15,16 @@ use Nette\Utils\Random;
 
 class ApplicantRepository implements ApplicantInterface
 {
-    public function getZeroPaddedNumber($value, $padding, $pad_type = STR_PAD_LEFT) {
+    public function getZeroPaddedNumber($value, $padding, $pad_type = STR_PAD_LEFT)
+    {
         return str_pad($value, $padding, "0", STR_PAD_LEFT);
     }
 
     public function store($request)
     {
-        // if (Gate::denies('create-applicant', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to applicant!');
-        // }
+        if (Gate::denies('create-offline-applicant', auth()->user())) {
+            return array('status' => 0, 'msg' => 'You are not authorised to create applicants  as staff member!');
+        }
         $log = [
             'route' => '/api/save_applicant',
         ];
@@ -39,9 +37,11 @@ class ApplicantRepository implements ApplicantInterface
                 'nic' => 'required|string|max: 20',
                 'passport_number' => 'nullable|sometimes|string|max: 100',
                 'passport_issue_date' => 'nullable|sometimes|string|max: 255',
+                'passport_place_of_issue' => 'nullable|sometimes|string|max: 255',
                 'passport_exp_date' => 'nullable|sometimes|string|max: 255',
                 'birth_date' => 'nullable|sometimes|string|max: 255',
                 'gender' => 'nullable|sometimes|string|max: 8',
+                'height' => 'nullable|sometimes|string|max: 5',
                 'weight' => 'nullable|sometimes|string|max: 5',
                 'complexion' =>  'nullable|sometimes|string|max: 255',
                 'nationality' => 'nullable|sometimes|string|max: 255',
@@ -51,6 +51,8 @@ class ApplicantRepository implements ApplicantInterface
                 'applied_post' => 'nullable|sometimes|string|max: 255',
                 'applied_country' => 'nullable|sometimes|string|max: 255',
                 'post_status' => 'nullable|sometimes|string|max: 1',
+                'edu_qualifications' => 'nullable|sometimes|string|max: 255',
+                'monthly_sallary' => 'nullable|sometimes|string|max: 255',
                 'passport_pdf' => 'nullable|sometimes',
                 'nic_pdf' => 'nullable|sometimes',
                 'police_record_pdf' => 'nullable|sometimes',
@@ -58,12 +60,12 @@ class ApplicantRepository implements ApplicantInterface
                 'family_back_pdf' => 'nullable|sometimes',
                 'visa_pdf' => 'nullable|sometimes',
                 'medical_pdf' => 'nullable|sometimes',
-                'aggreement_pdf' => 'nullable|sometimes',
+                'agreement_pdf' => 'nullable|sometimes',
                 'personal_form_pdf' => 'nullable|sometimes',
                 'job_order_pdf' => 'nullable|sometimes',
                 'ticket_pdf' => 'nullable|sometimes',
                 'applicant_image' => 'nullable|sometimes',
-                'agency_aggrement_pdfagency_aggrement_pdf' => 'nullable|sometimes',
+                'agency_agreement_pdf' => 'nullable|sometimes',
                 'commision_price' => 'nullable|string',
                 'decorating' => 'nullable|sometimes|string',
                 'baby_sitting' => 'nullable|sometimes|string',
@@ -82,9 +84,11 @@ class ApplicantRepository implements ApplicantInterface
                 'nic' => $request->nic,
                 'passport_no' => $request->passport_number,
                 'passport_issue_date' => $request->passport_issue_date,
+                'passport_place_of_issue' => $request->passport_place_of_issue,
                 'passport_exp_date' => $request->passport_exp_date,
                 'birth_date' => $request->birth_date,
                 'sex' => $request->gender,
+                'height' => $request->height,
                 'weight' => $request->weight,
                 'complexion' => $request->complexion,
                 'nationality' => $request->nationality,
@@ -92,8 +96,10 @@ class ApplicantRepository implements ApplicantInterface
                 'maritial_status' => $request->maritial_status,
                 'number_of_children' => $request->number_of_children,
                 'applied_post' => $request->applied_post,
+                'edu_qaulification' => $request->edu_qualifications,
                 'applied_country' => $request->applied_country,
                 'post_status' => $request->post_status,
+                'monthly_sallary' => $request->monthly_sallary,
                 'commision_price' => $request->commision_price,
                 'decorating' => ($request->decorating == 'true') ? 1 : 0,
                 'baby_sitting' => ($request->baby_sitting == 'true') ? 1 : 0,
@@ -101,11 +107,11 @@ class ApplicantRepository implements ApplicantInterface
                 'cooking' => ($request->cooking == 'true') ? 1 : 0,
                 'sewing' => ($request->sewing == 'true') ? 1 : 0,
                 'washing' => ($request->washing == 'true') ? 1 : 0,
-                'driving' => ($request->driving == 'true') ? 1 : 0
+                'driving' => ($request->driving == 'true') ? 1 : 0,
+                'added_by' => auth()->user()->id,
             ]);
-
-            $applicant->reff_no = $this->getZeroPaddedNumber($applicant->id,10);
-            $applicant->save();
+            
+            $applicant->reff_no = $this->getZeroPaddedNumber($applicant->id, 5);
 
             $documents = [
                 'passport_pdf' => $request->passport_pdf,
@@ -115,64 +121,82 @@ class ApplicantRepository implements ApplicantInterface
                 'family_back_pdf' => $request->family_back_pdf,
                 'visa_pdf' => $request->visa_pdf,
                 'medical_pdf' => $request->medical_pdf,
-                'aggreement_pdf' => $request->aggreement_pdf,
+                'agreement_pdf' => $request->aggreement_pdf,
                 'personal_form_pdf' => $request->personal_form_pdf,
                 'job_order_pdf' => $request->job_order_pdf,
                 'ticket_pdf' => $request->ticket_pdf,
-                'agency_aggrement_pdf' => $request->agency_aggrement_pdf
+                'agency_agreement_pdf' => $request->agency_agreement_pdf
             ];
-
+            
             foreach ($documents as $key => $document) {
                 if ($request->hasFile($key)) {
                     $path = 'applicant/' . $applicant->id;
                     Storage::disk('public')->makeDirectory($path);
                     $applicant->$key = Storage::disk('public')->put($path . '/', $request->file($key));
-                    $applicant->save();
                 }
             }
-
-            if ($request->hasFile('applicant_image')) {
+            
+            if ($request->hasFile('applicant_image_passport')) {
                 $path = public_path('/storage/applicant/' . $applicant->id . '/');
                 \File::exists($path) or \File::makeDirectory($path);
                 $random_name = uniqid($applicant->id);
-
-                $applicant_img     = $request->file('applicant_image');
+                
+                $applicant_img     = $request->file('applicant_image_passport');
                 $applicant_img_ext    = $applicant_img->extension();
-
+                
                 // I am saying to create the dir if it's not there.
-                $applicant_img = \Image::make($applicant_img->getRealPath())->resize(500, 500);
+                $applicant_img = \Image::make($applicant_img->getRealPath());
                 $applicant_img->save($path . $random_name . '.' . $applicant_img_ext);
                 $applicant_img_path = '/storage/applicant/' . $applicant->id . '/' . $random_name . '.' . $applicant_img_ext;
-                $applicant->applicant_image = $applicant_img_path;
-                $applicant->save();
+                $applicant->applicant_image_passport = $applicant_img_path;
             }
-
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
+            
+            if ($request->hasFile('applicant_image_full_size')) {
+                $path = public_path('/storage/applicant/' . $applicant->id . '/');
+                \File::exists($path) or \File::makeDirectory($path);
+                $random_name = uniqid($applicant->id);
+                
+                $applicant_img     = $request->file('applicant_image_full_size');
+                $applicant_img_ext    = $applicant_img->extension();
+                
+                // I am saying to create the dir if it's not there.
+                $applicant_img = \Image::make($applicant_img->getRealPath());
+                $applicant_img->save($path . $random_name . '.' . $applicant_img_ext);
+                $applicant_img_path = '/storage/applicant/' . $applicant->id . '/' . $random_name . '.' . $applicant_img_ext;
+                $applicant->applicant_image_full_size = $applicant_img_path;
+            }
+            
+            $applicant->save();
+            
+            $user = auth()->user();
             $log['msg'] = 'Saving applicant is successful!';
+            Notification::send($user, new SystemNotification($user, $log['msg']));
             Log::channel('daily')->info(json_encode($log));
-
+            
             return array('status' => 1, 'msg' => 'Saving applicant is successful!');
         } catch (Exception $e) {
             $log['msg'] = 'Saving candidate was unsuccessful!';
+            // Notification::send($user, new SystemNotification($user, $log['msg']));
             $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
             Log::channel('daily')->error(json_encode($log));
-
+            
             return array('status' => 0, 'msg' => 'Saving applicant was unsuccessful!');
         }
     }
-
+    
     public function editApplicant($id)
     {
+        if (Gate::denies('update-offline-applicant', auth()->user())) {
+            return array('status' => 0, 'msg' => 'You are not authorised to update the applicant as a staff member!');
+        }
         return view('applicant.registration', array('applicant_data' => Applicant::find($id)));
     }
-
+    
     public function update($request, $id)
     {
-        // if (Gate::denies('update-applicant', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to applicant!');
-        // }
+        if (Gate::denies('update-offline-applicant', auth()->user())) {
+            return array('status' => 0, 'msg' => 'You are not authorised to applicant!');
+        }
         $log = [
             'route' => '/api/update_applicant/id/' . $id,
         ];
@@ -185,9 +209,11 @@ class ApplicantRepository implements ApplicantInterface
                 'nic' => 'required|string|max: 20',
                 'passport_number' => 'nullable|sometimes|string|max: 100',
                 'passport_issue_date' => 'nullable|sometimes|string|max: 255',
+                'passport_place_of_issue' => 'nullable|sometimes|string|max: 255',
                 'passport_exp_date' => 'nullable|sometimes|string|max: 255',
                 'birth_date' => 'nullable|sometimes|string|max: 255',
                 'gender' => 'nullable|sometimes|string|max: 8',
+                'height' => 'nullable|sometimes|string|max: 5',
                 'weight' => 'nullable|sometimes|string|max: 5',
                 'complexion' =>  'nullable|sometimes|string|max: 255',
                 'nationality' => 'nullable|sometimes|string|max: 255',
@@ -197,6 +223,8 @@ class ApplicantRepository implements ApplicantInterface
                 'applied_post' => 'nullable|sometimes|string|max: 255',
                 'applied_country' => 'nullable|sometimes|string|max: 255',
                 'post_status' => 'nullable|sometimes|string|max: 1',
+                'edu_qualifications' => 'nullable|sometimes|string|max: 255',
+                'monthly_sallary' => 'nullable|sometimes|string|max: 255',
                 'passport_pdf' => 'nullable|sometimes',
                 'nic_pdf' => 'nullable|sometimes',
                 'police_record_pdf' => 'nullable|sometimes',
@@ -204,11 +232,11 @@ class ApplicantRepository implements ApplicantInterface
                 'family_back_pdf' => 'nullable|sometimes',
                 'visa_pdf' => 'nullable|sometimes',
                 'medical_pdf' => 'nullable|sometimes',
-                'aggreement_pdf' => 'nullable|sometimes',
+                'agreement_pdf' => 'nullable|sometimes',
                 'personal_form_pdf' => 'nullable|sometimes',
                 'job_order_pdf' => 'nullable|sometimes',
                 'ticket_pdf' => 'nullable|sometimes',
-                'agency_aggrement_pdf' => 'nullable|sometimes',
+                'agency_agreement_pdf' => 'nullable|sometimes',
                 'commision_price' => 'nullable|string',
                 'decorating' => 'nullable|sometimes|string',
                 'baby_sitting' => 'nullable|sometimes|string',
@@ -227,9 +255,11 @@ class ApplicantRepository implements ApplicantInterface
             $applicant->nic = $request->nic;
             $applicant->passport_no = $request->passport_number;
             $applicant->passport_issue_date = $request->passport_issue_date;
+            $applicant->passport_place_of_issue = $request->passport_place_of_issue;
             $applicant->passport_exp_date = $request->passport_exp_date;
             $applicant->birth_date = $request->birth_date;
             $applicant->sex = $request->gender;
+            $applicant->height = $request->height;
             $applicant->weight = $request->weight;
             $applicant->complexion = $request->complexion;
             $applicant->nationality = $request->nationality;
@@ -237,8 +267,10 @@ class ApplicantRepository implements ApplicantInterface
             $applicant->maritial_status = $request->maritial_status;
             $applicant->number_of_children = $request->number_of_children;
             $applicant->applied_post = $request->applied_post;
+            $applicant->edu_qaulification = $request->edu_qualifications;
             $applicant->applied_country = $request->applied_country;
             $applicant->post_status = $request->post_status;
+            $applicant->monthly_sallary = $request->monthly_sallary;
             $applicant->commision_price = $request->commision_price;
             $applicant->decorating = ($request->decorating == 'true') ? 1 : 0;
             $applicant->baby_sitting = ($request->baby_sitting == 'true') ? 1 : 0;
@@ -247,8 +279,7 @@ class ApplicantRepository implements ApplicantInterface
             $applicant->sewing = ($request->sewing == 'true') ? 1 : 0;
             $applicant->washing = ($request->washing == 'true') ? 1 : 0;
             $applicant->driving = ($request->driving == 'true') ? 1 : 0;
-            $applicant->save();
-            
+
             $documents = [
                 'passport_pdf' => $request->passport_pdf,
                 'nic_pdf' => $request->nic_pdf,
@@ -257,11 +288,11 @@ class ApplicantRepository implements ApplicantInterface
                 'family_back_pdf' => $request->family_back_pdf,
                 'visa_pdf' => $request->visa_pdf,
                 'medical_pdf' => $request->medical_pdf,
-                'aggreement_pdf' => $request->aggreement_pdf,
+                'agreement_pdf' => $request->aggreement_pdf,
                 'personal_form_pdf' => $request->personal_form_pdf,
                 'job_order_pdf' => $request->job_order_pdf,
                 'ticket_pdf' => $request->ticket_pdf,
-                'agency_aggrement_pdf' => $request->agency_aggrement_pdf
+                'agency_agreement_pdf' => $request->agency_agreement_pdf
             ];
 
             foreach ($documents as $key => $document) {
@@ -269,36 +300,52 @@ class ApplicantRepository implements ApplicantInterface
                     $path = 'applicant/' . $applicant->id;
                     Storage::disk('public')->makeDirectory($path);
                     $applicant->$key = Storage::disk('public')->put($path . '/', $request->file($key));
-                    $applicant->save();
                 }
             }
 
-            if ($request->hasFile('applicant_image')) {
+            if ($request->hasFile('applicant_image_passport')) {
                 $path = public_path('/storage/applicant/' . $applicant->id . '/');
                 \File::exists($path) or \File::makeDirectory($path);
                 $random_name = uniqid($applicant->id);
 
-                $applicant_img     = $request->file('applicant_image');
+                $applicant_img     = $request->file('applicant_image_passport');
                 $applicant_img_ext    = $applicant_img->extension();
 
                 // I am saying to create the dir if it's not there.
-                $applicant_img = \Image::make($applicant_img->getRealPath())->resize(500, 500);
+                $applicant_img = \Image::make($applicant_img->getRealPath());
                 $applicant_img->save($path . $random_name . '.' . $applicant_img_ext);
                 $applicant_img_path = '/storage/applicant/' . $applicant->id . '/' . $random_name . '.' . $applicant_img_ext;
-                $applicant->applicant_image = $applicant_img_path;
-                $applicant->save();
+                $applicant->applicant_image_passport = $applicant_img_path;
             }
 
-            $user = auth()->user();
-            $msg = $log['msg'];
-            Notification::send($user, new SystemNotification($user, $msg));
-            $log['msg'] = 'Updating applicant is successful!';
-            Log::channel('daily')->info(json_encode($log));
+            if ($request->hasFile('applicant_image_full_size')) {
+                $path = public_path('/storage/applicant/' . $applicant->id . '/');
+                \File::exists($path) or \File::makeDirectory($path);
+                $random_name = uniqid($applicant->id);
 
+                $applicant_img     = $request->file('applicant_image_full_size');
+                $applicant_img_ext    = $applicant_img->extension();
+
+                // I am saying to create the dir if it's not there.
+                $applicant_img = \Image::make($applicant_img->getRealPath());
+                $applicant_img->save($path . $random_name . '.' . $applicant_img_ext);
+                $applicant_img_path = '/storage/applicant/' . $applicant->id . '/' . $random_name . '.' . $applicant_img_ext;
+                $applicant->applicant_image_full_size = $applicant_img_path;
+            }
+
+            $applicant->save();
+
+            $user = auth()->user();
+            $log['msg'] = 'Updating applicant is successful!';
+            $msg = $log['msg'];
+            // Notification::send($user, new SystemNotification($user, $log['msg']));
+            Log::channel('daily')->info(json_encode($log));
+            
             return array('status' => 1, 'msg' => 'Updating candidate is successful!');
         } catch (Exception $e) {
             $log['msg'] = 'Updating applicant was unsuccessful!';
             $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+            // Notification::send($user, new SystemNotification($user, $log['msg']));
             Log::channel('daily')->error(json_encode($log));
 
             return array('status' => 0, 'msg' => 'Updating applicant was unsuccessful!');
@@ -307,9 +354,9 @@ class ApplicantRepository implements ApplicantInterface
 
     public function getApplicantDetail($id)
     {
-        // if (Gate::denies('view-applicant', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view applicants!');
-        // }
+        if (Gate::denies('view-offline-applicant', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view applicants as staff!');
+        }
         $log = [
             'route' => '/api/get_applicant/id/' . $id,
             'msg' => 'Successfully accessed the applicant details!',
@@ -320,9 +367,9 @@ class ApplicantRepository implements ApplicantInterface
 
     public function applicantProfile($id)
     {
-        // if (Gate::denies('view-applicant', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view applicant!');
-        // }
+        if (Gate::denies('view-offline-applicant', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view applicant as staff!');
+        }
         $log = [
             'route' => '/api/applicant_profile/id/' . $id,
             'msg' => 'Successfully accessed the applicant details!',
@@ -330,27 +377,38 @@ class ApplicantRepository implements ApplicantInterface
         Log::channel('daily')->info(json_encode($log));
 
         $applicant_data = Applicant::find($id);
-        return view('applicant.applicant_profile', array('applicant_data' => $applicant_data));
+        return view('applicant.applicant_profile', [
+            'applicant_data' => $applicant_data,
+            'commision_price' => $applicant_data->commision_price,
+            'paid_total_commision' => Commission::where('applicant_id', $id)->sum('price'),
+            'post_status_array' => Applicant::find($id)->post_status_array
+        ]);
     }
 
     public function viewApplication($id)
     {
+        if (Gate::denies('view-offline-applicant', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view applicants as staff!');
+        }
         $applicant_details = Applicant::where('id', $id)
             ->with([
                 'ApplicantEducationalQualification',
                 'ApplicantLanguage',
-                'ApplicantPreviousEmployeement',
+                'ApplicantPreviousEmployeement' => function ($prev_emp) {
+                    $prev_emp->orderBy('id', 'DESC')->limit(1);
+                },
                 'ApplicationStaffResponse',
                 'Commission'
-            ])->first();
-        return view('applicant.applicant_application', array('applicant_details' => $applicant_details));
+            ])
+            ->first();
+        return view('applicant.application', array('applicant_details' => $applicant_details));
     }
 
     public function show()
     {
-        // if (Gate::denies('view-applicants', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view applicants!');
-        // }
+        if (Gate::denies('view-offline-applicant', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view applicants as staff!');
+        }
         $log = [
             'route' => '/api/get_applicants',
             'msg' => 'Successfully accessed the applicants!',
@@ -361,9 +419,9 @@ class ApplicantRepository implements ApplicantInterface
 
     public function destroy($id)
     {
-        // if (Gate::denies('delete-applicant', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to delete applicant!');
-        // }
+        if (Gate::denies('delete-offline-applicant', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to delete applicant as staff!');
+        }
         $log = [
             'route' => '/api/delete_applicant/id/' . $id,
             'msg' => 'Successfully deleted the applicant!',

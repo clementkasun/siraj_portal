@@ -27,4 +27,8 @@ class Commission extends Model
     public function Applicant(){
         return $this->belongsTo(Applicant::class);
     }
+
+    public function Designation(){
+        return $this->belongsTo(Role::class, 'designation');
+    }
 }

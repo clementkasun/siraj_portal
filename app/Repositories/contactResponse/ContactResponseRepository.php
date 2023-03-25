@@ -14,14 +14,17 @@ class ContactResponseRepository implements ContactResponseInterface
 {
     public function index($id)
     {
-        return view('contact.contact_reponse', ['contact_id' => $id]);
+        if (Gate::denies('view-contact-us-resp', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view contact response!');
+        }
+        return view('contact.contact_response', ['contact_id' => $id]);
     }
 
     public function store($request)
     {
-        // if (Gate::denies('create-contact-response', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to register contact!');
-        // }
+        if (Gate::denies('create-contact-us-resp', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to register contact response!');
+        }
         $log = [
             'route' => '/api/save_contact_response',
         ];
@@ -58,9 +61,9 @@ class ContactResponseRepository implements ContactResponseInterface
 
     public function update($request, $id)
     {
-        // if (Gate::denies('update-contact-response', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to update contact response!');
-        // }
+        if (Gate::denies('update-contact-us-resp', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to update contact response!');
+        }
         $log = [
             'route' => '/api/save_contact_response',
         ];
@@ -97,9 +100,9 @@ class ContactResponseRepository implements ContactResponseInterface
 
     public function show()
     {
-        // if (Gate::denies('view-contact-response', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view contact responses!');
-        // }
+        if (Gate::denies('view-contact-us-resp', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view contact responses!');
+        }
         $log = [
             'route' => '/api/get_contact_responses',
             'msg' => 'Successfully accessed the contact responses!',
@@ -108,13 +111,13 @@ class ContactResponseRepository implements ContactResponseInterface
         return ContactResponse::all();
     }
 
-    public function getContact($id)
+    public function getContactResponse($id)
     {
-        // if (Gate::denies('view-contact-reponse', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view contact response!');
-        // }
+        if (Gate::denies('view-contact-us-resp', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view contact response!');
+        }
         $log = [
-            'route' => '/api/get_contact_reponse/id/'.$id,
+            'route' => '/api/get_contact_response/id/' . $id,
             'msg' => 'Successfully accessed the contact response!',
         ];
         Log::channel('daily')->info(json_encode($log));
@@ -124,11 +127,11 @@ class ContactResponseRepository implements ContactResponseInterface
 
     public function destroy($id)
     {
-        // if (Gate::denies('delete-contact-response', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to delete contact response!');
-        // }
+        if (Gate::denies('delete-contact-us-resp', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to delete contact response!');
+        }
         $log = [
-            'route' => '/api/delete_contact_reponse/id/'.$id,
+            'route' => '/api/delete_contact_response/id/' . $id,
             'msg' => 'Successfully delete the contact response!',
         ];
         Log::channel('daily')->info(json_encode($log));

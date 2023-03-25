@@ -14,27 +14,24 @@ class StaffResponseRepository implements StaffResponseInterface
 {
     public function store($request)
     {
-        // if (Gate::denies('create-application-staff-response', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to create application staff response!');
-        // }
+        if (Gate::denies('create-application-staff-resp', auth()->user())) {
+            return array('status' => 0, 'msg' => 'You are not authorised to create application staff response!');
+        }
         $log = [
             'route' => '/api/save_application_staff_response',
         ];
         try {
             $request->validate([
-                'staff_name' => 'nullable|sometimes|string|max: 255',
-                'designation' => 'nullable|sometimes|string|max: 255',
-                'price' => 'nullable|sometimes|string|max: 255',
                 'response' => 'nullable|sometimes|string|max: 255',
                 'applicant_id' => 'nullable|sometimes|string|max: 255',
             ]);
 
             ApplicationStaffResponse::create([
-                'staff_mem_name' => $request->staff_name,
-                'designation' => $request->designation,
-                'price' => $request->price,
+                'staff_mem_name' => auth()->user()->first_name.' '.auth()->user()->last_name,
+                'designation' => auth()->user()->role_id,
                 'response' => $request->response,
                 'applicant_id' => $request->applicant_id,
+                'added_by' => auth()->user()->id
             ]);
 
             // $user = auth()->user();
@@ -55,25 +52,21 @@ class StaffResponseRepository implements StaffResponseInterface
 
     public function update($request, $id)
     {
-        // if (Gate::denies('update-applicant-language', auth()->user())) {
-        //     return array('status' => 0, 'msg' => 'You are not authorised to applicant language!');
-        // }
+        if (Gate::denies('update-application-staff-resp', auth()->user())) {
+            return array('status' => 0, 'msg' => 'You are not authorised to application staff response!');
+        }
         $log = [
             'route' => '/api/update_applicant_language/id/' . $id,
         ];
         try {
             $request->validate([
-                'staff_name' => 'nullable|sometimes|string|max: 255',
-                'designation' => 'nullable|sometimes|string|max: 255',
-                'price' => 'nullable|sometimes|string|max: 255',
                 'response' => 'nullable|sometimes|string|max: 255',
                 'applicant_id' => 'nullable|sometimes|string|max: 255',
             ]);
 
             $application_staff_response = ApplicationStaffResponse::find($id);
-            $application_staff_response->staff_mem_name = $request->staff_name;
-            $application_staff_response->designation = $request->designation;
-            $application_staff_response->price = $request->price;
+            $application_staff_response->staff_mem_name = auth()->user()->first_name.' '.auth()->user()->last_name;
+            $application_staff_response->designation = auth()->user()->role_id;
             $application_staff_response->response = $request->response;
             $application_staff_response->applicant_id = $request->applicant_id;
             $application_staff_response->save();
@@ -96,35 +89,35 @@ class StaffResponseRepository implements StaffResponseInterface
 
     public function show($id)
     {
-        // if (Gate::denies('view-application-staff-response', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view application staff!');
-        // }
+        if (Gate::denies('view-application-staff-resp', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view application staff response!');
+        }
         $log = [
             'route' => '/api/get_application_staff_response/id/' . $id,
             'msg' => 'Successfully accessed the application staff response!',
         ];
         Log::channel('daily')->info(json_encode($log));
-        return ApplicationStaffResponse::where('applicant_id', $id)->get();
+        return ApplicationStaffResponse::where('applicant_id', $id)->with(['Applicant', 'designation'])->get();
     }
 
     public function getApplicationStaffResponse($applicant_lan_id)
     {
-        // if (Gate::denies('view-application-staff-response', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view application staff response!');
-        // }
+        if (Gate::denies('view-application-staff-resp', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view application staff response!');
+        }
         $log = [
             'route' => '/api/get_application_staff_response/id/' . $applicant_lan_id,
             'msg' => 'Successfully accessed the applicant staff response!',
         ];
         Log::channel('daily')->info(json_encode($log));
-        return ApplicationStaffResponse::find($applicant_lan_id);
+        return ApplicationStaffResponse::where('applicant_id', $applicant_lan_id)->with(['Applicant', 'designation'])->first();
     }
 
     public function destroy($id)
     {
-        // if (Gate::denies('delete-applicant-language', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to delete applicant language!');
-        // }
+        if (Gate::denies('delete-application-staff-resp', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to delete application staff response!');
+        }
         $log = [
             'route' => '/api/delete_application_staff_response/id/' . $id,
             'msg' => 'Successfully deleted the application staff response!',
@@ -132,7 +125,7 @@ class StaffResponseRepository implements StaffResponseInterface
         Log::channel('daily')->info(json_encode($log));
         $status = ApplicationStaffResponse::find($id)->delete();
         if ($status == true) {
-            return array('status' => 1, 'msg' => 'Successfully deleted the application staff reponse!');
+            return array('status' => 1, 'msg' => 'Successfully deleted the application staff response!');
         } else {
             return array('status' => 0, 'msg' => 'Application staff response deletion was unsuccessful!');
         }

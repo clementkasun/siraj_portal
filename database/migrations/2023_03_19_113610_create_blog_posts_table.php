@@ -20,6 +20,12 @@ class CreateBlogPostsTable extends Migration
             $table->text('description');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('added_by')->nullable();
+            $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('deleted_by')->nullable();
+            $table->foreign('deleted_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

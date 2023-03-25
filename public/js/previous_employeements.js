@@ -5,8 +5,6 @@ $('#save_previous_emp').click(function () {
     let data = {
         'job_type': $('#job_type').val(),
         'period': $('#period').val(),
-        'monthly_sallary': $('#monthly_sallary').val(),
-        'contract_period': $('#contract_period').val(),
         'country': $('#country').val(),
         'applicant_id': $(this).attr('data-id')
     };
@@ -29,8 +27,6 @@ $('#update_previous_emp').click(function () {
     let data = {
         'job_type': $('#job_type').val(),
         'period': $('#period').val(),
-        'monthly_sallary': $('#monthly_sallary').val(),
-        'contract_period': $('#contract_period').val(),
         'country': $('#country').val(),
         'applicant_id': $('#save_previous_emp').attr('data-id')
     };
@@ -95,12 +91,10 @@ edit_prev_experience = (id) => {
     ajaxRequest('get', url, null, function (result) {
         $('#job_type').val(result.job_type);
         $('#period').val(result.period);
-        $('#monthly_sallary').val(result.monthly_salary);
-        $('#contract_period').val(result.contract_period);
         $('#country').val(result.country);
         $('#save_previous_emp').addClass('d-none');
         $('#update_previous_emp').removeClass('d-none');
-        $('#update_previous_emp').attr('data-id', result.id);
+        $('#update_previous_emp').attr('data-id', id);
     });
 }
 
@@ -110,13 +104,18 @@ load_previous_employeement_table = (id) => {
     ajaxRequest('get', '/api/get_previous_employeements/id/' + id, null, function (result) {
         if (result != '') {
             result.forEach(previous_emp => {
+                let first_name = (previous_emp.added_by != null) ? (previous_emp.added_by.first_name != null) ? previous_emp.added_by.first_name : '': '';
+                let last_name = (previous_emp.added_by != null) ? (previous_emp.added_by.last_name != null) ? previous_emp.added_by.last_name : '': '';
+                let created_at = new Date(previous_emp.created_at);
+                let formatted_created_at = created_at.getFullYear()+'-'+created_at.getMonth()+'-'+created_at.getDate();
+
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
-                html += '<td style="width: 15em">' + previous_emp.job_type + '</td>';
-                html += '<td>' + previous_emp.period + '</td>';
-                html += '<td>' + previous_emp.monthly_salary + '</td>';
+                html += '<td>' + previous_emp.job_type + '</td>';
                 html += '<td>' + previous_emp.country + '</td>';
-                html += '<td>' + previous_emp.contract_period + '</td>';
+                html += '<td>' + previous_emp.period + '</td>';
+                html += '<td>' + first_name +' '+ last_name + '</td>';
+                html += '<td>' + formatted_created_at + '</td>';
                 html += '<td><button type="button" class="btn btn-primary edit-previous-emp m-1" data-id="' + previous_emp.id + '"> Edit </button>';
                 html += '<button type="button" class="btn btn-danger delete-prev-emp m-1" data-id="' + previous_emp.id + '"> Delete </button></td>';
             });

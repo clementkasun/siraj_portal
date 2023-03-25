@@ -1,0 +1,197 @@
+$('#save_phone_number').click(function () {
+    if (!jQuery("#phone_number_form").valid()) {
+        return false;
+    }
+    let data = {
+        'phone_number': $('#phone_number').val(),
+        'name': $('#name').val(),
+    };
+
+    ulploadFileWithData('/api/save_phone_number', data, function (result) {
+        if (result.status == 1) {
+            toastr.success('Phone number adding is successful!')
+            $('#phone_number_form').trigger("reset");
+            load_phone_number_tbl();
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack();
+            }
+        } else {
+            toastr.error('Phone number saving was failed!');
+        }
+    });
+});
+
+$('#update_phone_number').click(function () {
+    let id = $(this).attr('data-id');
+    if (!jQuery("#phone_number_form").valid()) {
+        return false;
+    }
+    let data = {
+        'phone_number': $('#phone_number').val(),
+        'name': $('#name').val(),
+    };
+
+    ulploadFileWithData('/api/update_phone_number/id/' + id, data, function (result) {
+        if (result.status == 1) {
+            toastr.success('Phone number updating is successful!');
+            reset_phone_num_buttons();
+            load_phone_number_tbl();
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack();
+            }
+        } else {
+            toastr.error('Phone number updating was failed!');
+        }
+    });
+});
+
+$(document).on('click', '.delete', function () {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Record will be deleted!",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!'
+    }).then((result) => {
+        if (result.value) {
+            let id = $(this).attr('data-id');
+            reset_phone_num_buttons();
+            delete_phone_number(id);
+        }
+    });
+});
+
+delete_phone_number = (id) => {
+    ajaxRequest('delete', '/api/delete_phone_number/id/' + id, null, function (result) {
+        if (result.status == 1) {
+            $('#phone_number_form').trigger("reset");
+            reset_phone_num_buttons();
+            load_phone_number_tbl($('#save_phone_number').attr('data-id'));
+            toastr.success('Deleting phone number was successful!');
+        } else {
+            toastr.error('Deleting phone number was failed!');
+        }
+    });
+}
+
+reset_phone_num_buttons = () => {
+    $('#save_phone_number').removeClass('d-none');
+    $('#update_phone_number').addClass('d-none');
+}
+
+$(document).on('click', '.edit', function () {
+    let id = $(this).attr('data-id');
+    edit_phone_number(id);
+});
+
+edit_phone_number = (id) => {
+    let url = '/api/get_phone_number/id/' + id;
+    ajaxRequest('get', url, null, function (result) {
+        $('#phone_number').val(result.phone_number);
+        $('#name').val(result.name);
+        $('#save_phone_number').addClass('d-none');
+        $('#update_phone_number').removeClass('d-none');
+        $('#update_phone_number').attr('data-id', result.id);
+    });
+}
+
+load_phone_number_tbl = () => {
+    let index = 1;
+    let html = '';
+    ajaxRequest('get', '/api/get_phone_numbers', null, function (result) {
+        if (result != '') {
+            result.forEach(phone_number => {
+
+                let added_fname = (phone_number.added_by != null) ? (phone_number.added_by.first_name != null) ? phone_number.added_by.first_name : '' : '';
+                let added_lname = (phone_number.added_by != null) ? (phone_number.added_by.last_name != null) ? phone_number.added_by.last_name : '' : '';
+                let assigned_fname = (phone_number.assigned_to != null) ? (phone_number.assigned_to.first_name != null) ? phone_number.assigned_to.first_name : '' : '';
+                let assigned_lname = (phone_number.assigned_to != null) ? (phone_number.assigned_to.last_name != null) ? phone_number.assigned_to.last_name : '' : '';
+                let phone_num_response = (phone_number.phone_number_response != null) ? (phone_number.phone_number_response[0] != null) ? phone_number.phone_number_response[0].response : '' : '';  
+                
+                html += '<tr>';
+                html += '<td>' + index++ + '</td>';
+                html += '<td style="width: 8em">' + phone_number.phone_number + '</td>';
+                html += '<td>' + phone_number.name + '</td>';
+                html += '<td>' + added_fname + ' ' + added_lname + '</td>';
+                html += '<td>' + assigned_fname + ' ' + assigned_lname + '</td>';
+                html += '<td>' + phone_num_response + '</td>';
+                html += '<td>';
+                html += '<button type="button" class="btn btn-primary edit m-1" data-id="' + phone_number.id + '"> Edit </button>';
+                html += '<button type="button" class="btn btn-danger delete m-1" data-id="' + phone_number.id + '"> Delete </button>';
+                html += '<a href="/phone_number_profile/id/' + phone_number.id + '" class="btn btn-success m-1">Profile</a>';
+                html += '<a href="/phone_number_response/id/' + phone_number.id + '" class="btn btn-primary m-1">response</a>';
+                html += '</td>';
+            });
+            $('#phone_number_tbl tbody').html(html);
+            $('#phone_number_tbl').DataTable({
+                "pageLength": 10,
+                "destroy": true,
+                "retrieve": true
+            });
+        } else {
+            $('#phone_number_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
+        }
+    });
+}
+
+$("#phone_number_form").validate({
+    errorClass: "invalid",
+    rules: {
+        phone_number: {
+            valid_lk_phone: true,
+        },
+    },
+    highlight: function (element) {
+        $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element) {
+        $(element).removeClass('is-invalid');
+    },
+    errorElement: 'span',
+    errorClass: 'validation-error-message help-block form-helper bold',
+    errorPlacement: function (error, element) {
+        if (element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+        } else {
+            error.insertAfter(element);
+        }
+    }
+});
+
+jQuery.validator.setDefaults({
+    errorElement: "span",
+    ignore: ":hidden:not(select.chosen-select)",
+    errorPlacement: function (error, element) {
+        // Add the `help-block` class to the error element
+        error.addClass("help-block");
+        if (element.prop("type") === "checkbox") {
+            //                error.insertAfter(element.parent("label"));
+            error.appendTo(element.parents("validate-parent"));
+        } else if (element.is("select.chosen-select")) {
+            error.insertAfter(element.siblings(".chosen-container"));
+        } else if (element.prop("type") === "radio") {
+            error.appendTo(element.parents("div.validate-parent"));
+        } else {
+            error.insertAfter(element);
+        }
+    },
+    highlight: function (element, errorClass, validClass) {
+        jQuery(element).parents(".validate-parent").addClass("has-error").removeClass("has-success");
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        jQuery(element).parents(".validate-parent").removeClass("has-error");
+    }
+});
+jQuery.validator.addMethod("valid_name", function (value, element) {
+    return this.optional(element) || /^[a-zA-Z0-9\s\.\&\-():, ]{1,100}$/.test(value);
+}, "Please enter a valid name");
+jQuery.validator.addMethod("valid_lk_phone", function (value, element) {
+    return this.optional(element) || /^(\+94)?\d{2,3}[-]?\d{7}$/.test(value);
+}, "Please enter a valid phone number");
+jQuery.validator.addMethod("valid_date", function (value, element) {
+    return this.optional(element) || /^\d{4}\-\d{2}\-\d{2}$/.test(value);
+}, "Please enter a valid date ex. 2017-03-27");
+jQuery.validator.addMethod("valid_nic", function (value, element) {
+    return this.optional(element) || /^[0-9+]{12}$/.test(value) || /^[0-9+]{9}[vV|xX]$/.test(value);
+}, "Please enter a valid nic number");

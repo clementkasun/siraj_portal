@@ -33,7 +33,7 @@
                             <td style="width: 15em">{{ $contact->email }}</td>
                             <td>{{ $contact->phone_number }}</td>
                             <td>{{ $contact->subject }}</td>
-                            <td><a href="{{ 'storage/'.$contact->file }}" class="btn btn-primary" target="_blank">File</a></td>
+                            <td><a href="{{ ($contact->file != '') ? url('/storage/'.$contact->file) : '' }}" class="btn btn-primary" target="_blank">File</a></td>
                             <td style="width: 10em">{{ $contact->message }}</td>
                             <td><a href="/contact_response/id/{{ $contact->id }}" class="btn btn-success">Respond</a></td>
                         </tr>

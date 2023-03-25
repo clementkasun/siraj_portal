@@ -23,10 +23,12 @@ class CreateApplicantsTable extends Migration
             $table->string('nic', 25);
             $table->string('passport_no', 255)->nullable();
             $table->string('passport_issue_date', 255)->nullable();
+            $table->string('passport_place_of_issue', 255)->nullable();
             $table->string('passport_exp_date', 255)->nullable();
             $table->string('birth_date', 255)->nullable();
             $table->boolean('sex')->nullable();
-            $table->string('weight', 255)->nullable();
+            $table->string('height', 5)->nullable();
+            $table->string('weight', 5)->nullable();
             $table->string('complexion', 255)->nullable();
             $table->string('nationality', 255)->nullable();
             $table->string('religion', 255)->nullable();
@@ -34,7 +36,9 @@ class CreateApplicantsTable extends Migration
             $table->string('number_of_children', 255)->nullable();
             $table->string('applied_country', 255)->nullable();
             $table->string('applied_post', 255)->nullable();
+            $table->string('edu_qaulification', 255)->nullable();
             $table->tinyInteger('post_status')->nullable();
+            $table->string('monthly_sallary', 255)->nullable();
             $table->boolean('decorating')->nullable();
             $table->boolean('baby_sitting')->nullable();
             $table->boolean('cleaning')->nullable();
@@ -49,13 +53,16 @@ class CreateApplicantsTable extends Migration
             $table->string('family_back_pdf', 255)->nullable();
             $table->string('visa_pdf', 255)->nullable();
             $table->string('medical_pdf', 255)->nullable();
-            $table->string('aggreement_pdf', 255)->nullable();
+            $table->string('agreement_pdf', 255)->nullable();
             $table->string('personal_form_pdf', 255)->nullable();
             $table->string('job_order_pdf', 255)->nullable();
             $table->string('ticket_pdf', 255)->nullable();
-            $table->string('agency_aggrement_pdf', 255)->nullable();
-            $table->string('applicant_image', 255)->nullable();
-            $table->string('commision_price', 255)->nullable();
+            $table->string('agency_agreement_pdf', 255)->nullable();
+            $table->string('applicant_image_passport', 255)->nullable();
+            $table->string('applicant_image_full_size', 255)->nullable();
+            $table->string('commision_price', 255)->nullable();//promissed commission price
+            $table->unsignedBigInteger('added_by')->nullable();
+            $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

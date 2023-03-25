@@ -108,3 +108,30 @@ function loadRoles(id, combo, callBack) {
     });
 
 }
+
+function loadRolesById(id, combo, callBack) {
+    $.ajax({
+        type: "GET",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "/api/rolls/id/" + id,
+        contentType: false,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+            /// apending data to comboBox
+            $('.' + combo).empty();
+            $.each(result, function (key, value) {
+                $('.' + combo).append(new Option(value.name, value.id));
+            });
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack();
+            }
+        }
+    });
+
+}

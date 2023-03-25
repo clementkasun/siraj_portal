@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Level;
 use App\Models\Role;
 use App\Models\Privillage;
+use App\Models\RolePrivillage;
 use App\Models\User;
-use App\Rules\contactNo;
+use App\Notifications\SystemNotification;
 use App\Rules\nationalID;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -17,7 +19,7 @@ use function redirect;
 use function request;
 use function view;
 use Illuminate\Support\Facades\Gate;
-use PHPUnit\Framework\Constraint\IsType;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -34,6 +36,9 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
+        if (Gate::denies('create-user', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to create user!');
+        }
         try {
             \DB::transaction(function () use ($request) {
                 request()->validate([
@@ -42,8 +47,8 @@ class UserController extends Controller
                     'fullName' => 'sometimes|nullable|max:255|string',
                     'prefferedName' => 'sometimes|nullable|max:50|string',
                     'address' => 'sometimes|nullable|string|max:255',
-                    'mobileNo' => ['nullable', new contactNo],
-                    'landNo' => ['nullable', new contactNo],
+                    'mobileNo' => 'sometimes|nullable',
+                    'landNo' => 'sometimes|nullable',
                     'birthDate' => 'sometimes|nullable|string',
                     'email' => 'required|string|max:255',
                     'nicFrontImg' => 'sometimes|nullable',
@@ -116,16 +121,34 @@ class UserController extends Controller
 
                 $user->save();
             });
+
+            $log = [
+                'route' => '/api/save_applicant',
+            ];
+            $user = auth()->user();
+            $log['msg'] = 'Saving user is successful!';
+
+            Notification::send($user, new SystemNotification($user, $log['msg']));
+
             return array('status' => 1, 'msg' => 'User has successfully registered!');
         } catch (Exception $ex) {
+            $log['msg'] = 'User saving was unsuccessful!';
+            $log['error'] = $ex;
+
+            Notification::send($user, new SystemNotification($user, $log['msg']));
+            Log::channel('error')->info(json_encode($log));
+
             return array('status' => 0, 'msg' => 'User registration failed!');
         }
     }
 
     public function edit($id)
     {
+        if (Gate::denies('update-user', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to update user!');
+        }
         $user = User::findOrFail($id);
-        $level = $user->Role()->with('Level')->first();
+        $level = $user->Role()->with('Level')->first()->Level;
         $levels = Level::all();
         $privillages = Privillage::all();
         $roles = Role::where('level_id', $level->id)->get();
@@ -148,29 +171,46 @@ class UserController extends Controller
 
     public function PrivillagesAddById(Request $request, $id)
     {
-        $privillages = $request->privillages;
+        $new_privillages = $request->privillage;
         $user = User::findOrFail($id);
+        $user->role_id = $request->role_id;
         $user->save();
 
-        $privillages = $user->Role()->with('RolePrivillage')->get();
-        foreach ($privillages[0]->RolePrivillage as $privillage) {
-            if (isset($request->privillage)) {
-                foreach ($request->privillage as $new_privillage) {
-                    if ($new_privillage['id'] == $privillage->id) {
-                        $privillage->is_create = $new_privillage['is_create'];
-                        $privillage->is_update = $new_privillage['is_update'];
-                        $privillage->is_delete = $new_privillage['is_delete'];
-                        $privillage->is_read = $new_privillage['is_read'];
+        if (isset($new_privillages)) {
+            foreach ($new_privillages as $new_privilage) {
+                $role_privilage = RolePrivillage::where('role_id', $request->role_id)->where('privillage_id', $new_privilage['id']);
+                $role_privilage_status = $role_privilage->exists();
+                $role_privillage_data = $role_privilage->first();
+
+                if($role_privilage_status){
+                    if($role_privillage_data->privillage_id == $new_privilage['id']){
+                        $role_privillage_data->is_create = $new_privilage['is_create'];
+                        $role_privillage_data->is_update = $new_privilage['is_update'];
+                        $role_privillage_data->is_delete = $new_privilage['is_delete'];
+                        $role_privillage_data->is_read = $new_privilage['is_read'];
+                        $role_privillage_data->save();                        
                     }
+                }else{
+                    RolePrivillage::create([
+                        'role_id' => $request->role_id,
+                        'privillage_id' => $new_privilage['id'],
+                        'is_create' => $new_privilage['is_create'],
+                        'is_update' => $new_privilage['is_update'],
+                        'is_delete' => $new_privilage['is_delete'],
+                        'is_read' => $new_privilage['is_read']
+                    ]);
                 }
-                $privillage->save();
             }
         }
-        return array('id' => '1', 'msg' => 'ok');
+
+        return array('id' => '1', 'msg' => 'Successfully changed the privillages');
     }
 
     public function update(Request $request, $id)
     {
+        if (Gate::denies('update-user', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to update user!');
+        }
         try {
 
             $user = User::findOrFail($id);
@@ -183,6 +223,7 @@ class UserController extends Controller
                 'mobile_no' => $request->mobileNo,
                 'land_no' => $request->landNo,
                 'birth_date' => $request->birthDate,
+                'role' => $request->role
             ]);
 
             if ($request->hasFile('nicFrontImg')) {
@@ -225,7 +266,7 @@ class UserController extends Controller
 
                 // I am saying to create the dir if it's not there.
                 $user_image_photo = \Image::make($user_image_photo->getRealPath())->resize(500, 500);
-                $user_image_photo->save($path . $random_name . '.' . $nic_front_img_photo_ext);
+                $user_image_photo->save($path . $random_name . '.' . $user_image_photo_ext);
                 $user_image_photo_path = '/storage/user/user_image' . $user->id . '/' . $random_name . '.' . $user_image_photo_ext;
                 $user->user_image = $user_image_photo_path;
             }
@@ -238,6 +279,9 @@ class UserController extends Controller
 
     public function storePassword(Request $request, $id)
     {
+        if (Gate::denies('update-user', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to update user!');
+        }
         $user = User::findOrFail($id);
         request()->validate([
             'password' => 'required|confirmed|min:6',
@@ -259,6 +303,9 @@ class UserController extends Controller
 
     public function activeStatus(Request $request, $id)
     {
+        if (Gate::denies('update-user', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to update user!');
+        }
         $user = User::findOrFail($id);
         switch ($request['status']) {
             case 'ACTIVE':
@@ -287,7 +334,10 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        $user = User::findOrFail($id)->delete();
+        if (Gate::denies('delete-user', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to delete user!');
+        }
+        User::findOrFail($id)->delete();
         $users = User::with('role')->get();
         $level = Level::get();
         return view('user', ['levels' => $level, 'users' => $users]);
@@ -301,12 +351,15 @@ class UserController extends Controller
 
     public function myProfile()
     {
-        $user = Auth::user();
-        return view('my_profile', ['user' => $user]);
+        $user = User::where('id', Auth::user()->id)->with('Role')->first();
+        return view('user_profile', ['user' => $user]);
     }
 
     public function changeMyPass()
     {
+        if (Gate::denies('update-user', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to update user!');
+        }
         $aUser = User::find(Auth::user()->id);
         request()->validate([
             'password' => 'required|confirmed|min:6',

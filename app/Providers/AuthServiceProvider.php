@@ -26,11 +26,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        //Define Gate Privillages for the users
         Gate::define('create-user', function ($user) {
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'vacancy' && $role_privillage->is_create == 1) {
+                    if ($role_privillage->privillage[0]->name == 'User' && $role_privillage->is_create == 1) {
                         return true;
                     }
                 }
@@ -40,7 +41,7 @@ class AuthServiceProvider extends ServiceProvider
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'user' && $role_privillage->is_update == 1) {
+                    if ($role_privillage->privillage[0]->name == 'User' && $role_privillage->is_update == 1) {
                         return true;
                     }
                 }
@@ -50,7 +51,7 @@ class AuthServiceProvider extends ServiceProvider
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'user' && $role_privillage->is_delete == 1) {
+                    if ($role_privillage->privillage[0]->name == 'User' && $role_privillage->is_delete == 1) {
                         return true;
                     }
                 }
@@ -60,357 +61,62 @@ class AuthServiceProvider extends ServiceProvider
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'user' && $role_privillage->is_read == 1) {
+                    if ($role_privillage->privillage[0]->name == 'User' && $role_privillage->is_read == 1) {
                         return true;
                     }
                 }
             }
         });
-        Gate::define('create-role', function ($user) {
+
+        //Define Gate Privillages for the online applicants
+        Gate::define('create-online-applicant', function ($user) {
+            // $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            // if (isset($role_privillages)) {
+            //     foreach ($role_privillages as $role_privillage) {
+            //         if ($role_privillage->privillage[0]->name == 'OnlineApplicant' && $role_privillage->is_create == 1) {
+            //             return true;
+            //         }
+            //     }
+            // }
+            return true;
+        });
+        Gate::define('update-online-applicant', function ($user) {
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'role' && $role_privillage->is_create == 1) {
+                    if ($role_privillage->privillage[0]->name == 'OnlineApplicant' && $role_privillage->is_update == 1) {
                         return true;
                     }
                 }
             }
         });
-        Gate::define('update-role', function ($user) {
+        Gate::define('delete-online-applicant', function ($user) {
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'role' && $role_privillage->is_update == 1) {
+                    if ($role_privillage->privillage[0]->name == 'OnlineApplicant' && $role_privillage->is_delete == 1) {
                         return true;
                     }
                 }
             }
         });
-        Gate::define('delete-role', function ($user) {
+        Gate::define('view-online-applicant', function ($user) {
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'role' && $role_privillage->is_delete == 1) {
+                    if ($role_privillage->privillage[0]->name == 'OnlineApplicant' && $role_privillage->is_read == 1) {
                         return true;
                     }
                 }
             }
         });
-        Gate::define('view-role', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'role' && $role_privillage->is_read == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('create-level', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'level' && $role_privillage->is_creat == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('update-level', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'level' && $role_privillage->is_update == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('delete-level', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'level' && $role_privillage->is_delete == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('create-privillage', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'privillage' && $role_privillage->is_update == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('update-privillage', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'privillage' && $role_privillage->is_delete == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('view-privillage', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'privillage' && $role_privillage->is_read == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('create-candidate', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'candidate' && $role_privillage->is_create == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('update-candidate', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'candidate' && $role_privillage->is_update == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('delete-candidate', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'candidate' && $role_privillage->is_delete == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('view-candidate', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'candidate' && $role_privillage->is_read == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('create-contact', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'contact' && $role_privillage->is_create == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('update-contact', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'contact' && $role_privillage->is_update == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('delete-contact', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'contact' && $role_privillage->is_delete == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('view-contact', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'contact' && $role_privillage->is_read == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('create-contact-response', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'contact_response' && $role_privillage->is_create == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('update-contact-response', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'contact_response' && $role_privillage->is_update == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('delete-contact-response', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'contact_response' && $role_privillage->is_delete == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('view-contact-response', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'contact_response' && $role_privillage->is_read == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('create-candidate-response', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'candidate_response' && $role_privillage->is_create == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('update-candidate-response', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'candidate_response' && $role_privillage->is_update == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('delete-candidate-response', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'candidate_response' && $role_privillage->is_delete == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('view-candidate-response', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'candidate_response' && $role_privillage->is_read == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('create-vacancy', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'vacancy' && $role_privillage->is_create == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('update-vacancy', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'vacancy' && $role_privillage->is_update == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('delete-vacancy', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'vacancy' && $role_privillage->is_delete == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('view-vacancy', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'vacancy' && $role_privillage->is_read == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('create-applicant', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'applicant' && $role_privillage->is_create == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('update-applicant', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'applicant' && $role_privillage->is_update == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('delete-applicant', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'applicant' && $role_privillage->is_delete == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
-        Gate::define('view-applicant', function ($user) {
-            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
-            if (isset($role_privillages)) {
-                foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'applicant' && $role_privillage->is_read == 1) {
-                        return true;
-                    }
-                }
-            }
-        });
+
+        //Define Gate Privillages for the application staff response
         Gate::define('create-application-staff-resp', function ($user) {
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'application_staff_response' && $role_privillage->is_create == 1) {
+                    if ($role_privillage->privillage[0]->name == 'ApplicationStaffResponse' && $role_privillage->is_create == 1) {
                         return true;
                     }
                 }
@@ -420,7 +126,7 @@ class AuthServiceProvider extends ServiceProvider
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'application_staff_response' && $role_privillage->is_update == 1) {
+                    if ($role_privillage->privillage[0]->name == 'ApplicationStaffResponse' && $role_privillage->is_update == 1) {
                         return true;
                     }
                 }
@@ -430,7 +136,7 @@ class AuthServiceProvider extends ServiceProvider
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'application_staff_response' && $role_privillage->is_delete == 1) {
+                    if ($role_privillage->privillage[0]->name == 'ApplicationStaffResponse' && $role_privillage->is_delete == 1) {
                         return true;
                     }
                 }
@@ -440,17 +146,230 @@ class AuthServiceProvider extends ServiceProvider
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'application_staff_response' && $role_privillage->is_read == 1) {
+                    if ($role_privillage->privillage[0]->name == 'ApplicationStaffResponse' && $role_privillage->is_read == 1) {
                         return true;
                     }
                 }
             }
         });
+
+        //Define Gate Privillages for the offline applicants
+        Gate::define('create-offline-applicant', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'OfflineApplicant' && $role_privillage->is_create == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('update-offline-applicant', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'OfflineApplicant' && $role_privillage->is_update == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('delete-offline-applicant', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'OfflineApplicant' && $role_privillage->is_delete == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('view-offline-applicant', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'OfflineApplicant' && $role_privillage->is_read == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+
+        //Define Gate Privillages for the phone numbers
+        Gate::define('create-phone-number', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PhoneNumber' && $role_privillage->is_create == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('update-phone-number', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PhoneNumber' && $role_privillage->is_update == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('delete-phone-number', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PhoneNumber' && $role_privillage->is_delete == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('view-phone-number', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PhoneNumber' && $role_privillage->is_read == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+
+        //Define Gate Privillages for the phone number reponses
+        Gate::define('create-phone-number-resp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PhoneNumberResponse' && $role_privillage->is_create == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('update-phone-number-resp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PhoneNumberResponse' && $role_privillage->is_update == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('delete-phone-number-resp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PhoneNumberResponse' && $role_privillage->is_delete == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('view-phone-number-resp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PhoneNumberResponse' && $role_privillage->is_read == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+
+        //Define Gate Privillages for the contact us
+        Gate::define('create-contact-us', function ($user) {
+            // $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            // if (isset($role_privillages)) {
+            //     foreach ($role_privillages as $role_privillage) {
+            //         if ($role_privillage->privillage[0]->name == 'ContactUs' && $role_privillage->is_create == 1) {
+            //             return true;
+            //         }
+            //     }
+            // }
+            return true;
+        });
+        Gate::define('update-contact-us', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ContactUs' && $role_privillage->is_update == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('delete-contact-us', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ContactUs' && $role_privillage->is_delete == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('view-contact-us', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ContactUs' && $role_privillage->is_read == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+
+        //Define Gate Privillages for the contact us response
+        Gate::define('create-contact-us-resp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ContactUsResponse' && $role_privillage->is_create == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('update-contact-us-resp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ContactUsResponse' && $role_privillage->is_update == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('delete-contact-us-resp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ContactUsResponse' && $role_privillage->is_delete == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('view-contact-us-resp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ContactUsResponse' && $role_privillage->is_read == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+
+        //Define Gate Privillages for the blog post
         Gate::define('create-blog-post', function ($user) {
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'blog_post' && $role_privillage->is_create == 1) {
+                    if ($role_privillage->privillage[0]->name == 'BlogPost' && $role_privillage->is_create == 1) {
                         return true;
                     }
                 }
@@ -460,7 +379,7 @@ class AuthServiceProvider extends ServiceProvider
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'blog_post' && $role_privillage->is_update == 1) {
+                    if ($role_privillage->privillage[0]->name == 'BlogPost' && $role_privillage->is_update == 1) {
                         return true;
                     }
                 }
@@ -470,7 +389,7 @@ class AuthServiceProvider extends ServiceProvider
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'blog_post' && $role_privillage->is_delete == 1) {
+                    if ($role_privillage->privillage[0]->name == 'BlogPost' && $role_privillage->is_delete == 1) {
                         return true;
                     }
                 }
@@ -480,47 +399,177 @@ class AuthServiceProvider extends ServiceProvider
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'blog_post' && $role_privillage->is_read == 1) {
+                    if ($role_privillage->privillage[0]->name == 'BlogPost' && $role_privillage->is_read == 1) {
                         return true;
                     }
                 }
             }
         });
-        Gate::define('create-blog-post-staff-response', function ($user) {
+
+        //Define Gate Privillages for the vacancy
+        Gate::define('create-vacancy', function ($user) {
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'blog_post_staff_response' && $role_privillage->is_create == 1) {
+                    if ($role_privillage->privillage[0]->name == 'Vacancy' && $role_privillage->is_create == 1) {
                         return true;
                     }
                 }
             }
         });
-        Gate::define('update-blog-post-staff-response', function ($user) {
+        Gate::define('update-vacancy', function ($user) {
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'blog_post_staff_response' && $role_privillage->is_update == 1) {
+                    if ($role_privillage->privillage[0]->name == 'Vacancy' && $role_privillage->is_update == 1) {
                         return true;
                     }
                 }
             }
         });
-        Gate::define('delete-blog-post-staff-response', function ($user) {
+        Gate::define('delete-vacancy', function ($user) {
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'blog_post_staff_response' && $role_privillage->is_delete == 1) {
+                    if ($role_privillage->privillage[0]->name == 'Vacancy' && $role_privillage->is_delete == 1) {
                         return true;
                     }
                 }
             }
         });
-        Gate::define('view-blog-post-staff-response', function ($user) {
+        Gate::define('view-vacancy', function ($user) {
+            // $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            // if (isset($role_privillages)) {
+            //     foreach ($role_privillages as $role_privillage) {
+            //         if ($role_privillage->privillage[0]->name == 'Vacancy' && $role_privillage->is_read == 1) {
+            //             return true;
+            //         }
+            //     }
+            // }
+            return true;
+        });
+
+        //Define Gate Privillages for the commission
+        Gate::define('create-commission', function ($user) {
             $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
             if (isset($role_privillages)) {
                 foreach ($role_privillages as $role_privillage) {
-                    if ($role_privillage->privillage[0]->name == 'blog_post_staff_response' && $role_privillage->is_read == 1) {
+                    if ($role_privillage->privillage[0]->name == 'Commission' && $role_privillage->is_create == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('update-commission', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'Commission' && $role_privillage->is_update == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('delete-commission', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'Commission' && $role_privillage->is_delete == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('view-commission', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'Commission' && $role_privillage->is_read == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+
+        
+        //Define Gate Privillages for the previous employeements
+        Gate::define('create-previous-emp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PreviousEmployeement' && $role_privillage->is_create == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('update-previous-emp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PreviousEmployeement' && $role_privillage->is_update == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('delete-previous-emp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PreviousEmployeement' && $role_privillage->is_delete == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('view-previous-emp', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'PreviousEmployeement' && $role_privillage->is_read == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+
+         //Define Gate Privillages for the applicant languages
+         Gate::define('create-applicant-language', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ApplicantLanguage' && $role_privillage->is_create == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('update-applicant-language', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ApplicantLanguage' && $role_privillage->is_update == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('delete-applicant-language', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ApplicantLanguage' && $role_privillage->is_delete == 1) {
+                        return true;
+                    }
+                }
+            }
+        });
+        Gate::define('view-applicant-language', function ($user) {
+            $role_privillages = $user->with(['Role', 'Role.RolePrivillage', 'Role.RolePrivillage.Privillage'])->first()['Role']['RolePrivillage'];
+            if (isset($role_privillages)) {
+                foreach ($role_privillages as $role_privillage) {
+                    if ($role_privillage->privillage[0]->name == 'ApplicantLanguage' && $role_privillage->is_read == 1) {
                         return true;
                     }
                 }

@@ -1,11 +1,8 @@
 $('#save_staff_response').click(function() {
-    if (!jQuery("#staff_reponse_form").valid()) {
+    if (!jQuery("#staff_response_form").valid()) {
         return false;
     }
     let data = {
-        'staff_name': $('#staff_name').val(),
-        'designation': $('#designation').val(),
-        'price': $('#price').val(),
         'response': $('#response').val(),
         'applicant_id': $('#save_staff_response').attr('data-id')
     };
@@ -13,7 +10,7 @@ $('#save_staff_response').click(function() {
     ulploadFileWithData('/api/save_application_staff_response', data, function(result) {
         if (result.status == 1) {
             toastr.success('Application staff response saving is successful!')
-            $('#staff_reponse_form').trigger("reset");
+            $('#staff_response_form').trigger("reset");
             load_application_staff_table($('#save_staff_response').attr('data-id'));
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
@@ -26,9 +23,6 @@ $('#save_staff_response').click(function() {
 
 $('#update_staff_response').click(function() {
     let data = {
-        'staff_name': $('#staff_name').val(),
-        'designation': $('#designation').val(),
-        'price': $('#price').val(),
         'response': $('#response').val(),
         'applicant_id': $('#save_staff_response').attr('data-id')
     };
@@ -37,7 +31,7 @@ $('#update_staff_response').click(function() {
     ulploadFileWithData(url, data, function(result) {
         if (result.status == 1) {
             toastr.success('Application staff response updating is successful!')
-            $('#staff_reponse_form').trigger("reset");
+            $('#staff_response_form').trigger("reset");
             load_application_staff_table($('#save_staff_response').attr('data-id'));
             reset_app_staff_buttons();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
@@ -69,7 +63,7 @@ $(document).on('click', '.delete-app-staff', function() {
 delete_app_staff = (id) => {
     ajaxRequest('delete', '/api/delete_application_staff_response/id/' + id, null, function(result) {
         if (result.status == 1) {
-            $('#staff_reponse_form').trigger("reset");
+            $('#staff_response_form').trigger("reset");
             reset_app_staff_buttons();
             load_application_staff_table($('#save_staff_response').attr('data-id'));
             toastr.success('Deleting application staff was successful!');
@@ -92,9 +86,6 @@ $(document).on('click', '.edit-app-staff', function() {
 edit_applicant_staff_response = (id) => {
     let url = '/api/get_application_staff_response/id/' + id;
     ajaxRequest('get', url, null, function(result) {
-        $('#staff_name').val(result.staff_mem_name);
-        $('#designation').val(result.designation);
-        $('#price').val(result.price);
         $('#response').val(result.response);
         $('#save_staff_response').addClass('d-none');
         $('#update_staff_response').removeClass('d-none');
@@ -110,12 +101,11 @@ load_application_staff_table = (id) => {
             result.forEach(app_staff_resp => {
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
-                html += '<td style="width: 15em">' + app_staff_resp.staff_mem_name + '</td>';
-                html += '<td>' + app_staff_resp.designation + '</td>';
-                html += '<td>' + app_staff_resp.price + '</td>';
+                html += '<td>' + app_staff_resp.staff_mem_name + '</td>';
+                html += '<td>' + app_staff_resp.designation.name + '</td>';
                 html += '<td>' + app_staff_resp.response + '</td>';
-                html += '<td><button type="button" class="btn btn-primary edit-app-staff m-1" data-id="' + app_staff_resp.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger delete-app-staff m-1" data-id="' + app_staff_resp.id + '"> Delete </button></td>';
+                // html += '<td><button type="button" class="btn btn-primary edit-app-staff m-1" data-id="' + app_staff_resp.id + '"> Edit </button>';
+                // html += '<button type="button" class="btn btn-danger delete-app-staff m-1" data-id="' + app_staff_resp.id + '"> Delete </button></td>';
             });
             $('#app_staff_resp_tbl tbody').html(html);
             $('#app_staff_resp_tbl').DataTable({
@@ -124,12 +114,12 @@ load_application_staff_table = (id) => {
                 "retrieve": true
             });
         } else {
-            $('#app_staff_resp_tbl tbody').html('<tr><td colspan="6" class="text-center text-bold"><span>No Data</span></td></tr>');
+            $('#app_staff_resp_tbl tbody').html('<tr><td colspan="4" class="text-center text-bold"><span>No Data</span></td></tr>');
         }
     });
 }
 
-$("#staff_reponse_form").validate({
+$("#staff_response_form").validate({
     errorClass: "invalid",
     // rules: {
     //     firstName: {
