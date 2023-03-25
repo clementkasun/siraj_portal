@@ -85,7 +85,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'info@sirajmanpower.lk'),
-        'name' => env('MAIL_FROM_NAME', 'Sirajmanpower.lk'),
+        'name' => env('MAIL_FROM_NAME', 'info@sirajmanpower.lk'),
     ],
 
     /*

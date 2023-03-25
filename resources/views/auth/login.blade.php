@@ -33,7 +33,8 @@
                 <x-jet-label for="password" value="{{ __('Password') }}" />
                 <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
             </div>
-
+            <label>Show Password</label>
+            <input type="checkbox" id="checkbox">
             <div class="block mt-4">
                 <label for="remember_me" class="flex items-center">
                     <input id="remember_me" type="checkbox" class="form-checkbox" name="remember">
@@ -53,26 +54,14 @@
                 <!--                <a href="/register" class="ml-4" role="button">Register</a>-->
             </div>
         </form>
+        <!-- jQuery -->
+        <script src="{{ asset('plugins/jquery/jquery.min.js')}}"></script>
         <script>
-            //            alert();
-            //            var xhr = new XMLHttpRequest();
-            //// we defined the xhr
-            //
-            //            xhr.onreadystatechange = function () {
-            //                if (this.readyState != 4)
-            //                    return;
-            //
-            //                if (this.status == 200) {
-            //                    var data = JSON.parse(this.responseText);
-            //
-            //                    // we get the returned data
-            //                }
-            //
-            //                // end of state change: it can be after some time (async)
-            //            };
-            //
-            //            xhr.open('GET', '/sanctum/csrf-cookie', true);
-            //            xhr.send();
+            $(document).ready(function() {
+                $('#checkbox').on('change', function() {
+                    $('#password').attr('type', $('#checkbox').prop('checked') == true ? "text" : "password");
+                });
+            });
         </script>
     </x-jet-authentication-card>
 </x-guest-layout>
