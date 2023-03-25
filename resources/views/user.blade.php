@@ -139,7 +139,7 @@
                                     <td>{{$user['last_name']}}</td>
                                     <td>{{$user['Role']['name']}}</td>
                                     <td>{{$user['email']}}</td>
-                                    <td><span class="p-2 {{ $status_color_array[$user['status']] }}">{{$user['status']}}</span></td>
+                                    <td><span class="p-2 {{ (isset($user['status'])) ? $status_color_array[$user['status']] : '' }}">{{ (isset($user['status'])) ? $user['status'] : '' }}</span></td>
                                     <td>
                                         <a href="/users/id/{{$user['id']}}" class="btn btn-sm btn-success">Select</a>
                                     </td>

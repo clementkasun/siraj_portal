@@ -69,11 +69,11 @@
                             </select>
                         </div>
                         <div class="form-group col-3">
-                            <label for="vacancy_image">Vacancy Image *</label>
+                            <label for="vacancy_image">Vacancy Image * <code> ( 850 pixel x 540 pixel ) </code> </label>
                             <div class="input-group">
                                 <div class="custom-file">
                                     <input type="file" id="vacancy_image" name="vacancy_image" class="form-control" accept=".jpeg, .jpg, .png">
-                                    <label class="custom-file-label" for="vacancy_image">Applicant Image</label>
+                                    <label class="custom-file-label" for="vacancy_image">Applicant Image </label>
                                 </div>
                             </div>
                         </div>

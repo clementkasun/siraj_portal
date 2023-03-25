@@ -60,7 +60,7 @@ load_blog_posts = () => {
                 html += '<td>' + index++ + '</td>';
                 html += '<td><img src=' + blog_post.post_image + ' class="img-responsive" alt="blog post image" width="100px" height="100px"/></td>';
                 html += '<td>' + blog_post.post_name + '</td>';
-                html += '<td style="word-wrap: break-word;">' + blog_post.description + '</td>';
+                html += '<td style="word-wrap: break-word; max-width: 300px">' + blog_post.description + '</td>';
                 html += '<td>' + user_name + '</td>';
                 html += '<td>' + formatted_created_at + '</td>';
                 html += '<td>';
