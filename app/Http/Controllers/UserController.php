@@ -182,15 +182,15 @@ class UserController extends Controller
                 $role_privilage_status = $role_privilage->exists();
                 $role_privillage_data = $role_privilage->first();
 
-                if($role_privilage_status){
-                    if($role_privillage_data->privillage_id == $new_privilage['id']){
+                if ($role_privilage_status) {
+                    if ($role_privillage_data->privillage_id == $new_privilage['id']) {
                         $role_privillage_data->is_create = $new_privilage['is_create'];
                         $role_privillage_data->is_update = $new_privilage['is_update'];
                         $role_privillage_data->is_delete = $new_privilage['is_delete'];
                         $role_privillage_data->is_read = $new_privilage['is_read'];
-                        $role_privillage_data->save();                        
+                        $role_privillage_data->save();
                     }
-                }else{
+                } else {
                     RolePrivillage::create([
                         'role_id' => $request->role_id,
                         'privillage_id' => $new_privilage['id'],
@@ -307,17 +307,21 @@ class UserController extends Controller
             return array('status' => 2, 'msg' => 'You are not authorised to update user!');
         }
         $user = User::findOrFail($id);
+
         switch ($request['status']) {
             case 'ACTIVE':
-                $user->activeStatus = User::ACTIVE;
+                $user->status = User::ACTIVE;
+                $user->save();
                 return array('id' => 1, 'msg' => 'success');
                 break;
             case 'INACTIVE':
-                $user->activeStatus = User::INACTIVE;
+                $user->status = User::INACTIVE;
+                $user->save();
                 return array('id' => 1, 'msg' => 'success');
                 break;
             case 'ARCHIVED':
-                $user->activeStatus = User::ARCHIVED;
+                $user->status = User::ARCHIVED;
+                $user->save();
                 return array('id' => 1, 'msg' => 'success');
                 break;
             default:

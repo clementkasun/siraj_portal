@@ -311,9 +311,9 @@ class VacancyRepository implements VacancyInterface
 
     public function show()
     {
-        if (Gate::denies('view-vacancy', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
-        }
+        // if (Gate::denies('view-vacancy', auth()->user())) {
+        //     return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
+        // }
         $log = [
             'route' => '/api/get_vacancies',
             'msg' => 'Successfully accessed the vacancies!',

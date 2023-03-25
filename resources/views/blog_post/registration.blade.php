@@ -47,7 +47,7 @@
                             <thead>
                                 <th>#</th>
                                 <th>Image</th>
-                                <th>Post Name</th>
+                                <th>Name</th>
                                 <th>Description</th>
                                 <th>Added By</th>
                                 <th>Created at</th>
