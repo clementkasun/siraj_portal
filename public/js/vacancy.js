@@ -104,8 +104,8 @@ load_vacancy_table = () => {
                 html += '<td style="width: 15em">' + vacancy.salary + '</td>';
                 html += '<td style="width: 15em">' + vacancy.period + '</td>';
                 html += '<td style="width: 15em">' + vacancy.location + '</td>';
-                html += '<td><button type="button" class="btn btn-primary edit m-1" data-id="' + vacancy.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger delete m-1" data-id="' + vacancy.id + '"> Delete </button></td>';
+                html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + vacancy.id + '"> Edit </button>';
+                html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + vacancy.id + '"> Delete </button></td>';
             });
             $('#vacancy_tbl tbody').html(html);
             $('#vacancy_tbl').DataTable({

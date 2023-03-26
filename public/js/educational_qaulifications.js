@@ -117,8 +117,8 @@ load_edu_qualifications_table = (id) => {
                 html += '<td style="width: 15em">' + edu_qualification.result + '</td>';
                 html += '<td>' + edu_qualification.start_date + '</td>';
                 html += '<td>' + edu_qualification.end_date + '</td>';
-                html += '<td><button type="button" class="btn btn-primary edit m-1" data-id="' + edu_qualification.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger delete m-1" data-id="' + edu_qualification.id + '"> Delete </button></td>';
+                html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + edu_qualification.id + '"> Edit </button>';
+                html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + edu_qualification.id + '"> Delete </button></td>';
             });
             $('#edu_qualifications_tbl tbody').html(html);
             $('#edu_qualifications_tbl').DataTable({

@@ -22,7 +22,7 @@
                         <th>NIC</th>
                         <th>Passport No</th>
                         <th>Status</th>
-                        <th>action</th>
+                        <th>Action</th>
                     </thead>
                     <tbody>
                         @forelse($applicants as $key => $applicant)

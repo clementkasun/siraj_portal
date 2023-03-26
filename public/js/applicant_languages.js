@@ -118,8 +118,8 @@ load_language_table = (id) => {
                 html += '<td>' + poor_status + '</td>';
                 html += '<td>' + fair_status + '</td>';
                 html += '<td>' + fluent_status + '</td>';
-                html += '<td><button type="button" class="btn btn-primary edit-app-lan m-1" data-id="' + language.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger delete-app-lan m-1" data-id="' + language.id + '"> Delete </button></td>';
+                html += '<td><button type="button" class="btn btn-primary btn-sm edit-app-lan m-1" data-id="' + language.id + '"> Edit </button>';
+                html += '<button type="button" class="btn btn-danger btn-sm delete-app-lan m-1" data-id="' + language.id + '"> Delete </button></td>';
             });
             $('#language_tbl tbody').html(html);
             $('#language_tbl').DataTable({

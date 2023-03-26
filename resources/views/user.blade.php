@@ -4,6 +4,13 @@
 @extends('layouts.navbar')
 @extends('layouts.sidebar')
 @extends('layouts.footer')
+@section('pageStyles')
+<style>
+    .error .has-error{
+        color: red;
+    }
+</style>
+@endsection
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
@@ -39,7 +46,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Preffered Name</label>
-                                <input id="prefferedName" name="prefferedName" type="text" class="form-control form-control-sm" placeholder="Enter Preffered Name" value="{{old('prefferedName')}}">
+                                <input id="prefferedName" name="prefferedName" type="text" class="form-control form-control-sm" placeholder="Enter Preffered Name" value="{{old('prefferedName')}}" required>
                             </div>
                             <div class="form-group">
                                 <label>Email*</label>
@@ -96,11 +103,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input id="password" name="password" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password')}}">
+                                <input id="password" name="password" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password')}}" required>
                             </div>
                             <div class="form-group">
                                 <label>Confirm Password</label>
-                                <input id="password_confirmation" name="password_confirmation" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password_confirmation')}}">
+                                <input id="password_confirmation" name="password_confirmation" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password_confirmation')}}" required>
                             </div>
                         </div>
                         <div class="card-footer">

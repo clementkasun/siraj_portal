@@ -16,7 +16,7 @@ class CreatePhoneNumbersTable extends Migration
         Schema::create('phone_numbers', function (Blueprint $table) {
             $table->id();
             $table->string('phone_number', 12);
-            $table->string('name', 255);
+            $table->string('name', 255)->nullable();
             $table->unsignedBigInteger('added_by')->nullable();
             $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->unsignedBigInteger('deleted_by')->nullable();

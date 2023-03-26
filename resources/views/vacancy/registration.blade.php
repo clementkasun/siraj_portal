@@ -98,7 +98,7 @@
                         <th>salary</th>
                         <th>period</th>
                         <th>location</th>
-                        <th>action</th>
+                        <th>Action</th>
                     </thead>
                     <tbody>
                         <tr>

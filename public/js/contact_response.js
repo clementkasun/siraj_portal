@@ -65,8 +65,8 @@ load_contact_response = () => {
                 html += '<td style="width: 15em">' + contact_response.name + '</td>';
                 html += '<td>' + contact_response.designation + '</td>';
                 html += '<td>' + contact_response.response + '</td>';
-                html += '<td><button type="button" class="btn btn-primary edit m-1" data-id="' + contact_response.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger del m-1" data-id="' + contact_response.id + '"> Delete </button></td>';
+                html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + contact_response.id + '"> Edit </button>';
+                html += '<button type="button" class="btn btn-danger del btn-sm m-1" data-id="' + contact_response.id + '"> Delete </button></td>';
             });
             $('#contact_resp_tbl tbody').html(html);
             $('#contact_resp_tbl').DataTable({

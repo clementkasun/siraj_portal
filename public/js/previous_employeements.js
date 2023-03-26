@@ -116,8 +116,8 @@ load_previous_employeement_table = (id) => {
                 html += '<td>' + previous_emp.period + '</td>';
                 html += '<td>' + first_name +' '+ last_name + '</td>';
                 html += '<td>' + formatted_created_at + '</td>';
-                html += '<td><button type="button" class="btn btn-primary edit-previous-emp m-1" data-id="' + previous_emp.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger delete-prev-emp m-1" data-id="' + previous_emp.id + '"> Delete </button></td>';
+                html += '<td><button type="button" class="btn btn-primary btn-sm edit-previous-emp m-1" data-id="' + previous_emp.id + '"> Edit </button>';
+                html += '<button type="button" class="btn btn-danger btn-sm delete-prev-emp m-1" data-id="' + previous_emp.id + '"> Delete </button></td>';
             });
             $('#previous_emp_tbl tbody').html(html);
             $('#previous_emp_tbl').DataTable({

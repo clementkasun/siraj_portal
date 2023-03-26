@@ -103,24 +103,23 @@ load_phone_number_tbl = () => {
         if (result != '') {
             result.forEach(phone_number => {
 
-                let added_fname = (phone_number.added_by != null) ? (phone_number.added_by.first_name != null) ? phone_number.added_by.first_name : '' : '';
-                let added_lname = (phone_number.added_by != null) ? (phone_number.added_by.last_name != null) ? phone_number.added_by.last_name : '' : '';
-                let assigned_fname = (phone_number.assigned_to != null) ? (phone_number.assigned_to.first_name != null) ? phone_number.assigned_to.first_name : '' : '';
-                let assigned_lname = (phone_number.assigned_to != null) ? (phone_number.assigned_to.last_name != null) ? phone_number.assigned_to.last_name : '' : '';
+                let added_name = (phone_number.added_by != null) ? (phone_number.added_by.preffered_name != null) ? phone_number.added_by.preffered_name : '' : '';
+                let assigned_name = (phone_number.assigned_to != null) ? (phone_number.assigned_to.preffered_name != null) ? phone_number.assigned_to.preffered_name : '' : '';
                 let phone_num_response = (phone_number.phone_number_response != null) ? (phone_number.phone_number_response[0] != null) ? phone_number.phone_number_response[0].response : '' : '';  
-                
+                let phone_number_name =  (phone_number.name != null) ? phone_number.name : '';
+
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
                 html += '<td style="width: 8em">' + phone_number.phone_number + '</td>';
-                html += '<td>' + phone_number.name + '</td>';
-                html += '<td>' + added_fname + ' ' + added_lname + '</td>';
-                html += '<td>' + assigned_fname + ' ' + assigned_lname + '</td>';
+                html += '<td>' + phone_number_name + '</td>';
+                html += '<td>' + added_name + '</td>';
+                html += '<td>' + assigned_name + '</td>';
                 html += '<td>' + phone_num_response + '</td>';
                 html += '<td>';
-                html += '<button type="button" class="btn btn-primary edit m-1" data-id="' + phone_number.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger delete m-1" data-id="' + phone_number.id + '"> Delete </button>';
-                html += '<a href="/phone_number_profile/id/' + phone_number.id + '" class="btn btn-success m-1">Profile</a>';
-                html += '<a href="/phone_number_response/id/' + phone_number.id + '" class="btn btn-primary m-1">response</a>';
+                html += '<button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + phone_number.id + '"> Edit </button>';
+                html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + phone_number.id + '"> Delete </button>';
+                html += '<a href="/phone_number_profile/id/' + phone_number.id + '" class="btn btn-success btn-sm m-1">Profile</a>';
+                html += '<a href="/phone_number_response/id/' + phone_number.id + '" class="btn btn-primary btn-sm m-1">response</a>';
                 html += '</td>';
             });
             $('#phone_number_tbl tbody').html(html);

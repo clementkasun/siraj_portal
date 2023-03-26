@@ -404,7 +404,7 @@
                                                         <th>Period</th>
                                                         <th>Added by</th>
                                                         <th>Created at</th>
-                                                        <th>action</th>
+                                                        <th>Action</th>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
@@ -447,7 +447,7 @@
                                                         <th>Poor</th>
                                                         <th>Fair</th>
                                                         <th>Fluent</th>
-                                                        <th>action</th>
+                                                        <th>Action</th>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
@@ -516,7 +516,7 @@
                                                         <th>Designation</th>
                                                         <th>Installment</th>
                                                         <th>Response</th>
-                                                        <th>action</th>
+                                                        <th>Action</th>
                                                     </thead>
                                                     <tbody>
                                                         <tr>

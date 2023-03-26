@@ -42,7 +42,7 @@
                                 <th>Name</th>
                                 <th>Designation</th>
                                 <th>Response</th>
-                                <th>action</th>
+                                <th>Action</th>
                             </thead>
                             <tbody>
                                 <tr>

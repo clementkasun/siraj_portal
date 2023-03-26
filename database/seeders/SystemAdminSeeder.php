@@ -17,7 +17,7 @@ class SystemAdminSeeder extends Seeder
     public function run()
     {
         $password = Hash::make('cyberadmin@#1234');
-        user::create(['first_name' => 'Admin',  'email' => 'cybercore@gmail.com', 'password' => $password, 'role_id' => 1, 'status' => 'Active']);
+        user::create(['first_name' => 'Admin', 'last_name' => 'Admin', 'preffered_name' => 'Admin', 'email' => 'cybercore@gmail.com', 'password' => $password, 'role_id' => 1, 'status' => 'Active']);
 
         $role_privillage = [
 
