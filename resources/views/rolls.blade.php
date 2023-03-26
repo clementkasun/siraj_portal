@@ -143,20 +143,6 @@
 <script src="{{ asset('js/userjs/submit.js') }}"></script>
 <script>
     $(function() {
-        @if(session('success'))
-        Toast.fire({
-            type: 'success',
-            title: 'Agency Management System</br>Roll Saved'
-        });
-        @endif
-
-        @if(session('error'))
-        Toast.fire({
-            type: 'error',
-            title: 'Agency Management System</br>Error'
-        });
-        @endif
-
         $('#btnSaveRoll').click(function() {
             save_role();
         });

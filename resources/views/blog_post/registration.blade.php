@@ -26,12 +26,12 @@
                                         <textarea id="description" name="description" class="form-control" placeholder="Please enter the post description" maxlength="3000" style="width: 100%;height: 150px;padding: 12px 20px;box-sizing: border-box;border-radius: 4px;" required></textarea>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="post_image"> Post Image * <code>(805  pixel x 520 pixel)</code></label>
+                                        <label for="post_image"> Post Image * <code>(805 pixel x 520 pixel)</code></label>
                                         <div class="input-group">
-                                            <!-- <div class="custom-file"> -->
+                                            <div class="custom-file">
                                                 <input type="file" id="post_image" name="post_image" class="form-control image custom-file" accept=".jpeg, .jpg, .png" required>
                                                 <label class="custom-file-label" for="post_image">Post Image</label>
-                                            <!-- </div> -->
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row mt-5">

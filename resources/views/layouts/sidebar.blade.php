@@ -50,7 +50,7 @@ use App\Models\Candidate;
                     </a>
                 </li>
                 <li class="nav-header">APPLICANT MANAGEMENT</li>
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
@@ -60,7 +60,7 @@ use App\Models\Candidate;
                     </a>
                     <ul class="nav nav-treeview">
                         @can('create-offline-applicant')
-                        <li class="nav-item menu-open">
+                        <li class="nav-item">
                             <a href="{{ url('/applicant_registration') }}" class="nav-link  {{ Request::is('applicant_registration') ? 'active' : '' }}">
                                 <i class="fas fa-user-plus nav-icon"></i>
                                 <p>New Registration</p>
@@ -68,7 +68,7 @@ use App\Models\Candidate;
                         </li>
                         @endcan
                         @can('view-offline-applicant')
-                        <li class="nav-item menu-open">
+                        <li class="nav-item">
                             <a href="{{ url('/registered_applicants') }}" class="nav-link {{ Request::is('registered_applicants') ? 'active' : '' }}">
                                 <i class="fas fa-file-alt  nav-icon"></i>
                                 <p>All Registrations</p>
@@ -78,7 +78,7 @@ use App\Models\Candidate;
                     </ul>
                 </li>
                 <li class="nav-header">CALL CENTER</li>
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-mobile-alt"></i>
                         <p>
@@ -88,7 +88,7 @@ use App\Models\Candidate;
                     </a>
                     @can('create-phone-number')
                     <ul class="nav nav-treeview">
-                        <li class="nav-item menu-open">
+                        <li class="nav-item">
                             <a href="{{ url('/phone_number_registration') }}" class="nav-link {{ Request::is('phone_number_registration') ? 'active' : '' }}">
                                 <i class="far fa-plus-square nav-icon"></i>
                                 <p>Insert Mobile Numbers</p>
@@ -98,7 +98,7 @@ use App\Models\Candidate;
                     @endcan
                 </li>
                 <li class="nav-header">USER MANAGEMENT</li>
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-user-friends"></i>
                         <p>
@@ -108,7 +108,7 @@ use App\Models\Candidate;
                     </a>
                     <ul class="nav nav-treeview">
                         @can('create-user')
-                        <li class="nav-item menu-open">
+                        <li class="nav-item">
                             <a href="/users_list" class="nav-link {{ Request::is('users_list') ? 'active' : '' }}">
                                 <i class="fas fa-users-cog nav-icon"></i>
                                 <p>All Users</p>
@@ -119,7 +119,7 @@ use App\Models\Candidate;
                 </li>
                 @can('create-blog-post')
                 <li class="nav-header">FRONT WEBSITE</li>
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="{{ url('/blog_post_registration') }}" class="nav-link {{ Request::is('blog_post_registration') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-blog"></i>
                         <p>Blog Post</p>
@@ -127,7 +127,7 @@ use App\Models\Candidate;
                 </li>
                 @endcan
                 @can('create-vacancy')
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="{{ url('/vacancy_registration') }}" class="nav-link {{ Request::is('vacancy_registration') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-people-carry"></i>
                         <p>Vacancy</p>
@@ -135,7 +135,7 @@ use App\Models\Candidate;
                 </li>
                 @endcan
                 @can('view-online-applicant')
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="{{ url('/registered_online_applicants') }}" class="nav-link {{ Request::is('registered_online_applicants') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-portrait"></i>
                         <p>Online Applicants</p> <span class="badge badge-info right">{{OnlineApplicant::all()->count()}}</span>
@@ -143,7 +143,7 @@ use App\Models\Candidate;
                 </li>
                 @endcan
                 @can('view-contact-us')
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="{{ url('/registered_contacts') }}" class="nav-link {{ Request::is('registered_contacts') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-envelope"></i>
                         <p>Contacts</p> <span class="badge badge-info right"> {{ Contact::all()->count() }}</span>
@@ -152,14 +152,14 @@ use App\Models\Candidate;
                 @endcan
                 <li class="nav-header">SETTINGS</li>
                 @can('view-user')
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="{{ url('/user_profile') }}" class="nav-link {{ Request::is('user_profile') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-circle"></i>
                         <p>User Profile</p>
                     </a>
                 </li>
                 @endcan
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="/logout" class="nav-link {{ Request::is('logout') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>Logout</p>

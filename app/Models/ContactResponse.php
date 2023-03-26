@@ -23,7 +23,11 @@ class ContactResponse extends Model
         'contact_id',
     ];
 
-    public function Response(){
-        return $this->belongsTo(Response::class);
+    public function Contact(){
+        return $this->belongsTo(Contact::class);
+    }
+
+    public function Designation(){
+        return $this->belongsTo(Role::class, 'designation');
     }
 }

@@ -6,7 +6,7 @@
 @extends('layouts.footer')
 @section('pageStyles')
 <style>
-    .error .has-error{
+    .error .has-error {
         color: red;
     }
 </style>
@@ -24,7 +24,7 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card card-success">
                     <div class="card-header">
                         <label>User Register</label>
@@ -73,11 +73,11 @@
                                 <input id="birthDate" name="birthDate" type="date" maxlength="12" class="form-control form-control-sm" placeholder="Enter Birth Date" value="{{old('birthDate')}}">
                             </div>
                             <div class="form-group">
-                                <label>Nic Image (Front side)</label>
+                                <label>Nic Image Front side <code>(500*500)</code></label>
                                 <input id="nicImageFront" type="file" name="nicImageFront" class="form-control form-control-sm" accept=".png, .jpeg, .jpg">
                             </div>
                             <div class="form-group">
-                                <label>Nic Image (Back side)</label>
+                                <label>Nic Image Back side <code>(500*500)</code></label>
                                 <input id="nicImageBack" type="file" name="nicImageBack" class="form-control form-control-sm" accept=".png, .jpeg, .jpg">
                             </div>
                             <div class="form-group">
@@ -116,7 +116,7 @@
                     </form>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <?php $status_color_array = ['Active' => 'badge badge-success', 'Inactive' => 'badge badge-danger', 'Archived' => 'badge badge-secondary'] ?>
                 <div class="card card-success">
                     <div class="card-header">
@@ -141,14 +141,15 @@
                                 @if(isset($user->role_id ))
                                 <tr>
                                     <td>{{$indexKey+1}}.</td>
-                                    <td><img src="{{($user->user_image != null) ? $user->user_image : url('/dist/img/avatar5.png')}}" width="100px" height="100px" alt="User Image"/></td>
+                                    <td><img src="{{($user->user_image != null) ? $user->user_image : url('/dist/img/avatar5.png')}}" width="100px" height="100px" alt="User Image" /></td>
                                     <td>{{ ($user->first_name != null) ? $user->first_name : '-' }}</td>
                                     <td>{{ ($user->last_name != null) ? $user->last_name : '-'}}</td>
                                     <td>{{ $user->Role->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td><span class="p-2 {{ ($user->status != '') ? $status_color_array[$user->status] : '' }}">{{ ($user->status != '') ? $user->status : '' }}</span></td>
                                     <td>
-                                        <a href="/users/id/{{$user->id}}" class="btn btn-sm btn-success">Select</a>
+                                        <a href="/users/id/{{$user->id}}" class="btn btn-sm btn-primary">Select</a>
+                                        <button class="btn btn-sm btn-danger del" data-id="{{$user->id}}" {{ ($user->id == auth()->user()->id) ? 'disabled' : '' }}><i class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                                 @endif
@@ -213,24 +214,29 @@
 <script src="{{ asset('js/userjs/get.js') }}"></script>
 <script src="{{ asset('js/userjs/submit.js') }}"></script>
 <script src="{{ asset('js/userjs/user_nic_validation.js') }}"></script>
+<script src="{{ asset('plugins/checkImageSize/jquery.checkImageSize.min.js') }}"></script>
 <!-- Page script -->
 <script>
     $(function() {
         load_deleted_user_table();
 
-        @if(session('success'))
-        Toast.fire({
-            type: 'success',
-            title: 'Agency Management System</br>User Saved'
+        $("#nicImageFront").checkImageSize({
+            minWidth: 500,
+            minHeight: 500,
+            maxWidth: 500,
+            maxHeight: 500,
+            showError: true,
+            ignoreError: false
         });
-        @endif
 
-        @if(session('error'))
-        Toast.fire({
-            type: 'error',
-            title: 'Agency Management System</br>Error'
+        $("#nicImageBack").checkImageSize({
+            minWidth: 500,
+            minHeight: 500,
+            maxWidth: 500,
+            maxHeight: 500,
+            showError: true,
+            ignoreError: false
         });
-        @endif
 
         // loading roll combo at page start
         loadRoles($('.levelCombo').val(), 'rollCombo');
@@ -251,13 +257,29 @@
             }
         });
 
+        $(document).on('click', '.del', function() {
+            if (confirm('Are you sure you want to delete this user ?')) {
+                ulploadFileWithData('/api/delete_user/id/' + $(this).attr('data-id'), null, function(result) {
+                    if (result.status == 1) {
+                        toastr.success('User deleting is successful!');
+                        location.reload();
+                        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                            callBack();
+                        }
+                    } else {
+                        toastr.error('User deleting was failed!');
+                    }
+                }, 'delete');
+            }
+        });
+
         $('#register_user').click(function() {
             if (!jQuery("#user_registration_form").valid() || !password_confirmation()) {
                 return false;
             }
             let data = {
                 'firstName': $('#firstName').val(),
-                'lastName': $('#firstName').val(),
+                'lastName': $('#lastName').val(),
                 'fullName': $('#fullName').val(),
                 'prefferedName': $('#prefferedName').val(),
                 'email': $('#email').val(),

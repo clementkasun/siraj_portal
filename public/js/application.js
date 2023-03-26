@@ -54,6 +54,7 @@ $('#save_applicant').click(function() {
         if (result.status == 1) {
             toastr.success('Applicant saving is successful!')
             $('#applicant_form').trigger("reset");
+            window.location.href = '/registered_applicants';
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -118,7 +119,7 @@ $('#update_applicant').click(function() {
     ulploadFileWithData('/api/update_applicant/id/' + APPLICANT_ID, data, function(result) {
         if (result.status == 1) {
             toastr.success('Applicant updating is successful!');
-            window.location.href = 'http://127.0.0.1:8000/registered_applicants';
+            window.location.href = '/registered_applicants';
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }

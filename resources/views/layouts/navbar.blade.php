@@ -19,22 +19,17 @@
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
             <i class="fas fa-user-cog"></i>
-
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <span class="dropdown-item dropdown-header">Settings</span>
             <div class="dropdown-divider"></div>
             <a href="{{ url('/user_profile') }}" class=" dropdown-item">
                 <i class="fas fa-address-card mr-2"></i>My Profile
-
             </a>
             <div class="dropdown-divider"></div>
             <a href="{{ url('/logout') }}" class="dropdown-item">
                 <i class="fas fa-power-off mr-2"></i> Sign Out
-
             </a>
-
-
         </div>
     </li>
 </ul>

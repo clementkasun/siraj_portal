@@ -32,14 +32,14 @@ class ContactResponseRepository implements ContactResponseInterface
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'designation' => 'required|string|max:255',
+                // 'designation' => 'required|string|max:255',
                 'response' => 'required|string|max:255',
                 'contact_id' => 'required|string',
             ]);
 
             ContactResponse::create([
                 'name' => $request->name,
-                'designation' => $request->designation,
+                'designation' => auth()->user()->role_id,
                 'response' => $request->response,
                 'contact_id' => $request->contact_id,
             ]);
@@ -71,14 +71,14 @@ class ContactResponseRepository implements ContactResponseInterface
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'designation' => 'required|string|max:255',
+                // 'designation' => 'required|string|max:255',
                 'response' => 'required|string|max:255',
                 'contact_id' => 'required|string',
             ]);
 
             $contact = ContactResponse::find($id);
             $contact->name = $request->name;
-            $contact->designation = $request->designation;
+            $contact->designation = auth()->user()->role_id;
             $contact->response = $request->response;
             $contact->contact_id = $request->contact_id;
             $contact->save();
@@ -108,7 +108,7 @@ class ContactResponseRepository implements ContactResponseInterface
             'msg' => 'Successfully accessed the contact responses!',
         ];
         Log::channel('daily')->info(json_encode($log));
-        return ContactResponse::all();
+        return ContactResponse::with('Designation')->get();
     }
 
     public function getContactResponse($id)

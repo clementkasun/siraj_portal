@@ -4,7 +4,7 @@ $('#save_contact_response').click(function () {
     }
     let data = {
         'name': $('#name').val(),
-        'designation': $('#designation').val(),
+        // 'designation': $('#designation').val(),
         'response': $('#response').val(),
         'contact_id': CONTACT_ID
     };
@@ -34,7 +34,7 @@ update_contact_response = (contact_resp_id) => {
     }
     let data = {
         'name': $('#name').val(),
-        'designation': $('#designation').val(),
+        // 'designation': $('#designation').val(),
         'response': $('#response').val(),
         'contact_id': CONTACT_ID
     };
@@ -63,7 +63,7 @@ load_contact_response = () => {
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
                 html += '<td style="width: 15em">' + contact_response.name + '</td>';
-                html += '<td>' + contact_response.designation + '</td>';
+                html += '<td>' + contact_response.designation.name + '</td>';
                 html += '<td>' + contact_response.response + '</td>';
                 html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + contact_response.id + '"> Edit </button>';
                 html += '<button type="button" class="btn btn-danger del btn-sm m-1" data-id="' + contact_response.id + '"> Delete </button></td>';
