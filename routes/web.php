@@ -36,7 +36,6 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/logout', [UserController::class, 'logout']); //logout user
   Route::middleware('can:update-user')->put('/users/my_password', [UserController::class, 'changeMyPass']);
   Route::middleware('can:update-user')->put('/users/password/{id}', [UserController::class, 'storePassword']);
-  Route::middleware('can:delete-user')->delete('/users/id/{id}', [UserController::class, 'delete']);
   Route::get('/user_profile', [UserController::class, 'myProfile']);
   Route::middleware('can:update-user')->get('/user/activity/{id}', [UserController::class, 'activeStatus']);
   Route::middleware('can:view-user')->get('/user/deleted', [UserController::class, 'getDeletedUser']);

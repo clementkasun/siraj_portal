@@ -37,7 +37,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //role api's
 Route::get('/rolls/levelId/{id}', [LevelController::class, 'rolesByLevel'])->name('rolesByLevel');
 Route::get('/rolls/id/{id}', [RollController::class, 'getRoleById'])->name('getRoleById');
+Route::get('/rolls', [RollController::class, 'getRoles']);
 Route::post('/save_roles', [RollController::class, 'create'])->name('create_system_Rolls');
+Route::delete('/delete_user/id/{id}', [UserController::class, 'delete']);
 
 //user api's
 Route::middleware(['auth:sanctum'])->post('/save_user', [UserController::class, 'create']);

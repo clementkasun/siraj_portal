@@ -64,8 +64,8 @@ load_blog_posts = () => {
                 html += '<td>' + user_name + '</td>';
                 html += '<td>' + formatted_created_at + '</td>';
                 html += '<td>';
-                html += '<button type="button" class="btn btn-primary edit m-1" data-id="' + blog_post.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger del m-1" data-id="' + blog_post.id + '"> Delete </button>';
+                html += '<button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + blog_post.id + '"> Edit </button>';
+                html += '<button type="button" class="btn btn-danger btn-sm del m-1" data-id="' + blog_post.id + '"> Delete </button>';
                 html += '</td>';
             });
             $('#blog_post_tbl tbody').html(html);
@@ -133,35 +133,8 @@ edit_blog_post = (id) => {
 $("#blog_post_form").validate({
     errorClass: "invalid",
     // rules: {
-    //     full_name: {
-    //         valid_name: true,
-    //     },
-    //     address: {
-    //         valid_name: true,
-    //     },
-    //     phone_no_one: {
-    //         valid_lk_phone: true,
-    //     },
-    //     phone_no_two: {
-    //         valid_lk_phone: true,
-    //     },
-    //     nic: {
-    //         valid_nic: true,
-    //     },
-    //     passport_issue_date: {
-    //         valid_date: true,
-    //     },
-    //     passport_exp_date: {
-    //         valid_date: true,
-    //     },
-    //     birth_date: {
-    //         valid_date: true,
-    //     },
-    //     nationality: {
-    //         valid_name: true,
-    //     },
-    //     religion: {
-    //         valid_name: true,
+    //     post_image: {
+    //         require: true,
     //     },
     // },
     highlight: function(element) {

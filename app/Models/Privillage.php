@@ -14,6 +14,6 @@ class Privillage extends Model
     ];
 
     public function PrivillageRole(){
-        return $this->belongsToMany(PrivillageRole::class, 'privillage_id');
+        return $this->hasMany(PrivillageRole::class);
     }
 }

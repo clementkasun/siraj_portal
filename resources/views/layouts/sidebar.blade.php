@@ -20,11 +20,7 @@ use App\Models\Candidate;
                 <img src="{{ (isset(auth()->user()->user_image)) ? auth()->user()->user_image : url('/dist/img/avatar5.png') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <?php
-                $first_name = (isset(auth()->user()->first_name)) ? auth()->user()->first_name : '';
-                $last_name = (isset(auth()->user()->last_name)) ? auth()->user()->last_name : '';
-                ?>
-                <a href="#" class="d-block">{{ $first_name .' '. $last_name }}</a>
+                <a href="#" class="d-block">{{ auth()->user()->preffered_name }}</a>
             </div>
         </div>
 
@@ -45,7 +41,7 @@ use App\Models\Candidate;
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                <li class="nav-item">
+                <li class="nav-item menu-open">
                     <a href="{{ url('./dashboard') }}" class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
@@ -140,7 +136,7 @@ use App\Models\Candidate;
                 @endcan
                 @can('view-online-applicant')
                 <li class="nav-item">
-                    <a href="{{ url('/registered_online_applicants') }}" class="nav-link {{ url('/registered_online_applicants') }}">
+                    <a href="{{ url('/registered_online_applicants') }}" class="nav-link {{ Request::is('registered_online_applicants') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-portrait"></i>
                         <p>Online Applicants</p> <span class="badge badge-info right">{{OnlineApplicant::all()->count()}}</span>
                     </a>
@@ -157,14 +153,14 @@ use App\Models\Candidate;
                 <li class="nav-header">SETTINGS</li>
                 @can('view-user')
                 <li class="nav-item">
-                    <a href="{{ url('/user_profile') }}" class="nav-link">
+                    <a href="{{ url('/user_profile') }}" class="nav-link {{ Request::is('user_profile') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-circle"></i>
                         <p>User Profile</p>
                     </a>
                 </li>
                 @endcan
                 <li class="nav-item">
-                    <a href="/logout" class="nav-link">
+                    <a href="/logout" class="nav-link {{ Request::is('logout') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>Logout</p>
                     </a>

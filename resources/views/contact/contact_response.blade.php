@@ -21,10 +21,10 @@
                                 <label for="name"> Name *</label>
                                 <div><input type="text" class="form-control" name="name" id="name" placeholder="Please enter the name" required></div>
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="designation">Designation *</label>
                                 <div><input type="text" class="form-control" name="designation" id="designation" placeholder="Please enter the designation" required></div>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="response">Response *</label>
                                 <div><input type="text" class="form-control" name="response" id="response" placeholder="Please enter the phone response" required></div>
@@ -42,7 +42,7 @@
                                 <th>Name</th>
                                 <th>Designation</th>
                                 <th>Response</th>
-                                <th>action</th>
+                                <th>Action</th>
                             </thead>
                             <tbody>
                                 <tr>

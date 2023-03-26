@@ -108,8 +108,8 @@ load_comission_tbl = (id) => {
                 html += '<td>' + comission.designation.name + '</td>';
                 html += '<td>' + comission.price + '</td>';
                 html += '<td>' + comission.response + '</td>';
-                html += '<td><button type="button" class="btn btn-primary edit-comission m-1" data-id="' + comission.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger delete-comission m-1" data-id="' + comission.id + '"> Delete </button></td>';
+                html += '<td><button type="button" class="btn btn-primary btn-sm edit-comission m-1" data-id="' + comission.id + '"> Edit </button>';
+                html += '<button type="button" class="btn btn-danger btn-sm delete-comission m-1" data-id="' + comission.id + '"> Delete </button></td>';
             });
             $('#commission_tbl tbody').html(html);
             $('#commission_tbl').DataTable({

@@ -76,7 +76,7 @@ class UserController extends Controller
                 ]);
 
                 if ($request->hasFile('nicFrontImg')) {
-                    $path = public_path('/storage/user/nic/nic_front_img' . $user->id . '/');
+                    $path = public_path('/storage/user/nic/' . $user->id . '/');
                     \File::exists($path) or \File::makeDirectory($path);
                     $random_name = uniqid($user->id);
 
@@ -86,12 +86,12 @@ class UserController extends Controller
                     // I am saying to create the dir if it's not there.
                     $nic_front_img_photo = \Image::make($nic_front_img_photo->getRealPath())->resize(500, 500);
                     $nic_front_img_photo->save($path . $random_name . '.' . $nic_front_img_photo_ext);
-                    $nic_front_img_photo_path = '/storage/user/nic/nic_front_img' . $user->id . '/' . $random_name . '.' . $nic_front_img_photo_ext;
+                    $nic_front_img_photo_path = '/storage/user/nic/' . $user->id . '/' . $random_name . '.' . $nic_front_img_photo_ext;
                     $user->nic_front_image = $nic_front_img_photo_path;
                 }
 
                 if ($request->hasFile('nicBackImg')) {
-                    $path = public_path('/storage/user/nic/nic_back_img' . $user->id . '/');
+                    $path = public_path('/storage/user/nic/' . $user->id . '/');
                     \File::exists($path) or \File::makeDirectory($path);
                     $random_name = uniqid($user->id);
 
@@ -101,12 +101,12 @@ class UserController extends Controller
                     // I am saying to create the dir if it's not there.
                     $nic_back_img_photo = \Image::make($nic_back_img_photo->getRealPath())->resize(500, 500);
                     $nic_back_img_photo->save($path . $random_name . '.' . $nic_back_img_photo_ext);
-                    $nic_back_img_photo_path = '/storage/user/nic/nic_back_img' . $user->id . '/' . $random_name . '.' . $nic_back_img_photo_ext;
+                    $nic_back_img_photo_path = '/storage/user/nic/' . $user->id . '/' . $random_name . '.' . $nic_back_img_photo_ext;
                     $user->nic_back_image = $nic_back_img_photo_path;
                 }
 
                 if ($request->hasFile('userImg')) {
-                    $path = public_path('/storage/user/user_image' . $user->id . '/');
+                    $path = public_path('/storage/user/user_image/' . $user->id . '/');
                     \File::exists($path) or \File::makeDirectory($path);
                     $random_name = uniqid($user->id);
 
@@ -116,7 +116,7 @@ class UserController extends Controller
                     // I am saying to create the dir if it's not there.
                     $user_image_photo = \Image::make($user_image_photo->getRealPath())->resize(500, 500);
                     $user_image_photo->save($path . $random_name . '.' . $nic_front_img_photo_ext);
-                    $user_image_photo_path = '/storage/user/user_image' . $user->id . '/' . $random_name . '.' . $user_image_photo_ext;
+                    $user_image_photo_path = '/storage/user/user_image/' . $user->id . '/' . $random_name . '.' . $user_image_photo_ext;
                     $user->user_image = $user_image_photo_path;
                 }
 
@@ -224,11 +224,11 @@ class UserController extends Controller
                 'mobile_no' => $request->mobileNo,
                 'land_no' => $request->landNo,
                 'birth_date' => $request->birthDate,
-                'role' => $request->role
+                'role_id' => $request->role,
             ]);
 
             if ($request->hasFile('nicFrontImg')) {
-                $path = public_path('/storage/user/nic/nic_front_img' . $user->id . '/');
+                $path = public_path('/storage/user/nic/' . $user->id . '/');
                 \File::exists($path) or \File::makeDirectory($path);
                 $random_name = uniqid($user->id);
 
@@ -238,12 +238,12 @@ class UserController extends Controller
                 // I am saying to create the dir if it's not there.
                 $nic_front_img_photo = \Image::make($nic_front_img_photo->getRealPath())->resize(500, 500);
                 $nic_front_img_photo->save($path . $random_name . '.' . $nic_front_img_photo_ext);
-                $nic_front_img_photo_path = '/storage/user/nic/nic_front_img' . $user->id . '/' . $random_name . '.' . $nic_front_img_photo_ext;
+                $nic_front_img_photo_path = '/storage/user/nic/' . $user->id . '/' . $random_name . '.' . $nic_front_img_photo_ext;
                 $user->nic_front_image = $nic_front_img_photo_path;
             }
 
             if ($request->hasFile('nicBackImg')) {
-                $path = public_path('/storage/user/nic/nic_back_img' . $user->id . '/');
+                $path = public_path('/storage/user/nic/' . $user->id . '/');
                 \File::exists($path) or \File::makeDirectory($path);
                 $random_name = uniqid($user->id);
 
@@ -253,12 +253,12 @@ class UserController extends Controller
                 // I am saying to create the dir if it's not there.
                 $nic_back_img_photo = \Image::make($nic_back_img_photo->getRealPath())->resize(500, 500);
                 $nic_back_img_photo->save($path . $random_name . '.' . $nic_back_img_photo_ext);
-                $nic_back_img_photo_path = '/storage/user/nic/nic_back_img' . $user->id . '/' . $random_name . '.' . $nic_back_img_photo_ext;
+                $nic_back_img_photo_path = '/storage/user/nic/' . $user->id . '/' . $random_name . '.' . $nic_back_img_photo_ext;
                 $user->nic_back_image = $nic_back_img_photo_path;
             }
 
             if ($request->hasFile('userImg')) {
-                $path = public_path('/storage/user/user_image' . $user->id . '/');
+                $path = public_path('/storage/user/user_image/' . $user->id . '/');
                 \File::exists($path) or \File::makeDirectory($path);
                 $random_name = uniqid($user->id);
 
@@ -268,7 +268,7 @@ class UserController extends Controller
                 // I am saying to create the dir if it's not there.
                 $user_image_photo = \Image::make($user_image_photo->getRealPath())->resize(500, 500);
                 $user_image_photo->save($path . $random_name . '.' . $user_image_photo_ext);
-                $user_image_photo_path = '/storage/user/user_image' . $user->id . '/' . $random_name . '.' . $user_image_photo_ext;
+                $user_image_photo_path = '/storage/user/user_image/' . $user->id . '/' . $random_name . '.' . $user_image_photo_ext;
                 $user->user_image = $user_image_photo_path;
             }
             $user->save();
@@ -285,7 +285,7 @@ class UserController extends Controller
         }
         $user = User::findOrFail($id);
         request()->validate([
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:4',
         ]);
         $user->password = Hash::make(request('password'));
         $msg = $user->save();
@@ -339,13 +339,15 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        if (Gate::denies('delete-user', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete user!');
+        // if (Gate::denies('delete-user', auth()->user())) {
+        //     return array('status' => 2, 'msg' => 'You are not authorised to delete user!');
+        // }
+        $delete_user = User::findOrFail($id)->delete();
+        if($delete_user){
+            return ['status' => 1, 'msg' => 'User has deleted successsfully!'];
+        }else{
+            return ['status' => 0, 'msg' => 'User deletion was unsuccesssful!'];
         }
-        User::findOrFail($id)->delete();
-        $users = User::with('role')->get();
-        $level = Level::get();
-        return view('user', ['levels' => $level, 'users' => $users]);
     }
 
     public function logout()

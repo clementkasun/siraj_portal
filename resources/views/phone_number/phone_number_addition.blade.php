@@ -23,7 +23,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="name">Name *</label>
-                                <div><input type="text" class="form-control" name="name" id="name" placeholder="Please enter the name" required></div>
+                                <div><input type="text" class="form-control" name="name" id="name" placeholder="Please enter the name"></div>
                             </div>
                             <div class="form-group">
                                 <button id="save_phone_number" type="button" class="btn btn-success pl-5 pr-5">Save</button>
@@ -40,7 +40,7 @@
                                 <th>Added By</th>
                                 <th>Assigned To</th>
                                 <th>Response</th>
-                                <th>action</th>
+                                <th>Action</th>
                             </thead>
                             <tbody>
                                 <tr>

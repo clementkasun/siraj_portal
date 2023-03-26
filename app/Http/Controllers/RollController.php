@@ -64,9 +64,15 @@ class RollController extends Controller
         return $role->RolePrivillage()->get();
     }
 
+    public function getRoles()
+    {
+         return Role::all();
+    }
+
+
     public function getRoleById($id)
     {
-         return Role::findOrFail($id)->get();
+         return Role::where('id', $id)->get();
     }
 
     public function PrivillagesAdd()

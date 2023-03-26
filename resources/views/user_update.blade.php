@@ -77,11 +77,11 @@
                                 <input id="birthDate" name="birthDate" type="date" maxlength="12" class="form-control form-control-sm" placeholder="Enter the Birth Date" value="{{ $user->birth_date }}">
                             </div>
                             <div class="form-group">
-                                <label>Nic Image (Front side)</label>
+                                <label>Nic Image Front side <code>(500*500)</code></label>
                                 <input id="nicImageFront" type="file" name="nicImageFront" class="form-control form-control-sm" accept=".png, .jpeg, .jpg">
                             </div>
                             <div class="form-group">
-                                <label>Nic Image (Back side)</label>
+                                <label>Nic Image Back side <code>(500*500)</code></label>
                                 <input id="nicImageBack" type="file" name="nicImageBack" class="form-control form-control-sm" accept=".png, .jpeg, .jpg">
                             </div>
                             <div class="form-group">
@@ -155,48 +155,40 @@
         </div>
     </div>
 </section>
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-light">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete User</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this user ? </b></p>
-                <p>Once you continue, this process can not be undone. Change Active Status to
-                    <b>Inactive</b> if you want to keep the user and disable from the system(Recommended)
-                </p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light bg-secondary" data-dismiss="modal">Close</button>
-                <form action="/users/id/{{$user['id']}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-outline-light bg-danger">Delete Permanently</button>
-                </form>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 @endsection
 
 @section('pageScripts')
 <script src="{{ asset('js/userjs/get.js') }}"></script>
 <script src="{{ asset('js/userjs/submit.js') }}"></script>
 <script src="{{ asset('js/userjs/user_nic_validation.js') }}"></script>
+<script src="{{ asset('plugins/checkImageSize/jquery.checkImageSize.min.js') }}"></script>
 <script>
     $(function() {
         //Initialize Select2 Elements
         var userId = "{{$user['id']}}";
         var roleId = "{{$user['role_id']}}";
+
         $('.select2').select2();
 
-        loadRolesById(roleId, 'rollCombo');
+        $("#nicImageFront").checkImageSize({
+            minWidth: 500,
+            minHeight: 500,
+            maxWidth: 500,
+            maxHeight: 500,
+            showError: true,
+            ignoreError: false
+        });
+
+        $("#nicImageBack").checkImageSize({
+            minWidth: 500,
+            minHeight: 500,
+            maxWidth: 500,
+            maxHeight: 500,
+            showError: true,
+            ignoreError: false
+        });
+
+        loadAllRoles('rollCombo', roleId);
 
         //Initialize Select2 Elements
         $('.select2').select2();
@@ -223,7 +215,7 @@
 
             let data = {
                 'firstName': $('#firstName').val(),
-                'lastName': $('#firstName').val(),
+                'lastName': $('#lastName').val(),
                 'fullName': $('#fullName').val(),
                 'prefferedName': $('#prefferedName').val(),
                 'address': $('#address').val(),
@@ -238,7 +230,7 @@
             ulploadFileWithData('/api/update_user/id/' + userId, data, function(result) {
                 if (result.status == 1) {
                     toastr.success('User details have successfully updated!')
-                    location.reload();
+                    window.location.href = '/users_list';
                     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                         callBack();
                     }

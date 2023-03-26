@@ -21,7 +21,7 @@ class Role extends Model
 
     public function RolePrivillage()
     {
-        return  $this->hasMany(RolePrivillage::class);
+        return  $this->hasMany(RolePrivillage::class, 'role_id');
     }
 
     public function ApplicationStaffResponse()

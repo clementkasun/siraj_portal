@@ -120,7 +120,19 @@
                         </div>
                         <div class="form-group col-md-4 col-12">
                             <label for="edu_qualifications">Educational Qualification <code>(Highest)</code> </label>
-                            <input type="text" id="edu_qualifications" name="edu_qualifications" class="form-control" placeholder="Please enter the highest educational qualification" value="{{( isset($applicant_data->edu_qaulification)) ? $applicant_data->edu_qaulification : '' }}">
+                            <select class="custom-select select2 select2-purple" data-dropdown-css-class="select2-purple" id="edu_qualifications" name="edu_qualifications">
+                                <option value="">Select the post educational qualification</option>
+                                <option value="Passed Year 5"> Passed Year 5 </option>
+                                <option value="Upto GCE Ordinary Level">Upto GCE Ordinary Level</option>
+                                <option value="Passed GCE Ordinary Level">Passed GCE Ordinary Level</option>
+                                <option value="Upto GCE Advanced Level">Upto GCE Advanced Level</option>
+                                <option value="Passed GCE Advanced Level">Passed GCE Advanced Level</option>
+                                <option value="Diploma">Diploma</option>
+                                <option value="Higher National Diploma">Higher National Diploma</option>
+                                <option value="Undergraduate">Undergraduate</option>
+                                <option value="Postgraduate">Postgraduate</option>
+                                <option value="PhD">PhD</option>
+                            </select>
                         </div>
                         <div class="form-group col-md-4 col-12">
                             <label for="applied_country">Country</label>

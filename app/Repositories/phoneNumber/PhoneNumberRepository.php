@@ -33,7 +33,7 @@ class PhoneNumberRepository implements PhoneNumberInterface
         try {
             $request->validate([
                 'phone_number' => 'required|string|max:12',
-                'name' => 'required|string|max:255',
+                'name' => 'sometimes|nullable|string|max:255',
             ]);
 
             $phone_number = PhoneNumber::create([
