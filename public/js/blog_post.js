@@ -47,7 +47,7 @@ $('#update_blog_post').click(function() {
     });
 });
 
-load_blog_posts = () => {
+load_blog_posts = (privillages = []) => {
     let index = 1;
     let html = '';
     ajaxRequest('get', '/api/get_blog_posts', null, function (result) {
@@ -64,8 +64,16 @@ load_blog_posts = () => {
                 html += '<td>' + user_name + '</td>';
                 html += '<td>' + formatted_created_at + '</td>';
                 html += '<td>';
-                html += '<button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + blog_post.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger btn-sm del m-1" data-id="' + blog_post.id + '"> Delete </button>';
+                if(privillages['is_update'] == '1'){
+                    html += '<button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + blog_post.id + '"> Edit </button>';
+                }else{
+                    html += '<button type="button" class="btn btn-primary btn-sm edit m-1" disabled> Edit </button>';
+                }
+                if(privillages['is_delete'] == '1'){
+                    html += '<button type="button" class="btn btn-danger btn-sm del m-1" data-id="' + blog_post.id + '"> Delete </button>';
+                }else{
+                    html += '<button type="button" class="btn btn-danger btn-sm del m-1" disabled> Delete </button>';
+                }
                 html += '</td>';
             });
             $('#blog_post_tbl tbody').html(html);

@@ -193,7 +193,7 @@
                                         <div class="card card-success">
                                             <div class="card-header">Attachments</div>
                                             <div class="card-body row">
-                                                @if(!isset($applicant_data->passport_pdf) && !isset($applicant_data->nic_pdf) && !isset($applicant_data->police_record_pdf) && !isset($applicant_data->gs_certificate_pdf) && !isset($applicant_data->family_back_pdf) && !isset($applicant_data->visa_pdf) && !isset($applicant_data->medical_pdf) && !isset($applicant_data->agreement_pdf) && !isset($applicant_data->personal_form_pdf) && !isset($applicant_data->job_order_pdf) && !isset($applicant_data->ticket_pdf) && !isset($applicant_data->agency_agreement_pdf) && !isset($applicant_data->hform_pdf) &&  !isset($applicant_data->other_pdf))
+                                                @if(!isset($applicant_data->passport_pdf) && !isset($applicant_data->nic_pdf) && !isset($applicant_data->police_record_pdf) && !isset($applicant_data->gs_certificate_pdf) && !isset($applicant_data->family_back_pdf) && !isset($applicant_data->visa_pdf) && !isset($applicant_data->medical_pdf) && !isset($applicant_data->agreement_pdf) && !isset($applicant_data->personal_form_pdf) && !isset($applicant_data->job_order_pdf) && !isset($applicant_data->ticket_pdf) && !isset($applicant_data->agency_agreement_pdf) && !isset($applicant_data->hform_pdf) && !isset($applicant_data->other_pdf))
                                                 <div>No attachments available</div>
                                                 @endif
                                                 @if(isset($applicant_data->passport_pdf))
@@ -350,12 +350,34 @@
                                     @can('update-offline-applicant')
                                     <div class="tab-pane" id="previous_employeements">
                                         <div class="row">
-                                            @if($previous_emp_count < 4)
-                                            <div class="col-md-3">
+                                            @if($previous_emp_count < 4) <div class="col-md-3">
                                                 <form id="previous_employeement_form">
                                                     <div class="form-group">
                                                         <label for="job_type">Job type *</label>
-                                                        <div><input type="text" class="form-control" name="job_type" id="job_type" placeholder="Please enter the job type" required></div>
+                                                        <div>
+                                                            <select class="form-select form-control" id="job_type" name="job_type" aria-label="Choose a job type" required>
+                                                                <option selected value="">Choose a job category</option>
+                                                                <option value="Home maid (New)">Home maid (New)</option>
+                                                                <option value="Home maid (Experienced)">Home maid (Experienced)</option>
+                                                                <option value="Driver">Driver</option>
+                                                                <option value="Chef">Chef</option>
+                                                                <option value="Welder">Welder</option>
+                                                                <option value="Electrician">Electrician</option>
+                                                                <option value="Civil Engineer">Civil Engineer</option>
+                                                                <option value="Software Engineer">Software Engineer</option>
+                                                                <option value="Mason">Mason</option>
+                                                                <option value="Doctor">Doctor</option>
+                                                                <option value="Carpentor">Carpentor</option>
+                                                                <option value="WoodCraftmen">WoodCraftmen</option>
+                                                                <option value="Waiter">Waiter</option>
+                                                                <option value="Bartender">Bartender</option>
+                                                                <option value="Teacher">Teacher</option>
+                                                                <option value="Accountant">Accountant</option>
+                                                                <option value="HR Manager">HR Manager</option>
+                                                                <option value="Sales Manager">Sales Manager</option>
+                                                                <option value="Other">Other</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="period">Period *</label>
@@ -374,17 +396,26 @@
                                                                 <option value="Malaysia">Malaysia</option>
                                                                 <option value="Thailand">Thailand</option>
                                                                 <option value="China">China</option>
+                                                                <option value="Cyprus">Cyprus</option>
+                                                                <option value="Egypt">Egypt</option>
+                                                                <option value="Iraq">Iraq</option>
+                                                                <option value="Jordan">Jordan</option>
+                                                                <option value="Oman">Oman</option>
+                                                                <option value="Palestine">Palestine</option>
+                                                                <option value="Saudi Arabia">Saudi Arabia</option>
+                                                                <option value="Syria">Syria</option>
+                                                                <option value="Turkey">Turkey</option>
+                                                                <option value="Yemen">Yemen</option>
                                                                 <option value="Kuwait">Kuwait</option>
-                                                                <option value="Quatar">Quatar</option>
+                                                                <option value="Quatar">Qutar</option>
                                                                 <option value="Lebonon">Lebanon</option>
                                                                 <option value="Turkey">Turkey</option>
-                                                                <option value="UAE">UAE</option>
-                                                                <option value="Dubai">Dubai</option>
-                                                                <option value="Baharen">Baharen</option>
+                                                                <option value="United Arab Emirates">United Arab Emirates</option>
+                                                                <option value="Baharen">Baharain</option>
                                                                 <option value="Iran">Iran</option>
                                                                 <option value="Syria">Syria</option>
                                                                 <option value="Afghanisthan">Afghnisthan</option>
-                                                                <option value="Ishrael">Ishrael</option>
+                                                                <option value="Israel">Israel</option>
                                                                 <option value="Pakisthan">Pakisthan</option>
                                                                 <option value="Nepal">Nepal</option>
                                                                 <option value="Russia">Russia</option>
@@ -410,160 +441,160 @@
                                                         <button id="update_previous_emp" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
                                                     </div>
                                                 </form>
-                                            </div>
-                                            @endif
-                                            <div class="col-md-9">
-                                                <table class="table table-striped" id="previous_emp_tbl">
-                                                    <thead>
-                                                        <th>#</th>
-                                                        <th>Job Type</th>
-                                                        <th>Country</th>
-                                                        <th>Period</th>
-                                                        <th>Added by</th>
-                                                        <th>Created at</th>
-                                                        <th>Action</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        </div>
+                                        @endif
+                                        <div class="col-md-9">
+                                            <table class="table table-striped" id="previous_emp_tbl">
+                                                <thead>
+                                                    <th>#</th>
+                                                    <th>Job Type</th>
+                                                    <th>Country</th>
+                                                    <th>Period</th>
+                                                    <th>Added by</th>
+                                                    <th>Created at</th>
+                                                    <th>Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="languages">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <form id="languages_form">
-                                                    <div class="form-group">
-                                                        <label for="language">Language*</label>
-                                                        <select class="custom-select select2 select2-purple" data-dropdown-css-class="select2-purple" id="language" name="language" required>
-                                                            <option value="">Select the post language</option>
-                                                            <option value="english">English</option>
-                                                            <option value="arabic">Arabic</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="poor">Poor</label>
-                                                        <input type="radio" id="poor" name="language_status" class="float-right" required /><br>
-                                                        <label for="fair">Fair</label>
-                                                        <input type="radio" id="fair" name="language_status" class="float-right" required /><br>
-                                                        <label for="fluent">Fluent</label>
-                                                        <input type="radio" id="fluent" name="language_status" class="float-right" required />
-                                                    </div>
-                                                    <button id="save_language" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
-                                                    <button id="update_language" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
-                                                </form>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <table class="table table-striped" id="language_tbl">
-                                                    <thead>
-                                                        <th>#</th>
-                                                        <th>Language Name</th>
-                                                        <th>Poor</th>
-                                                        <th>Fair</th>
-                                                        <th>Fluent</th>
-                                                        <th>Action</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="6" class="text-center text-bold"><span>No Data</span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.tab-pane -->
-                                    <div class="tab-pane" id="staff_response">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <form id="staff_response_form">
-                                                    <div class="form-group">
-                                                        <label for="response">Response *</label>
-                                                        <div><input type="text" class="form-control" name="response" id="response" placeholder="Please enter the staff response" required></div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button id="save_staff_response" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
-                                                        <button id="update_staff_response" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <table class="table table-striped" id="app_staff_resp_tbl">
-                                                    <thead>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Designation</th>
-                                                        <th>Response</th>
-                                                        <th>Created at</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="5" class="text-center text-bold"><span>No Data</span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane" id="commission">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <form id="commission_form">
-                                                    <div class="form-group">
-                                                        <label for="com_price">Price *</label>
-                                                        <div><input type="number" class="form-control" name="com_price" id="com_price" min="0" placeholder="Please enter the price" required></div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="com_response">Response *</label>
-                                                        <div><input type="text" class="form-control" name="com_response" id="com_response" placeholder="Please enter the staff response" required></div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button id="save_comission" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
-                                                        <button id="update_comission" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <table class="table table-striped" id="commission_tbl">
-                                                    <thead>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Designation</th>
-                                                        <th>Installment</th>
-                                                        <th>Response</th>
-                                                        <th>Created at</th>
-                                                        <th>Action</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="row float-right">
-                                            <span class="col-4">Promised Total Commission:</span><span class="col-8"><b>{{ $commision_price }}</b></span>
-                                            <span class="col-4">Paid Total Commission:</span><span class="col-8"><b>{{ $paid_total_commision }}</b></span>
-                                            <span class="col-4">Available Commission:</span><span class="col-8"><b>{{ $commision_price - $paid_total_commision }}</b></span>
-                                        </div>
-                                    </div>
-                                    @endcan
                                 </div>
-                                <!-- /.tab-content -->
+                                <div class="tab-pane" id="languages">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <form id="languages_form">
+                                                <div class="form-group">
+                                                    <label for="language">Language*</label>
+                                                    <select class="custom-select select2 select2-purple" data-dropdown-css-class="select2-purple" id="language" name="language" required>
+                                                        <option value="">Select the post language</option>
+                                                        <option value="english">English</option>
+                                                        <option value="arabic">Arabic</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="poor">Poor</label>
+                                                    <input type="radio" id="poor" name="language_status" class="float-right" required /><br>
+                                                    <label for="fair">Fair</label>
+                                                    <input type="radio" id="fair" name="language_status" class="float-right" required /><br>
+                                                    <label for="fluent">Fluent</label>
+                                                    <input type="radio" id="fluent" name="language_status" class="float-right" required />
+                                                </div>
+                                                <button id="save_language" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
+                                                <button id="update_language" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <table class="table table-striped" id="language_tbl">
+                                                <thead>
+                                                    <th>#</th>
+                                                    <th>Language Name</th>
+                                                    <th>Poor</th>
+                                                    <th>Fair</th>
+                                                    <th>Fluent</th>
+                                                    <th>Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="6" class="text-center text-bold"><span>No Data</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.tab-pane -->
+                                <div class="tab-pane" id="staff_response">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <form id="staff_response_form">
+                                                <div class="form-group">
+                                                    <label for="response">Response *</label>
+                                                    <div><input type="text" class="form-control" name="response" id="response" placeholder="Please enter the staff response" required></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button id="save_staff_response" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
+                                                    <button id="update_staff_response" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <table class="table table-striped" id="app_staff_resp_tbl">
+                                                <thead>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Designation</th>
+                                                    <th>Response</th>
+                                                    <th>Created at</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="5" class="text-center text-bold"><span>No Data</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="commission">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <form id="commission_form">
+                                                <div class="form-group">
+                                                    <label for="com_price">Price *</label>
+                                                    <div><input type="number" class="form-control" name="com_price" id="com_price" min="0" placeholder="Please enter the price" required></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="com_response">Response *</label>
+                                                    <div><input type="text" class="form-control" name="com_response" id="com_response" placeholder="Please enter the staff response" required></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button id="save_comission" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
+                                                    <button id="update_comission" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <table class="table table-striped" id="commission_tbl">
+                                                <thead>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Designation</th>
+                                                    <th>Installment</th>
+                                                    <th>Response</th>
+                                                    <th>Created at</th>
+                                                    <th>Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row float-right">
+                                        <span class="col-4">Promised Total Commission:</span><span class="col-8"><b>{{ $commision_price }}</b></span>
+                                        <span class="col-4">Paid Total Commission:</span><span class="col-8"><b>{{ $paid_total_commision }}</b></span>
+                                        <span class="col-4">Available Commission:</span><span class="col-8"><b>{{ $commision_price - $paid_total_commision }}</b></span>
+                                    </div>
+                                </div>
+                                @endcan
                             </div>
                             <!-- /.tab-content -->
-                        </div><!-- /.card-body -->
-                    </div>
-                    <!-- /.card -->
+                        </div>
+                        <!-- /.tab-content -->
+                    </div><!-- /.card-body -->
                 </div>
-                <!-- /.col -->
+                <!-- /.card -->
             </div>
+            <!-- /.col -->
         </div>
-        <!-- /.row -->
+    </div>
+    <!-- /.row -->
     </div>
 </section>
 @endsection

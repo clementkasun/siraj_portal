@@ -36,9 +36,9 @@ class SystemAdminSeeder extends Seeder
                 'privillage_id' => 2,
                 'role_id' => 1,
                 'is_read' => 1,
-                'is_create' => 0,
-                'is_update' => 0,
-                'is_delete' => 0
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
             ],
             [
                 //Application Staff Response Privillage done
@@ -46,8 +46,8 @@ class SystemAdminSeeder extends Seeder
                 'role_id' => 1,
                 'is_read' => 1,
                 'is_create' => 1,
-                'is_update' => 0,
-                'is_delete' => 0
+                'is_update' => 1,
+                'is_delete' => 1
             ],
             [
                 //Offline Applicant Privillage done 
@@ -56,7 +56,7 @@ class SystemAdminSeeder extends Seeder
                 'is_read' => 1,
                 'is_create' => 1,
                 'is_update' => 1,
-                'is_delete' => 0
+                'is_delete' => 1
             ],
             [
                 //Phone Number Privillage done
@@ -64,8 +64,8 @@ class SystemAdminSeeder extends Seeder
                 'role_id' => 1,
                 'is_read' => 1,
                 'is_create' => 1,
-                'is_update' => 0,
-                'is_delete' => 0
+                'is_update' => 1,
+                'is_delete' => 1
             ],
             [
                 //Phone Number Response Privillage done
@@ -74,16 +74,16 @@ class SystemAdminSeeder extends Seeder
                 'is_read' => 1,
                 'is_create' => 1,
                 'is_update' => 1,
-                'is_delete' => 0
+                'is_delete' => 1
             ],
             [
                 //Contact Us Privillage done
                 'privillage_id' => 7,
                 'role_id' => 1,
                 'is_read' => 1,
-                'is_create' => 0,
-                'is_update' => 0,
-                'is_delete' => 0
+                'is_create' => 1,
+                'is_update' => 1,
+                'is_delete' => 1
             ],
             [
                 //Contact Us Response Privillage done
@@ -92,7 +92,7 @@ class SystemAdminSeeder extends Seeder
                 'is_read' => 1,
                 'is_create' => 1,
                 'is_update' => 1,
-                'is_delete' => 0
+                'is_delete' => 1
             ],
             [
                 //blog post Privillage done
@@ -119,7 +119,7 @@ class SystemAdminSeeder extends Seeder
                 'is_read' => 1,
                 'is_create' => 1,
                 'is_update' => 1,
-                'is_delete' => 0
+                'is_delete' => 1
             ],
             [
                 //Previous Employeement done

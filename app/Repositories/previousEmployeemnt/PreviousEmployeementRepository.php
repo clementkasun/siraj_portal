@@ -98,7 +98,7 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
 
     public function getPreviousEmployeement($id)
     {
-        if (Gate::denies('view-previous-employeement', auth()->user())) {
+        if (Gate::denies('view-previous-emp', auth()->user())) {
             return array('status' => 4, 'msg' => 'You are not authorised to view previous employeement!');
         }
         $log = [

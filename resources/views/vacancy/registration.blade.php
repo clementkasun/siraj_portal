@@ -39,17 +39,26 @@
                                 <option value="Malaysia">Malaysia</option>
                                 <option value="Thailand">Thailand</option>
                                 <option value="China">China</option>
+                                <option value="Cyprus">Cyprus</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="Iraq">Iraq</option>
+                                <option value="Jordan">Jordan</option>
+                                <option value="Oman">Oman</option>
+                                <option value="Palestine">Palestine</option>
+                                <option value="Saudi Arabia">Saudi Arabia</option>
+                                <option value="Syria">Syria</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="Yemen">Yemen</option>
                                 <option value="Kuwait">Kuwait</option>
-                                <option value="Quatar">Quatar</option>
+                                <option value="Quatar">Qutar</option>
                                 <option value="Lebonon">Lebanon</option>
                                 <option value="Turkey">Turkey</option>
-                                <option value="UAE">UAE</option>
-                                <option value="Dubai">Dubai</option>
-                                <option value="Baharen">Baharen</option>
+                                <option value="United Arab Emirates">United Arab Emirates</option>
+                                <option value="Baharen">Baharain</option>
                                 <option value="Iran">Iran</option>
                                 <option value="Syria">Syria</option>
                                 <option value="Afghanisthan">Afghnisthan</option>
-                                <option value="Ishrael">Ishrael</option>
+                                <option value="Israel">Israel</option>
                                 <option value="Pakisthan">Pakisthan</option>
                                 <option value="Nepal">Nepal</option>
                                 <option value="Russia">Russia</option>
@@ -66,7 +75,7 @@
                                 <option value="Cuba">Cuba</option>
                                 <option value="West Indies">West Indies</option>
                                 <option value="Austrailia">Austrailia</option>
-                                <option value="Newzealand">New Zealand</option>
+                                <option value="New zealand">New Zealand</option>
                             </select>
                         </div>
                         <div class="form-group col-md-3 col-12">
@@ -80,8 +89,8 @@
                         </div>
                     </div>
                     <div class="row float-right">
-                        <button type="button" class="btn btn-success btn-lg pl-5 pr-5 m-1" id="save_vacancy">Save</button>
-                        <button type="button" class="btn btn-warning btn-lg pl-5 pr-5 m-1 d-none" id="update_vacancy">Update</button>
+                        <button type="button" class="btn btn-success pl-5 pr-5 m-1" id="save_vacancy">Save</button>
+                        <button type="button" class="btn btn-warning pl-5 pr-5 m-1 d-none" id="update_vacancy">Update</button>
                     </div>
                 </form>
             </div>
@@ -125,8 +134,8 @@
     $(document).ready(function() {
         bsCustomFileInput.init();
         let privillages = {
-            'is_update' : '{{ Gate::allows("update-vacancy") }}',
-            'is_delete' : '{{ Gate::allows("delete-phone-vacancy") }}'
+            'is_update': '{{ Gate::allows("update-vacancy") }}',
+            'is_delete': '{{ Gate::allows("delete-vacancy") }}'
         };
         load_vacancy_table(privillages);
     });
