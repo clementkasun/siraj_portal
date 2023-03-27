@@ -21,6 +21,8 @@ class ApplicantPreviousEmployeement extends Model
         'country',
         'period',
         'added_by',
+        'updated_by',
+        'deleted_by',
         'applicant_id'
     ];
 

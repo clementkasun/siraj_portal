@@ -139,6 +139,24 @@ class SystemAdminSeeder extends Seeder
                 'is_update' => 1,
                 'is_delete' => 1
             ],
+            [
+                //Online Applicant Response Privillage done
+                'privillage_id' => 14,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+               //View logs Privillage done
+                'privillage_id' => 15,
+                'role_id' => 1,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
 
             //privillages for the owner
             [
@@ -257,6 +275,24 @@ class SystemAdminSeeder extends Seeder
                 'is_create' => 1,
                 'is_update' => 1,
                 'is_delete' => 1
+            ],
+            [
+                //Online Applicant Response Privillage done
+                'privillage_id' => 14,
+                'role_id' => 2,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //View logs Privillage done
+                'privillage_id' => 15,
+                'role_id' => 2,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
             ],
 
             //privillages for the IT Officer
@@ -377,6 +413,24 @@ class SystemAdminSeeder extends Seeder
                 'is_update' => 1,
                 'is_delete' => 1
             ],
+            [
+                //Online Applicant Response Privillage done
+                'privillage_id' => 14,
+                'role_id' => 3,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //View logs Privillage done
+                'privillage_id' => 15,
+                'role_id' => 3,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
 
             //privillages for the Manager
             [
@@ -491,6 +545,24 @@ class SystemAdminSeeder extends Seeder
                 'role_id' => 4,
                 'is_read' => 1,
                 'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Online Applicant Response Privillage done
+                'privillage_id' => 14,
+                'role_id' => 4,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //View logs Privillage done
+                'privillage_id' => 15,
+                'role_id' => 4,
+                'is_read' => 0,
+                'is_create' => 0,
                 'is_update' => 0,
                 'is_delete' => 0
             ],
@@ -613,6 +685,24 @@ class SystemAdminSeeder extends Seeder
                 'is_update' => 0,
                 'is_delete' => 0
             ],
+            [
+                //Online Applicant Response Privillage done
+                'privillage_id' => 14,
+                'role_id' => 5,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //View logs Privillage done
+                'privillage_id' => 15,
+                'role_id' => 5,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
 
             //privillages for the call center
             [
@@ -732,6 +822,24 @@ class SystemAdminSeeder extends Seeder
                 'is_update' => 0,
                 'is_delete' => 0
             ],
+            [
+                //Online Applicant Response Privillage done
+                'privillage_id' => 14,
+                'role_id' => 6,
+                'is_read' => 1,
+                'is_create' => 1,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //View logs Privillage done
+                'privillage_id' => 15,
+                'role_id' => 6,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
 
             //privillages for the receptionist
             [
@@ -845,6 +953,24 @@ class SystemAdminSeeder extends Seeder
             [
                 //Apllicant Language Privillage done
                 'privillage_id' => 13,
+                'role_id' => 7,
+                'is_read' => 0,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //Online Applicant Response Privillage done
+                'privillage_id' => 14,
+                'role_id' => 7,
+                'is_read' => 1,
+                'is_create' => 0,
+                'is_update' => 0,
+                'is_delete' => 0
+            ],
+            [
+                //View logs Privillage done
+                'privillage_id' => 15,
                 'role_id' => 7,
                 'is_read' => 0,
                 'is_create' => 0,

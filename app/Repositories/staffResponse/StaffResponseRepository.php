@@ -15,7 +15,7 @@ class StaffResponseRepository implements StaffResponseInterface
     public function store($request)
     {
         if (Gate::denies('create-application-staff-resp', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to create application staff response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create application staff response!');
         }
         $log = [
             'route' => '/api/save_application_staff_response',
@@ -53,7 +53,7 @@ class StaffResponseRepository implements StaffResponseInterface
     public function update($request, $id)
     {
         if (Gate::denies('update-application-staff-resp', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to application staff response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to application staff response!');
         }
         $log = [
             'route' => '/api/update_applicant_language/id/' . $id,
@@ -90,7 +90,7 @@ class StaffResponseRepository implements StaffResponseInterface
     public function show($id)
     {
         if (Gate::denies('view-application-staff-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view application staff response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view application staff response!');
         }
         $log = [
             'route' => '/api/get_application_staff_response/id/' . $id,
@@ -103,7 +103,7 @@ class StaffResponseRepository implements StaffResponseInterface
     public function getApplicationStaffResponse($applicant_lan_id)
     {
         if (Gate::denies('view-application-staff-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view application staff response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view application staff response!');
         }
         $log = [
             'route' => '/api/get_application_staff_response/id/' . $applicant_lan_id,
@@ -116,7 +116,7 @@ class StaffResponseRepository implements StaffResponseInterface
     public function destroy($id)
     {
         if (Gate::denies('delete-application-staff-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete application staff response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to delete application staff response!');
         }
         $log = [
             'route' => '/api/delete_application_staff_response/id/' . $id,

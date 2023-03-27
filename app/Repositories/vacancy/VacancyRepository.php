@@ -15,7 +15,7 @@ class VacancyRepository implements VacancyInterface
     public function index()
     {
         if (Gate::denies('view-vacancy', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
         }
         return view('vacancy.registration');
     }
@@ -23,7 +23,7 @@ class VacancyRepository implements VacancyInterface
     public function store($request)
     {
         if (Gate::denies('create-vacancy', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to create vacancy!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create vacancy!');
         }
         $log = [
             'route' => '/api/save_vacancy',
@@ -80,7 +80,7 @@ class VacancyRepository implements VacancyInterface
     public function update($request, $id)
     {
         if (Gate::denies('update-vacancy', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to update vacancy!');
+            return array('status' => 4, 'msg' => 'You are not authorised to update vacancy!');
         }
         $log = [
             'route' => '/api/update_vacancy/id/'.$id,
@@ -135,7 +135,7 @@ class VacancyRepository implements VacancyInterface
     public function getVacancy($id)
     {
         // if (Gate::denies('view-vacancy', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
+        //     return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
         // }
         $log = [
             'route' => '/api/get_vacancy/id/' . $id,
@@ -148,7 +148,7 @@ class VacancyRepository implements VacancyInterface
     public function getPaginatedVacancy($request)
     {
         // if (Gate::denies('view-vacancy', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
+        //     return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
         // }
         $log = [
             'route' => '/api/get_paginated_vacancy',
@@ -199,7 +199,7 @@ class VacancyRepository implements VacancyInterface
     // public function getFilPagedVacancies($request)
     // {
     //     // if (Gate::denies('view-vacancy', auth()->user())) {
-    //     //     return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
+    //     //     return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
     //     // }
     //     $log = [
     //         'route' => '/api/get_filtered_vacancy',
@@ -312,7 +312,7 @@ class VacancyRepository implements VacancyInterface
     public function show()
     {
         // if (Gate::denies('view-vacancy', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view vacancy!');
+        //     return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
         // }
         $log = [
             'route' => '/api/get_vacancies',
@@ -325,7 +325,7 @@ class VacancyRepository implements VacancyInterface
     public function destroy($id)
     {
         if (Gate::denies('delete-vacancy', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete vacancies!');
+            return array('status' => 4, 'msg' => 'You are not authorised to delete vacancies!');
         }
         $log = [
             'route' => '/api/delete_vacancy/id/' . $id,

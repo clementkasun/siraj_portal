@@ -20,6 +20,8 @@ class PhoneNumber extends Model
         'phone_number',
         'name',
         'added_by',
+        'updated_by',
+        'deleted_by',
         'assigned_staff_member',
     ];
 

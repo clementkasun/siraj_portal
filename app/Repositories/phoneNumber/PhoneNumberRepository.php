@@ -17,7 +17,7 @@ class PhoneNumberRepository implements PhoneNumberInterface
     public function index()
     {
         if (Gate::denies('view-phone-number', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to add phone number!');
+            return array('status' => 4, 'msg' => 'You are not authorised to add phone number!');
         }
         return view('phone_number.phone_number_addition');
     }
@@ -25,7 +25,7 @@ class PhoneNumberRepository implements PhoneNumberInterface
     public function store($request)
     {
         if (Gate::denies('create-phone-number', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to add phone number!');
+            return array('status' => 4, 'msg' => 'You are not authorised to add phone number!');
         }
         $log = [
             'route' => '/api/add_phone_number',
@@ -63,7 +63,7 @@ class PhoneNumberRepository implements PhoneNumberInterface
     public function update($request, $id)
     {
         if (Gate::denies('update-phone-number', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to edit phone number!');
+            return array('status' => 4, 'msg' => 'You are not authorised to edit phone number!');
         }
         $log = [
             'route' => '/api/update_phone_number/id/' . $id,
@@ -99,7 +99,7 @@ class PhoneNumberRepository implements PhoneNumberInterface
     public function phoneNumberProfile($id)
     {
         if (Gate::denies('view-phone-number', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view phone number!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view phone number!');
         }
         $log = [
             'route' => '/api/phone_number_profile/id/' . $id,
@@ -108,7 +108,7 @@ class PhoneNumberRepository implements PhoneNumberInterface
         $phone_num_details = PhoneNumber::where('id', $id)->with([
             'AddedBy', 'PhoneNumberResponse' => function ($phone_num_resp) {
                 $phone_num_resp->orderBy('id', 'DESC');
-            }, 
+            },
             'PhoneNumberResponse.Designation',
             'PhoneNumberResponse.User',
             'AssignedTo'
@@ -119,7 +119,7 @@ class PhoneNumberRepository implements PhoneNumberInterface
     public function show()
     {
         if (Gate::denies('view-phone-number', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view phone numbers!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view phone numbers!');
         }
         $log = [
             'route' => '/api/get_phone_numbers',
@@ -133,7 +133,7 @@ class PhoneNumberRepository implements PhoneNumberInterface
     public function getPhoneNumberDetails($id)
     {
         if (Gate::denies('view-phone-number', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view phone number!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view phone number!');
         }
         $log = [
             'route' => '/api/get_phone_number/id/' . $id,
@@ -145,7 +145,7 @@ class PhoneNumberRepository implements PhoneNumberInterface
     public function destroy($id)
     {
         if (Gate::denies('delete-phone-number', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete phone number!');
+            return array('status' => 4, 'msg' => 'You are not authorised to delete phone number!');
         }
         $phone_number = PhoneNumber::find($id);
         $phone_number->deleted_by = auth()->user()->id;
@@ -162,26 +162,17 @@ class PhoneNumberRepository implements PhoneNumberInterface
 
     public function assignStaffMember($id)
     {
-        if (Gate::denies('update-phone-number', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to update phone number details!');
-        }
-        try {
-            $user_arr_count = User::all()->count();
-            $log = [];
+        $assignable_users = User::where('role_id', 5)->orWhere('role_id', 6)->get();
+        $user_count = $assignable_users->count();
 
-            if ($user_arr_count > 0) {
-                $staff_assign = PhoneNumber::find($id);
-                $generated_user_id = rand(1, $user_arr_count);
-                $staff_assign->assigned_staff_member = $generated_user_id;
-                $staff_assign->save();
-                $log['msg'] = 'Staff Assignment for the phone number has failed due to no users available!';
-            } else {
-                $log['msg'] = 'Staff Assignment for the phone number has failed due to no users available!';
-            }
-            Log::channel('daily')->error(json_encode($log));
-        } catch (Exception $ex) {
-            $log['msg'] = 'Staff Assignment for the phone number has failed with an error!';
-            Log::channel('daily')->error(json_encode($log));
+        if ($user_count > 0) {
+            $random_user_index = rand(1, $user_count);
+            $user_array = $assignable_users->toArray();
+            $selected_user = $user_array[$random_user_index-1]['id'];
+            
+            $phone_number = PhoneNumber::where('id', $id)->first();
+            $phone_number->assigned_staff_member = $selected_user;
+            $phone_number->save();
         }
     }
 }

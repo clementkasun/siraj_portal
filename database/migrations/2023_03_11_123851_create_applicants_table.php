@@ -27,7 +27,7 @@ class CreateApplicantsTable extends Migration
             $table->string('passport_exp_date', 255)->nullable();
             $table->string('birth_date', 255)->nullable();
             $table->boolean('sex')->nullable();
-            $table->string('height', 5)->nullable();
+            $table->string('height', 20)->nullable();
             $table->string('weight', 5)->nullable();
             $table->string('complexion', 255)->nullable();
             $table->string('nationality', 255)->nullable();
@@ -58,6 +58,8 @@ class CreateApplicantsTable extends Migration
             $table->string('job_order_pdf', 255)->nullable();
             $table->string('ticket_pdf', 255)->nullable();
             $table->string('agency_agreement_pdf', 255)->nullable();
+            $table->string('other_pdf', 255)->nullable();
+            $table->string('hform_pdf', 255)->nullable();
             $table->string('applicant_image_passport', 255)->nullable();
             $table->string('applicant_image_full_size', 255)->nullable();
             $table->string('commision_price', 255)->nullable();//promissed commission price

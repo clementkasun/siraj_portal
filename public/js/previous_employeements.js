@@ -133,38 +133,6 @@ load_previous_employeement_table = (id) => {
 
 $("#previous_employeement_form").validate({
     errorClass: "invalid",
-    // rules: {
-    //     firstName: {
-    //         valid_name: true,
-    //     },
-    //     lastName: {
-    //         valid_name: true,
-    //     },
-    //     fullName: {
-    //         valid_name: true,
-    //     },
-    //     prefferedName: {
-    //         valid_name: true,
-    //     },
-    //     email: {
-    //         valid_email: true,
-    //     },
-    //     address: {
-    //         valid_name: true,
-    //     },
-    //     mobileNo: {
-    //         valid_lk_phone: true,
-    //     },
-    //     landNo: {
-    //         valid_lk_phone: true,
-    //     },
-    //     nic: {
-    //         valid_nic: true,
-    //     },
-    //     birthDate: {
-    //         valid_date: true,
-    //     },
-    // },
     highlight: function(element) {
         $(element).addClass('is-invalid');
     },

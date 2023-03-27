@@ -5,6 +5,7 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
+<?php use Illuminate\Support\Carbon; ?>
 <section class="content-header">
     <div class="container-fluid">
         <div class="card card-primary">
@@ -22,6 +23,7 @@
                         <th>NIC</th>
                         <th>Passport No</th>
                         <th>Status</th>
+                        <th>Created at</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
@@ -38,6 +40,7 @@
                             <td>{{ $applicant->passport_no }}</td>
                             <?php $status_style = (isset($applicant->post_status)) ? $post_status_array[$applicant->post_status]['color'] : '' ?>
                             <td><span class="btn btn-sm rounded text-dark" style="<?php echo 'background-color:' . $status_style ?>"><b>{{ (isset($applicant->post_status)) ? $post_status_array[$applicant->post_status]['name'] : '' }}</b></span></td>
+                            <td>{{ Carbon::parse($applicant->created_at) }}</td>
                             <td>
                                 <a href="/applicant_profile/id/{{ $applicant->id }}" class="btn btn-success btn-sm">Profile</a>
                                 <a href="/edit_applicant/id/{{ $applicant->id }}" class="btn btn-warning btn-sm">Edit</a>
@@ -47,7 +50,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="9" class="text-center text-bold"><span>No Data</span></td>
+                            <td colspan="10" class="text-center text-bold"><span>No Data</span></td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -65,31 +68,5 @@
         "destroy": true,
         "retrieve": true
     });
-    // $(document).on('click', '.del', function() {
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "Record will be deleted!",
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes!'
-    //     }).then((result) => {
-    //         if (result.value) {
-    //             let id = $(this).attr('data-id');
-    //             delete_applicant(id);
-    //         }
-    //     });
-    // });
-
-    // delete_applicant = (id) => {
-    //     ajaxRequest('delete', '/api/delete_applicant/id/' + id, null, function(result) {
-    //         if (result.status == 1) {
-    //             location.reload();
-    //             toastr.success('Deleting applicant was successful!')
-    //         } else {
-    //             toastr.error('Deleting applicant was failed!');
-    //         }
-    //     });
-    // }
 </script>
 @endsection

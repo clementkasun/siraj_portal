@@ -15,7 +15,7 @@ class ComissionRepository implements ComissionInterface
     public function store($request)
     {
         if (Gate::denies('create-commission', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to create comission!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create comission!');
         }
         $log = [
             'route' => '/api/save_comission',
@@ -55,7 +55,7 @@ class ComissionRepository implements ComissionInterface
     public function update($request, $id)
     {
         if (Gate::denies('update-commission', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to comission!');
+            return array('status' => 4, 'msg' => 'You are not authorised to comission!');
         }
         $log = [
             'route' => '/api/update_comission/id/' . $id,
@@ -94,7 +94,7 @@ class ComissionRepository implements ComissionInterface
     public function show($id)
     {
         if (Gate::denies('view-commission', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view comissions!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view comissions!');
         }
         $log = [
             'route' => '/api/get_comission/id/' . $id,
@@ -107,7 +107,7 @@ class ComissionRepository implements ComissionInterface
     public function getComission($applicant_lan_id)
     {
         if (Gate::denies('view-commission', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view comission!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view comission!');
         }
         $log = [
             'route' => '/api/get_comission/id/' . $applicant_lan_id,
@@ -120,7 +120,7 @@ class ComissionRepository implements ComissionInterface
     public function destroy($id)
     {
         if (Gate::denies('delete-commission', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete comission!');
+            return array('status' => 4, 'msg' => 'You are not authorised to delete comission!');
         }
         $log = [
             'route' => '/api/delete_comission/id/' . $id,

@@ -1,3 +1,4 @@
+
 $('#save_staff_response').click(function() {
     if (!jQuery("#staff_response_form").valid()) {
         return false;
@@ -99,11 +100,14 @@ load_application_staff_table = (id) => {
     ajaxRequest('get', '/api/get_application_staff_responses/id/'+id, null, function(result) {
         if (result != '') {
             result.forEach(app_staff_resp => {
+                let created_at = new Date(app_staff_resp.created_at);
+                let formatted_date = created_at.getFullYear()+'-'+created_at.getMonth()+'-'+created_at.getDate();
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
                 html += '<td>' + app_staff_resp.staff_mem_name + '</td>';
                 html += '<td>' + app_staff_resp.designation.name + '</td>';
                 html += '<td>' + app_staff_resp.response + '</td>';
+                html += '<td>' + formatted_date + '</td>';
                 // html += '<td><button type="button" class="btn btn-primary edit-app-staff m-1" data-id="' + app_staff_resp.id + '"> Edit </button>';
                 // html += '<button type="button" class="btn btn-danger delete-app-staff m-1" data-id="' + app_staff_resp.id + '"> Delete </button></td>';
             });
@@ -114,45 +118,13 @@ load_application_staff_table = (id) => {
                 "retrieve": true
             });
         } else {
-            $('#app_staff_resp_tbl tbody').html('<tr><td colspan="4" class="text-center text-bold"><span>No Data</span></td></tr>');
+            $('#app_staff_resp_tbl tbody').html('<tr><td colspan="5" class="text-center text-bold"><span>No Data</span></td></tr>');
         }
     });
 }
 
 $("#staff_response_form").validate({
     errorClass: "invalid",
-    // rules: {
-    //     firstName: {
-    //         valid_name: true,
-    //     },
-    //     lastName: {
-    //         valid_name: true,
-    //     },
-    //     fullName: {
-    //         valid_name: true,
-    //     },
-    //     prefferedName: {
-    //         valid_name: true,
-    //     },
-    //     email: {
-    //         valid_email: true,
-    //     },
-    //     address: {
-    //         valid_name: true,
-    //     },
-    //     mobileNo: {
-    //         valid_lk_phone: true,
-    //     },
-    //     landNo: {
-    //         valid_lk_phone: true,
-    //     },
-    //     nic: {
-    //         valid_nic: true,
-    //     },
-    //     birthDate: {
-    //         valid_date: true,
-    //     },
-    // },
     highlight: function(element) {
         $(element).addClass('is-invalid');
     },

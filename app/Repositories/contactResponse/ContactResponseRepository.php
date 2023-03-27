@@ -15,7 +15,7 @@ class ContactResponseRepository implements ContactResponseInterface
     public function index($id)
     {
         if (Gate::denies('view-contact-us-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view contact response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view contact response!');
         }
         return view('contact.contact_response', ['contact_id' => $id]);
     }
@@ -23,7 +23,7 @@ class ContactResponseRepository implements ContactResponseInterface
     public function store($request)
     {
         if (Gate::denies('create-contact-us-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to register contact response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to register contact response!');
         }
         $log = [
             'route' => '/api/save_contact_response',
@@ -32,7 +32,6 @@ class ContactResponseRepository implements ContactResponseInterface
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                // 'designation' => 'required|string|max:255',
                 'response' => 'required|string|max:255',
                 'contact_id' => 'required|string',
             ]);
@@ -42,6 +41,7 @@ class ContactResponseRepository implements ContactResponseInterface
                 'designation' => auth()->user()->role_id,
                 'response' => $request->response,
                 'contact_id' => $request->contact_id,
+                'added_by' => auth()->user()->id
             ]);
 
             // $user = auth()->user();
@@ -62,7 +62,7 @@ class ContactResponseRepository implements ContactResponseInterface
     public function update($request, $id)
     {
         if (Gate::denies('update-contact-us-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to update contact response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to update contact response!');
         }
         $log = [
             'route' => '/api/save_contact_response',
@@ -71,7 +71,6 @@ class ContactResponseRepository implements ContactResponseInterface
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                // 'designation' => 'required|string|max:255',
                 'response' => 'required|string|max:255',
                 'contact_id' => 'required|string',
             ]);
@@ -101,7 +100,7 @@ class ContactResponseRepository implements ContactResponseInterface
     public function show()
     {
         if (Gate::denies('view-contact-us-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view contact responses!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view contact responses!');
         }
         $log = [
             'route' => '/api/get_contact_responses',
@@ -114,7 +113,7 @@ class ContactResponseRepository implements ContactResponseInterface
     public function getContactResponse($id)
     {
         if (Gate::denies('view-contact-us-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view contact response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view contact response!');
         }
         $log = [
             'route' => '/api/get_contact_response/id/' . $id,
@@ -128,7 +127,7 @@ class ContactResponseRepository implements ContactResponseInterface
     public function destroy($id)
     {
         if (Gate::denies('delete-contact-us-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete contact response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to delete contact response!');
         }
         $log = [
             'route' => '/api/delete_contact_response/id/' . $id,

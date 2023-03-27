@@ -24,7 +24,8 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3">
+            @can('create-user')
+            <div class="col-12 col-md-3">
                 <div class="card card-success">
                     <div class="card-header">
                         <label>User Register</label>
@@ -74,15 +75,26 @@
                             </div>
                             <div class="form-group">
                                 <label>Nic Image Front side <code>(500*500)</code></label>
-                                <input id="nicImageFront" type="file" name="nicImageFront" class="form-control form-control-sm" accept=".png, .jpeg, .jpg">
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input id="nicImageFront" type="file" name="nicImageFront" class="form-control image form-control-sm" accept=".png, .jpeg, .jpg">
+                                        <label class="custom-file-label" for="nicImageFront">Nic Image Front side </label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Nic Image Back side <code>(500*500)</code></label>
-                                <input id="nicImageBack" type="file" name="nicImageBack" class="form-control form-control-sm" accept=".png, .jpeg, .jpg">
+                                <div class="custom-file">
+                                    <input id="nicImageBack" type="file" name="nicImageBack" class="form-control image form-control-sm" accept=".png, .jpeg, .jpg">
+                                    <label class="custom-file-label" for="nicImageBack">Nic Image Back side </label>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>User Image</label>
-                                <input id="userImage" type="file" name="userImage" class="form-control form-control-sm" accept=".png, .jpeg, .jpg">
+                                <div class="custom-file">
+                                    <input id="userImage" type="file" name="userImage" class="form-control image form-control-sm" accept=".png, .jpeg, .jpg">
+                                    <label class="custom-file-label" for="userImage"> User Image </label>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>User Level</label>
@@ -116,7 +128,9 @@
                     </form>
                 </div>
             </div>
-            <div class="col-md-9">
+            @endcan
+            @can('view-user')
+            <div class="col-12 col-md-9">
                 <?php $status_color_array = ['Active' => 'badge badge-success', 'Inactive' => 'badge badge-danger', 'Archived' => 'badge badge-secondary'] ?>
                 <div class="card card-success">
                     <div class="card-header">
@@ -131,7 +145,7 @@
                                     <th style="width: 200px">First Name</th>
                                     <th style="width: 200px">Last Name</th>
                                     <th style="width: 200px">Roll</th>
-                                    <th style="width: 200px">e-mail</th>
+                                    <th style="width: 200px">E-mail</th>
                                     <th style="width: 200px">Status</th>
                                     <th style="width: 200px">Action</th>
                                 </tr>
@@ -149,7 +163,7 @@
                                     <td><span class="p-2 {{ ($user->status != '') ? $status_color_array[$user->status] : '' }}">{{ ($user->status != '') ? $user->status : '' }}</span></td>
                                     <td>
                                         <a href="/users/id/{{$user->id}}" class="btn btn-sm btn-primary">Select</a>
-                                        <button class="btn btn-sm btn-danger del" data-id="{{$user->id}}" {{ ($user->id == auth()->user()->id) ? 'disabled' : '' }}><i class="fa fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-danger del" data-id="{{$user->id}}" {{ ($user->id == auth()->user()->id) ? 'disabled' : '' }}> Delete </button>
                                     </td>
                                 </tr>
                                 @endif
@@ -160,6 +174,7 @@
                     </div>
                 </div>
             </div>
+            @endcan
         </div>
     </div>
     </div>
@@ -215,6 +230,7 @@
 <script src="{{ asset('js/userjs/submit.js') }}"></script>
 <script src="{{ asset('js/userjs/user_nic_validation.js') }}"></script>
 <script src="{{ asset('plugins/checkImageSize/jquery.checkImageSize.min.js') }}"></script>
+<script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <!-- Page script -->
 <script>
     $(function() {
@@ -288,12 +304,12 @@
                 'landNo': $('#landNo').val(),
                 'nic': $('#nic').val(),
                 'nicFrontImg': $('#nicImageFront')[0].files[0],
-                'nicBackImg': $('#nicImageFront')[0].files[0],
+                'nicBackImg': $('#nicImageBack')[0].files[0],
                 'userImg': $('#userImage')[0].files[0],
                 'birthDate': $('#birthDate').val(),
                 'level': $('#level').val(),
                 'role': $('#role').val(),
-                'password': $('#user_password').val(),
+                'password': $('#password').val(),
             };
             is_user_email_or_nic_exist(data, function(response) {
                 if (response == true) {

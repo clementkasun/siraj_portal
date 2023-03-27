@@ -3,11 +3,6 @@
 namespace App\Repositories\blogPost;
 
 use Exception;
-use App\Models\Applicant;
-use App\Models\ApplicantEducationalQualification;
-use App\Models\ApplicantLanguage;
-use App\Models\ApplicantPreviousEmployeement;
-use App\Models\ApplicationStaffResponse;
 use App\Models\BlogPost;
 use App\Repositories\blogPost\BlogPostInterface;
 use Illuminate\Support\Facades\Gate;
@@ -20,16 +15,13 @@ class BlogPostRepository implements BlogPostInterface
 {
     public function index()
     {
-        if (Gate::denies('create-blog-post', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view blog post!');
-        }
         return view('blog_post.registration');
     }
 
     public function store($request)
     {
         if (Gate::denies('create-blog-post', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to create blog post!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create blog post!');
         }
         $log = [
             'route' => '/api/save_blog_post',
@@ -83,7 +75,7 @@ class BlogPostRepository implements BlogPostInterface
     public function update($request, $id)
     {
         if (Gate::denies('update-blog-post', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to blog post!');
+            return array('status' => 4, 'msg' => 'You are not authorised to blog post!');
         }
         $log = [
             'route' => '/api/update_blog_post/id/' . $id,
@@ -137,7 +129,7 @@ class BlogPostRepository implements BlogPostInterface
     public function getBlogPost($id)
     {
         // if (Gate::denies('view-blog-post', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view blog post!');
+        //     return array('status' => 4, 'msg' => 'You are not authorised to view blog post!');
         // }
         $log = [
             'route' => '/api/get_blog_post/id/' . $id,
@@ -150,7 +142,7 @@ class BlogPostRepository implements BlogPostInterface
     public function show()
     {
         // if (Gate::denies('view-blog-post', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view blog post!');
+        //     return array('status' => 4, 'msg' => 'You are not authorised to view blog post!');
         // }
         $log = [
             'route' => '/api/get_blog_posts',
@@ -163,7 +155,7 @@ class BlogPostRepository implements BlogPostInterface
     public function getPaginatedBlogPosts($request)
     {
         // if (Gate::denies('view-blog-post', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view blog post!');
+        //     return array('status' => 4, 'msg' => 'You are not authorised to view blog post!');
         // }
         $page = $request->page;
         $limit = 6;
@@ -187,17 +179,17 @@ class BlogPostRepository implements BlogPostInterface
     public function destroy($id)
     {
         if (Gate::denies('delete-blog-post', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete blog post!');
+            return array('status' => 4, 'msg' => 'You are not authorised to delete blog post!');
         }
         $log = [
             'route' => '/api/delete_blog_post/id/' . $id,
             'msg' => 'Successfully deleted the blog post!',
         ];
-        $delete_record = BlogPost::find($id);
-        $delete_record->deleted_by = auth()->user()->id;
-        $delete_record->save();
+        $blog_post = BlogPost::find($id);
+        $blog_post->deleted_by = auth()->user()->id;
+        $blog_post->save();
         
-        $status = $delete_record->delete();
+        $status = $blog_post->delete();
         Log::channel('daily')->info(json_encode($log));
 
         if ($status == true) {

@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <div class="card card-primary">
             <div class="card-header">
-                <h2>Mobile Number Registration</h2>
+                <h2>Mobile Number Response</h2>
             </div>
             <div class="card-body">
                 <div class="row">

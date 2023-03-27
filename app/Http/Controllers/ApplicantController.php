@@ -25,7 +25,7 @@ class ApplicantController extends Controller
     public function index()
     {
         if (Gate::denies('create-offline-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to create applicant!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create applicant!');
         }
         return view('applicant.registration');
     }
@@ -38,7 +38,7 @@ class ApplicantController extends Controller
     public function registeredApplicants(Applicant $applicant)
     {
         if (Gate::denies('view-offline-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view applicant details!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view applicant details!');
         }
         return view('applicant.registered_applicants', array('applicants' => $applicant->orderBy('id', 'DESC')->get(), 'post_status_array' => $applicant->post_status_array));
     }
@@ -46,7 +46,7 @@ class ApplicantController extends Controller
 
     public function viewApplication($id){
         // if (Gate::denies('view-offline-applicant', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to view applicant application!');
+        //     return array('status' => 4, 'msg' => 'You are not authorised to view applicant application!');
         // }
         return $this->applicantRepository->viewApplication($id);
     }
@@ -94,7 +94,7 @@ class ApplicantController extends Controller
     public function editApplicant($id)
     {
         if (Gate::denies('update-offline-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to update applicant details!');
+            return array('status' => 4, 'msg' => 'You are not authorised to update applicant details!');
         }
         return $this->applicantRepository->editApplicant($id);
     }
@@ -109,7 +109,7 @@ class ApplicantController extends Controller
     public function applicantProfile($id)
     {
         if (Gate::denies('view-offline-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view applicant profile!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view applicant profile!');
         }
         return $this->applicantRepository->applicantProfile($id);
     }

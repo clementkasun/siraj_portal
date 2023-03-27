@@ -75,7 +75,37 @@
                         </div>
                         <div class="form-group col-md-4 col-12">
                             <label for="height">Height</label>
-                            <input type="number" id="height" name="height" class="form-control" placeholder="Please enter the height of applicant" min="0" max="200" value="{{( isset($applicant_data->height)) ? $applicant_data->height : '' }}">
+                            <select id="height" name="height" class="custom-select select2 select2-purple">
+                                <option value="">Select the height</option>
+                                <option value="4 Feet 5 Inches">4 Feet 5 Inches</option>
+                                <option value="4 Feet 6 Inches">4 Feet 6 Inches</option>
+                                <option value="4 Feet 7 Inches">4 Feet 7 Inches</option>
+                                <option value="4 Feet 8 Inches">4 Feet 8 Inches</option>
+                                <option value="4 Feet 9 Inches">4 Feet 9 Inches</option>
+                                <option value="4 Feet 10 Inches">4 Feet 10 Inches</option>
+                                <option value="4 Feet 11 Inches">4 Feet 11 Inches</option>
+                                <option value="5 Feet">5 Feet</option>
+                                <option value="5 Feet 1 Inches">5 Feet 1 Inches</option>
+                                <option value="5 Feet 2 Inches">5 Feet 2 Inches</option>
+                                <option value="5 Feet 3 Inches">5 Feet 3 Inches</option>
+                                <option value="5 Feet 4 Inches">5 Feet 4 Inches</option>
+                                <option value="5 Feet 5 Inches">5 Feet 5 Inches</option>
+                                <option value="5 Feet 6 Inches">5 Feet 6 Inches</option>
+                                <option value="5 Feet 7 Inches">5 Feet 7 Inches</option>
+                                <option value="5 Feet 8 Inches">5 Feet 8 Inches</option>
+                                <option value="5 Feet 9 Inches">5 Feet 9 Inches</option>
+                                <option value="5 Feet 10 Inches">5 Feet 10 Inches</option>
+                                <option value="5 Feet 11 Inches">5 Feet 11 Inches</option>
+                                <option value="6 Feet">6 Feet</option>
+                                <option value="6 Feet 1 Inches">6 Feet 1 Inches</option>
+                                <option value="6 Feet 2 Inches">6 Feet 2 Inches</option>
+                                <option value="6 Feet 3 Inches">6 Feet 3 Inches</option>
+                                <option value="6 Feet 4 Inches">6 Feet 4 Inches</option>
+                                <option value="6 Feet 5 Inches">6 Feet 5 Inches</option>
+                                <option value="6 Feet 6 Inches">6 Feet 6 Inches</option>
+                                <option value="6 Feet 7 Inches">6 Feet 7 Inches</option>
+                                <option value="6 Feet 8 Inches">6 Feet 8 Inches</option>
+                            </select>
                         </div>
                         <div class="form-group col-md-4 col-12">
                             <label for="weight">Weight</label>
@@ -138,7 +168,7 @@
                             <label for="applied_country">Country</label>
                             <select class="form-select form-control select2 select2-purple" aria-label="Select the country" id="applied_country" name="applied_country">
                                 <option selected value="">Choose Country</option>
-                                <option value="Srilanka">Sri Lanka</option>
+                                <option value="Sri Lanka">Sri Lanka</option>
                                 <option value="India">India</option>
                                 <option value="Bangladesh">Bangladesh</option>
                                 <option value="Maldives">Maldives</option>
@@ -171,9 +201,9 @@
                                 <option value="Brazil">Brazil</option>
                                 <option value="Panama">Panama</option>
                                 <option value="Cuba">Cuba</option>
-                                <option value="Westindies">West Indies</option>
+                                <option value="West Indies">West Indies</option>
                                 <option value="Austrailia">Austrailia</option>
-                                <option value="New zealand">New Zealand</option>
+                                <option value="Newzealand">New Zealand</option>
                             </select>
                         </div>
                         <div class="form-group col-md-4 col-12">
@@ -197,8 +227,8 @@
                             <input type="text" id="monthly_sallary" name="monthly_sallary" class="form-control" placeholder="Please enter the monthly sallary" value="{{( isset($applicant_data->monthly_sallary)) ? $applicant_data->monthly_sallary : '' }}">
                         </div>
                         <div class="form-group col-md-4 col-12">
-                            <label for="commision_price">Promised Commission Price</label>
-                            <input type="text" id="commision_price" name="commision_price" class="form-control" placeholder="Please enter the commission price" value="{{( isset($applicant_data->commision_price)) ? $applicant_data->commision_price : '' }}">
+                            <label for="commision_price">Promised Commission Price <code>(Ex: 20000.00)</code></label>
+                            <input type="number" id="commision_price" name="commision_price" class="form-control" placeholder="Please enter the commission price" min="0" value="{{( isset($applicant_data->commision_price)) ? $applicant_data->commision_price : '' }}">
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -311,6 +341,24 @@
                             </div>
                         </div>
                         <div class="form-group col-md-4 col-12">
+                            <label for="other_pdf">Other PDF</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" id="other_pdf" name="other_pdf" class="form-control" accept=".pdf">
+                                    <label class="custom-file-label" for="other_pdf">Other PDF</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 col-12">
+                            <label for="hform_pdf">H-FORM PDF</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" id="hform_pdf" name="hform_pdf" class="form-control" accept=".pdf">
+                                    <label class="custom-file-label" for="hform_pdf">H-FORM PDF</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 col-12">
                             <label for="applicant_image_passport">Applicant Passport Size Image <code>(300*300 pixels)</code></label>
                             <div class="input-group">
                                 <div class="custom-file">
@@ -398,6 +446,7 @@
     var COMPLEXION = "{{ isset($applicant_data->complexion) ? $applicant_data->complexion : '' }}";
     var COUNTRY = "{{ isset($applicant_data->applied_country) ? $applicant_data->applied_country : '' }}";
     var POST_STATUS = "{{ isset($applicant_data->post_status) ? $applicant_data->post_status : '' }}";
+    var HEIGHT = "{{ isset($applicant_data->height) ? $applicant_data->height : '' }}";
     var DECORATING = "{{ isset($applicant_data->decorating) ? $applicant_data->decorating : ''  }}";
     var BABY_SITTING = "{{ isset($applicant_data->baby_sitting) ? $applicant_data->baby_sitting : '' }}";
     var CLEANING = "{{ isset($applicant_data->cleaning) ? $applicant_data->cleaning : '' }}";
@@ -407,6 +456,7 @@
     var DRIVING = "{{ isset($applicant_data->driving) ? $applicant_data->driving : '' }}";
 
     $(function() {
+        
         $("#applicant_image_passport").checkImageSize({
             minWidth: 300,
             minHeight: 300,
@@ -415,6 +465,7 @@
             showError: true,
             ignoreError: false
         });
+
         $("#applicant_image_full_size").checkImageSize({
             minWidth: 436,
             minHeight: 580,
@@ -426,12 +477,15 @@
         bsCustomFileInput.init();
 
         if (APPLICANT_ID != '') {
+
             $('#sex').val(GENDER);
             $('#maritial_status').val(MARITIAL_STATUS);
             $('#post_status').val(POST_STATUS);
             $('#religion').val(RELIGION);
             $('#complexion').val(COMPLEXION);
             $('#applied_country').val(COUNTRY);
+            $('#height').val(HEIGHT);
+
             $('#save_applicant').addClass('d-none');
             $('#update_applicant').removeClass('d-none');
 

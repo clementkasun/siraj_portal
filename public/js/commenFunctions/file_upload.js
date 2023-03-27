@@ -40,13 +40,20 @@ function ulploadFileWithData(URL, dataArray, callBack, metod = false) {
         dataType: "json",
         processData: false
     }).done(function (response) {
+        if(response.status == 4){
+            Toast.fire({
+                type: 'warning',
+                title: response.msg
+            });
+            return false;
+        }
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(response);
         }
     }).fail(function (jqXHR, exception) {
         let msg = responseMsg(jqXHR, exception);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            // callBack(msg);
+            return msg;
         }
     });
 }
@@ -72,8 +79,10 @@ function responseMsg(jqXHR, exception) {
     } else {
         msg = 'Uncaught Error.\n' + jqXHR.responseText;
     }
-    alert(msg);
-    return msg;
+    Toast.fire({
+        type: 'error',
+        title: msg
+    });
 }
 
 $("input[type='file']").on("change", function () {

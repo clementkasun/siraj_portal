@@ -7,6 +7,7 @@
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
+        @can('create-vacancy')
         <div class="card card-primary">
             <div class="card-header">
                 <h2>Vacancy Registration</h2>
@@ -30,40 +31,40 @@
                             <label for="location">Country *</label>
                             <select class="form-select form-control" aria-label="Select the country" id="location" name="location">
                                 <option selected value="">Choose Country</option>
-                                <option value="srilanka">Sri Lanka</option>
-                                <option value="india">India</option>
-                                <option value="bangladesh">Bangladesh</option>
-                                <option value="maldives">Maldives</option>
-                                <option value="singapore">Singapore</option>
-                                <option value="malaysia">Malaysia</option>
-                                <option value="thailand">Thailand</option>
-                                <option value="china">China</option>
-                                <option value="kuwait">Kuwait</option>
-                                <option value="quatar">Quatar</option>
-                                <option value="lebonon">Lebanon</option>
-                                <option value="turkey">Turkey</option>
-                                <option value="uae">UAE</option>
-                                <option value="dubai">Dubai</option>
-                                <option value="baharen">Baharen</option>
-                                <option value="iran">Iran</option>
-                                <option value="syria">Syria</option>
-                                <option value="afghanisthan">Afghnisthan</option>
-                                <option value="ishrael">Ishrael</option>
-                                <option value="pakisthan">Pakisthan</option>
-                                <option value="nepal">Nepal</option>
-                                <option value="russia">Russia</option>
-                                <option value="usa">USA</option>
-                                <option value="spain">Spain</option>
-                                <option value="france">France</option>
-                                <option value="germany">Germaney</option>
-                                <option value="ukraine">Ukraine</option>
-                                <option value="poland">Poland</option>
-                                <option value="italy">Italy</option>
-                                <option value="uk">UK</option>
-                                <option value="brazil">Brazil</option>
-                                <option value="panama">Panama</option>
-                                <option value="cuba">Cuba</option>
-                                <option value="westindies">West Indies</option>
+                                <option value="Sri Lanka">Sri Lanka</option>
+                                <option value="India">India</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                                <option value="Maldives">Maldives</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Malaysia">Malaysia</option>
+                                <option value="Thailand">Thailand</option>
+                                <option value="China">China</option>
+                                <option value="Kuwait">Kuwait</option>
+                                <option value="Quatar">Quatar</option>
+                                <option value="Lebonon">Lebanon</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="UAE">UAE</option>
+                                <option value="Dubai">Dubai</option>
+                                <option value="Baharen">Baharen</option>
+                                <option value="Iran">Iran</option>
+                                <option value="Syria">Syria</option>
+                                <option value="Afghanisthan">Afghnisthan</option>
+                                <option value="Ishrael">Ishrael</option>
+                                <option value="Pakisthan">Pakisthan</option>
+                                <option value="Nepal">Nepal</option>
+                                <option value="Russia">Russia</option>
+                                <option value="USA">USA</option>
+                                <option value="Spain">Spain</option>
+                                <option value="France">France</option>
+                                <option value="Germany">Germaney</option>
+                                <option value="Ukraine">Ukraine</option>
+                                <option value="Poland">Poland</option>
+                                <option value="Italy">Italy</option>
+                                <option value="UK">UK</option>
+                                <option value="Brazil">Brazil</option>
+                                <option value="Panama">Panama</option>
+                                <option value="Cuba">Cuba</option>
+                                <option value="West Indies">West Indies</option>
                                 <option value="Austrailia">Austrailia</option>
                                 <option value="Newzealand">New Zealand</option>
                             </select>
@@ -85,6 +86,8 @@
                 </form>
             </div>
         </div>
+        @endcan
+        @can('view-vacancy')
         <div class="card card-success">
             <div class="card-header">
                 <h2>Vacancies</h2>
@@ -108,6 +111,7 @@
                 </table>
             </div>
         </div>
+        @endcan
     </div>
 </section>
 @endsection
@@ -131,6 +135,5 @@
         showError: true,
         ignoreError: false
     });
-
 </script>
 @endsection

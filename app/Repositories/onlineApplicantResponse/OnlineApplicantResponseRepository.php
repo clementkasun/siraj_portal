@@ -13,27 +13,34 @@ use Illuminate\Support\Facades\Storage;
 
 class OnlineApplicantResponseRepository implements OnlineApplicantResponseInterface
 {
+    public function index($id)
+    {
+        // if (Gate::denies('update-online-applicant', auth()->user())) {
+        //     return array('status' => 4, 'msg' => 'You are not authorised to update online applicant related details!');
+        // }
+        return view('applicant.online_applicant_response', ['online_applicant_id' => $id]);
+    }
+
     public function store($request)
     {
-        if (Gate::denies('create-application-staff-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to create online application staff response!');
-        }
+        // if (Gate::denies('update-online-applicant', auth()->user())) {
+        //     return array('status' => 4, 'msg' => 'You are not authorised to update online applicant related details!');
+        // }
         $log = [
             'route' => '/api/save_online_applicant_resp',
         ];
         try {
             $request->validate([
-                'name',
                 'designation',
                 'response',
                 'online_applicant_id'
             ]);
 
             OnlineApplicantResponse::create([
-                'name' => $request->name,
-                'designation' => $request->designation,
+                'designation' => auth()->user()->role_id,
                 'response' => $request->response,
-                'online_applicant_id' => $request->online_applicant_id
+                'online_applicant_id' => $request->online_applicant_id,
+                'added_by' => auth()->user()->id
             ]);
 
             // $user = auth()->user();
@@ -50,5 +57,16 @@ class OnlineApplicantResponseRepository implements OnlineApplicantResponseInterf
 
             return array('status' => 0, 'msg' => 'Saving online applicant was unsuccessful!');
         }
+    }
+
+    public function show()
+    {
+        // if (Gate::denies('update-online-applicant', auth()->user())) {
+        //     return array('status' => 4, 'msg' => 'You are not authorised to update online applicant related details!');
+        // }
+        $log = [
+            'route' => '/api/get_online_applicant_responses',
+        ];
+        return OnlineApplicantResponse::with(['OnlineApplicant', 'Designation', 'AddedBy'])->get();
     }
 }

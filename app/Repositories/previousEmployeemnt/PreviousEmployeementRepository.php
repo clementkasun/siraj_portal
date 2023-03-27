@@ -16,7 +16,7 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
     public function store($request)
     {
         if (Gate::denies('create-previous-emp', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to create previous employeement!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create previous employeement!');
         }
         $log = [
             'route' => '/api/save_previous_employeement',
@@ -58,7 +58,7 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
     public function update($request, $id)
     {
         if (Gate::denies('update-previous-emp', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to update previous employeement!');
+            return array('status' => 4, 'msg' => 'You are not authorised to update previous employeement!');
         }
         $log = [
             'route' => '/api/update_previous_employeement/id/' . $id,
@@ -99,7 +99,7 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
     public function getPreviousEmployeement($id)
     {
         if (Gate::denies('view-previous-employeement', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view previous employeement!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view previous employeement!');
         }
         $log = [
             'route' => '/api/get_previous_experience/id/'.$id,
@@ -112,7 +112,7 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
     public function show($id)
     {
         if (Gate::denies('view-previous-emp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view previous employeement!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view previous employeement!');
         }
         $log = [
             'route' => '/api/get_previous_employeements/id/'>$id,
@@ -125,7 +125,7 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
     public function destroy($id)
     {
         if (Gate::denies('delete-previous-emp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete previous employeement!');
+            return array('status' => 4, 'msg' => 'You are not authorised to delete previous employeement!');
         }
         $log = [
             'route' => '/api/delete_previous_employeement/id/' . $id,

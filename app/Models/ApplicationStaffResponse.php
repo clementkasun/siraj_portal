@@ -20,7 +20,8 @@ class ApplicationStaffResponse extends Model
         'staff_mem_name',
         'designation',
         'response',
-        'applicant_id'
+        'applicant_id',
+        'added_by'
     ];
 
     public function Applicant(){

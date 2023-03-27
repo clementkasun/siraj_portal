@@ -25,6 +25,7 @@ class OnlineApplicant extends Model
         'phone_no_01',
         'phone_no_02',
         'job_type',
+        'added_by'
     ];
 
     public function User()
