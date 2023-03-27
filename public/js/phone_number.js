@@ -97,6 +97,7 @@ edit_phone_number = (id) => {
 }
 
 load_phone_number_tbl = (privillages = []) => {
+    console.log(privillages);
     let index = 1;
     let html = '';
     ajaxRequest('get', '/api/get_phone_numbers', null, function (result) {

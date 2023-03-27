@@ -80,7 +80,12 @@
     var USER_ID = '{{auth()->user()->id}}';
     $(function() {
         bsCustomFileInput.init();
-        load_blog_posts();
+        let privillages = {
+            'is_read' : '{{ Gate::allows("view-blog-post") }}',
+            'is_update' : '{{ Gate::allows("update-blog-post") }}',
+            'is_delete' : '{{ Gate::allows("delete-blog-post") }}'
+        };
+        load_blog_posts(privillages);
 
         $("#post_image").checkImageSize({
             minWidth: 805,
