@@ -3,7 +3,6 @@ $('#save_online_app_response').click(function () {
         return false;
     }
     let data = {
-        'name': $('#name').val(),
         'response': $('#response').val(),
         'online_appicant_id': ONLINE_APPLICANT_ID
     };

@@ -23,9 +23,6 @@ class ContactRepository implements ContactInterface
 
     public function store($request)
     {
-        $log = [
-            'route' => '/api/save_contact',
-        ];
         try {
             $request->validate([
                 'contact_name' => 'required|string|max:255',
@@ -44,7 +41,6 @@ class ContactRepository implements ContactInterface
                 'phone_number' => $request->phone_number,
                 'subject' => $request->subject,
                 'message' => $request->message,
-                'added_by' => auth()->user()->id
             ]);
 
             if ($request->hasFile('file')) {
@@ -55,9 +51,13 @@ class ContactRepository implements ContactInterface
                 $contact->save();
             }
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             $log['msg'] = 'Saving contact is successful!';
             Log::channel('daily')->info(json_encode($log));
 
@@ -73,14 +73,20 @@ class ContactRepository implements ContactInterface
 
     public function show()
     {
-        if (Gate::denies('view-contact-us', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view contacts!');
+        try {
+            if (Gate::denies('view-contact-us', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view contacts!');
+            }
+            $log = [
+                'route' => '/api/get_contacts',
+                'msg' => 'Successfully accessed the contacts!',
+            ];
+            Log::channel('daily')->info(json_encode($log));
+            return Contact::all();
+        } catch (Exception $ex) {
+            $log['msg'] = 'Accessing contact details was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        $log = [
-            'route' => '/api/get_contacts',
-            'msg' => 'Successfully accessed the contacts!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return Contact::all();
     }
 }

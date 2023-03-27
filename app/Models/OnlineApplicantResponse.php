@@ -17,7 +17,6 @@ class OnlineApplicantResponse extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
         'designation',
         'response',
         'online_applicant_id',

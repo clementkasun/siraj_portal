@@ -36,7 +36,11 @@
                             <td>{{ $online_applicant->phone_no_01 }}</td>
                             <td>{{ $online_applicant->phone_no_02 }}</td>
                             <td>{{ $online_applicant->job_type }}</td>
+                            @can('update-online-applicant')
                             <td><a href="/online_applicant_response/id/{{ $online_applicant->id }}" class="btn btn-primary btn-sm m-1">Respond</a></td>
+                            @else
+                            <td><a href="" class="btn btn-primary btn-sm m-1" style="pointer-events: none; cursor: default;">Respond</a></td>
+                            @endcan
                         </tr>
                         @empty
                         <tr>

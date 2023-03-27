@@ -19,10 +19,6 @@
                     <div class="col-md-3">
                         <form id="online_applicant_response_form">
                             <div class="form-group">
-                                <label for="name"> Name *</label>
-                                <div><input type="text" class="form-control" name="name" id="name" placeholder="Please enter the name" required></div>
-                            </div>
-                            <div class="form-group">
                                 <label for="response">Response *</label>
                                 <div><input type="text" class="form-control" name="response" id="response" placeholder="Please enter the phone response" required></div>
                             </div>

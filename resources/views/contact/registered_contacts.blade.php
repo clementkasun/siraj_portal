@@ -20,8 +20,8 @@
                         <th>Email</th>
                         <th>Phone No</th>
                         <th>Subject</th>
-                        <th>File</th>
                         <th>Message</th>
+                        <th>File</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
@@ -33,9 +33,17 @@
                             <td style="width: 15em">{{ $contact->email }}</td>
                             <td>{{ $contact->phone_number }}</td>
                             <td>{{ $contact->subject }}</td>
-                            <td><a href="{{ ($contact->file != '') ? url('/storage/'.$contact->file) : '' }}" class="btn btn-primary btn-sm pl-5 pr-5" target="_blank">File</a></td>
                             <td style="width: 10em">{{ $contact->message }}</td>
+                            @can('view-contact')
+                            <td><a href="{{ ($contact->file != '') ? url('/storage/'.$contact->file) : '' }}" class="btn btn-primary btn-sm pl-5 pr-5" target="_blank">File</a></td>
+                            @else
+                            <td><a href="#" class="btn btn-primary btn-sm pl-5 pr-5" target="_blank" style="pointer-events: none; cursor: default;">File</a></td>
+                            @endcan
+                            @can('update-contact')
                             <td><a href="/contact_response/id/{{ $contact->id }}" class="btn btn-success btn-sm">Respond</a></td>
+                            @else
+                            <td><a href="#" class="btn btn-success btn-sm" style="pointer-events: none; cursor: default;">Respond</a></td>
+                            @endcan
                         </tr>
                         @empty
                         <tr>

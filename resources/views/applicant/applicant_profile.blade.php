@@ -347,6 +347,7 @@
                                         </div>
                                     </div> -->
                                     <!-- /.tab-pane -->
+                                    @can('update-offline-applicant')
                                     <div class="tab-pane" id="previous_employeements">
                                         <div class="row">
                                             @if($previous_emp_count < 4)
@@ -550,6 +551,7 @@
                                             <span class="col-4">Available Commission:</span><span class="col-8"><b>{{ $commision_price - $paid_total_commision }}</b></span>
                                         </div>
                                     </div>
+                                    @endcan
                                 </div>
                                 <!-- /.tab-content -->
                             </div>

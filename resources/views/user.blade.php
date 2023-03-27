@@ -234,7 +234,7 @@
 <!-- Page script -->
 <script>
     $(function() {
-        load_deleted_user_table();
+        // load_deleted_user_table();
 
         $("#nicImageFront").checkImageSize({
             minWidth: 500,
@@ -264,13 +264,6 @@
 
         $('.levelCombo').change(function() {
             loadRoles(this.value, 'rollCombo');
-        });
-
-        $(document).on('click', '.btnAction', function() {
-            //var row = JSON.parse(decodeURIComponent($(this).data('row')));
-            if (confirm('Are you sure you want to restore this user ?')) {
-                activeDeletedUser($(this).val());
-            }
         });
 
         $(document).on('click', '.del', function() {

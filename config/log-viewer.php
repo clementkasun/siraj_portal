@@ -59,8 +59,11 @@ return [
     */
 
     'middleware' => [
-        'web',
+        'web', 
+        'auth',
         \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
+        'routeLog',
+        'authLog'
     ],
     
     /*
@@ -75,6 +78,8 @@ return [
     'api_middleware' => [
         \Opcodes\LogViewer\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
+        'routeLog',
+        'authLog'
     ],
 
     /*
@@ -90,6 +95,12 @@ return [
     'hosts' => [
         'local' => [
             'name' => ucfirst(env('APP_ENV', 'local')),
+            'auth' => [      // Example of Bearer token auth
+                'token' => env('APP_KEY'),
+            ],
+            'headers' => [
+                'X-Foo' => 'Bar',
+            ],
         ],
 
         // 'staging' => [
@@ -101,16 +112,16 @@ return [
         //     ],
         // ],
         //
-        // 'production' => [
-        //     'name' => 'Production',
-        //     'host' => 'https://example.com/log-viewer',
-        //     'auth' => [      // Example of Bearer token auth
-        //         'token' => env('LOG_VIEWER_PRODUCTION_TOKEN'),
-        //     ],
-        //     'headers' => [
-        //         'X-Foo' => 'Bar',
-        //     ],
-        // ],
+        'production' => [
+            'name' => 'Production',
+            'host' => 'https://portal.sirajmanpower.lk/',
+            'auth' => [      // Example of Bearer token auth
+                'token' => env('APP_KEY'),
+            ],
+            'headers' => [
+                'X-Foo' => 'Bar',
+            ],
+        ],
     ],
 
     /*

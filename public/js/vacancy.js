@@ -90,7 +90,7 @@ delete_vacancy = (vacancy_id) => {
     });
 }
 
-load_vacancy_table = () => {
+load_vacancy_table = (privillages = []) => {
     let index = 1;
     let html = '';
     ajaxRequest('get', '/api/get_vacancies', null, function(result) {
@@ -104,8 +104,16 @@ load_vacancy_table = () => {
                 html += '<td style="width: 15em">' + vacancy.salary + '</td>';
                 html += '<td style="width: 15em">' + vacancy.period + '</td>';
                 html += '<td style="width: 15em">' + vacancy.location + '</td>';
-                html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + vacancy.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + vacancy.id + '"> Delete </button></td>';
+                if(privillages['is_update'] == '1'){
+                    html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + vacancy.id + '"> Edit </button>';
+                }else{
+                    html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" disabled> Edit </button>';
+                }
+                if(privillages['is_delete'] == '1'){
+                    html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + vacancy.id + '"> Delete </button></td>';
+                }else{
+                    html += '<button type="button" class="btn btn-danger btn-sm delete m-1" disabled> Delete </button></td>';
+                }
             });
             $('#vacancy_tbl tbody').html(html);
             $('#vacancy_tbl').DataTable({

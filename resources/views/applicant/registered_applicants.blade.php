@@ -43,7 +43,9 @@
                             <td>{{ Carbon::parse($applicant->created_at) }}</td>
                             <td>
                                 <a href="/applicant_profile/id/{{ $applicant->id }}" class="btn btn-success btn-sm">Profile</a>
+                                @can('update-offline-applicant')
                                 <a href="/edit_applicant/id/{{ $applicant->id }}" class="btn btn-warning btn-sm">Edit</a>
+                                @endcan
                                 <a href="/view_application/id/{{ $applicant->id }}" class="btn btn-primary btn-sm">View Application</a>
                                 <!-- <button type="button" class="btn btn-danger del" data-id="">Delete</button> -->
                             </td>

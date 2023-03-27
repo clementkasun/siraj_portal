@@ -124,7 +124,11 @@
 <script>
     $(document).ready(function() {
         bsCustomFileInput.init();
-        load_vacancy_table();
+        let privillages = {
+            'is_update' : '{{ Gate::allows("update-vacancy") }}',
+            'is_delete' : '{{ Gate::allows("delete-phone-vacancy") }}'
+        };
+        load_vacancy_table(privillages);
     });
 
     $("#vacancy_image").checkImageSize({

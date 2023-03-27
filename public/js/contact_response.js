@@ -3,8 +3,6 @@ $('#save_contact_response').click(function () {
         return false;
     }
     let data = {
-        'name': $('#name').val(),
-        // 'designation': $('#designation').val(),
         'response': $('#response').val(),
         'contact_id': CONTACT_ID
     };
@@ -33,8 +31,6 @@ update_contact_response = (contact_resp_id) => {
         return false;
     }
     let data = {
-        'name': $('#name').val(),
-        // 'designation': $('#designation').val(),
         'response': $('#response').val(),
         'contact_id': CONTACT_ID
     };
@@ -54,7 +50,7 @@ update_contact_response = (contact_resp_id) => {
     });
 }
 
-load_contact_response = () => {
+load_contact_response = (privillages = []) => {
     let index = 1;
     let html = '';
     ajaxRequest('get', '/api/get_contact_responses', null, function (result) {
@@ -65,8 +61,16 @@ load_contact_response = () => {
                 html += '<td style="width: 15em">' + contact_response.name + '</td>';
                 html += '<td>' + contact_response.designation.name + '</td>';
                 html += '<td>' + contact_response.response + '</td>';
-                html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + contact_response.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger del btn-sm m-1" data-id="' + contact_response.id + '"> Delete </button></td>';
+                if (privillages['is_update'] == '1') {
+                    html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + contact_response.id + '"> Edit </button>';
+                }else{
+                    html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" disabled> Edit </button>';
+                }
+                if (privillages['is_delete'] == '1') {
+                    html += '<button type="button" class="btn btn-danger del btn-sm m-1" data-id="' + contact_response.id + '"> Delete </button></td>';
+                }else{
+                    html += '<button type="button" class="btn btn-danger del btn-sm m-1" disabled> Delete </button></td>';
+                }
             });
             $('#contact_resp_tbl tbody').html(html);
             $('#contact_resp_tbl').DataTable({
