@@ -94,11 +94,14 @@
                             </div>
                         </div>
                         <div class="card-footer">
+                            @can('update-user')
                             <button id="update_user" type="button" class="btn btn-warning">Update</button>
+                            @endcan
                         </div>
                     </form>
                 </div>
             </div>
+            @can('update-user')
             <div class="col-md-8">
                 <form method="POST" action="/users/password/{{$user['id']}}">
                     <div class="card card-success">
@@ -152,6 +155,7 @@
                     </div>
                 </form>
             </div>
+            @endcan
         </div>
     </div>
 </section>
@@ -222,7 +226,7 @@
                 'mobileNo': $('#mobileNo').val(),
                 'landNo': $('#landNo').val(),
                 'nicFrontImg': $('#nicImageFront')[0].files[0],
-                'nicBackImg': $('#nicImageFront')[0].files[0],
+                'nicBackImg': $('#nicImageBack')[0].files[0],
                 'userImg': $('#userImage')[0].files[0],
                 'birthDate': $('#birthDate').val(),
                 'role': $('#role').val(),

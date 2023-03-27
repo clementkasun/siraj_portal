@@ -145,8 +145,8 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if (Gate::denies('update-user', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to update user!');
+        if (Gate::denies('view-user', auth()->user())) {
+            return array('status' => 2, 'msg' => 'You are not authorised to view user!');
         }
         $user = User::findOrFail($id);
         $level = $user->Role()->with('Level')->first()->Level;

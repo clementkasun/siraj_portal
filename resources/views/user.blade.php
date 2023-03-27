@@ -24,7 +24,8 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3">
+            @can('create-user')
+            <div class="col-12 col-md-3">
                 <div class="card card-success">
                     <div class="card-header">
                         <label>User Register</label>
@@ -116,7 +117,9 @@
                     </form>
                 </div>
             </div>
-            <div class="col-md-9">
+            @endcan
+            @can('view-user')
+            <div class="col-12 col-md-9">
                 <?php $status_color_array = ['Active' => 'badge badge-success', 'Inactive' => 'badge badge-danger', 'Archived' => 'badge badge-secondary'] ?>
                 <div class="card card-success">
                     <div class="card-header">
@@ -149,7 +152,7 @@
                                     <td><span class="p-2 {{ ($user->status != '') ? $status_color_array[$user->status] : '' }}">{{ ($user->status != '') ? $user->status : '' }}</span></td>
                                     <td>
                                         <a href="/users/id/{{$user->id}}" class="btn btn-sm btn-primary">Select</a>
-                                        <button class="btn btn-sm btn-danger del" data-id="{{$user->id}}" {{ ($user->id == auth()->user()->id) ? 'disabled' : '' }}><i class="fa fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-danger del" data-id="{{$user->id}}" {{ ($user->id == auth()->user()->id) ? 'disabled' : '' }}> Delete </button>
                                     </td>
                                 </tr>
                                 @endif
@@ -160,6 +163,7 @@
                     </div>
                 </div>
             </div>
+            @endcan
         </div>
     </div>
     </div>
@@ -288,7 +292,7 @@
                 'landNo': $('#landNo').val(),
                 'nic': $('#nic').val(),
                 'nicFrontImg': $('#nicImageFront')[0].files[0],
-                'nicBackImg': $('#nicImageFront')[0].files[0],
+                'nicBackImg': $('#nicImageBack')[0].files[0],
                 'userImg': $('#userImage')[0].files[0],
                 'birthDate': $('#birthDate').val(),
                 'level': $('#level').val(),

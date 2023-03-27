@@ -32,7 +32,7 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
   //web routes for rolls , users and privillages
   Route::middleware('can:view-user')->get('/users_list', [UserController::class, 'index']);
-  Route::middleware('can:update-user')->get('/users/id/{id}', [UserController::class, 'edit']);
+  Route::middleware('can:view-user')->get('/users/id/{id}', [UserController::class, 'edit']);
   Route::get('/logout', [UserController::class, 'logout']); //logout user
   Route::middleware('can:update-user')->put('/users/my_password', [UserController::class, 'changeMyPass']);
   Route::middleware('can:update-user')->put('/users/password/{id}', [UserController::class, 'storePassword']);
@@ -58,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
   //web routes for the vacancy
-  Route::middleware('can:create-vacancy')->get('/vacancy_registration', [VacancyController::class, 'index'])->name('vacancy_registration');
+  Route::middleware('can:view-vacancy')->get('/vacancy_registration', [VacancyController::class, 'index'])->name('vacancy_registration');
   
   //web routes for the applicants
   Route::middleware('can:create-offline-applicant')->get('/applicant_registration', [ApplicantController::class, 'index']);
@@ -74,7 +74,7 @@ Route::middleware(['auth'])->group(function () {
   Route::middleware('can:view-contact-us-resp')->get('/contact_response/id/{contact_id}', [ContactResponseController::class, 'index']);
 
   //blog post registration
-  Route::middleware('can:create-blog-post')->get('/blog_post_registration', [BlogPostController::class, 'index']);
+  Route::middleware('can:view-blog-post')->get('/blog_post_registration', [BlogPostController::class, 'index']);
 
   //registered online applicants 
   Route::middleware('can:view-online-applicant')->get('/registered_online_applicants', [OnlineApplicantController::class, 'index']);

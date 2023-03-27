@@ -86,7 +86,7 @@ use App\Models\Candidate;
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    @can('create-phone-number')
+                    @can('view-phone-number')
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ url('/phone_number_registration') }}" class="nav-link {{ Request::is('phone_number_registration') ? 'active' : '' }}">
@@ -107,7 +107,7 @@ use App\Models\Candidate;
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @can('create-user')
+                        @can('view-user')
                         <li class="nav-item">
                             <a href="/users_list" class="nav-link {{ Request::is('users_list') ? 'active' : '' }}">
                                 <i class="fas fa-users-cog nav-icon"></i>
@@ -117,7 +117,7 @@ use App\Models\Candidate;
                         @endcan
                     </ul>
                 </li>
-                @can('create-blog-post')
+                @can('view-blog-post')
                 <li class="nav-header">FRONT WEBSITE</li>
                 <li class="nav-item">
                     <a href="{{ url('/blog_post_registration') }}" class="nav-link {{ Request::is('blog_post_registration') ? 'active' : '' }}">
@@ -126,10 +126,10 @@ use App\Models\Candidate;
                     </a>
                 </li>
                 @endcan
-                @can('create-vacancy')
+                @can('view-vacancy')
                 <li class="nav-item">
                     <a href="{{ url('/vacancy_registration') }}" class="nav-link {{ Request::is('vacancy_registration') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-people-carry"></i>
+                        <i class="nav-icon fas fa-briefcase"></i>
                         <p>Vacancy</p>
                     </a>
                 </li>

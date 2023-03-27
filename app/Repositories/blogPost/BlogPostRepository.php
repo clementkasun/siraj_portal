@@ -20,9 +20,6 @@ class BlogPostRepository implements BlogPostInterface
 {
     public function index()
     {
-        if (Gate::denies('create-blog-post', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view blog post!');
-        }
         return view('blog_post.registration');
     }
 

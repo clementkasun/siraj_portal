@@ -7,6 +7,7 @@
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
+        @can('create-vacancy')
         <div class="card card-primary">
             <div class="card-header">
                 <h2>Vacancy Registration</h2>
@@ -85,6 +86,8 @@
                 </form>
             </div>
         </div>
+        @endcan
+        @can('view-vacancy')
         <div class="card card-success">
             <div class="card-header">
                 <h2>Vacancies</h2>
@@ -108,6 +111,7 @@
                 </table>
             </div>
         </div>
+        @endcan
     </div>
 </section>
 @endsection

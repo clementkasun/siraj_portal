@@ -15,6 +15,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    @can('create-phone-number')
                     <div class="col-md-3">
                         <form id="phone_number_form">
                             <div class="form-group">
@@ -31,6 +32,8 @@
                             </div>
                         </form>
                     </div>
+                    @endcan
+                    @can('view-phone-number')
                     <div class="col-md-9">
                         <table class="table table-striped" id="phone_number_tbl">
                             <thead>
@@ -49,6 +52,7 @@
                             </tbody>
                         </table>
                     </div>
+                    @endcan
                 </div>
             </div>
         </div>

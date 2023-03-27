@@ -13,6 +13,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    @can('create-blog-post')
                     <div class="col-md-3">
                         <div class="card card-light">
                             <div class="card-body">
@@ -42,6 +43,8 @@
                             </div>
                         </div>
                     </div>
+                    @endcan
+                    @can('view-blog-post')
                     <div class="col-md-9">
                         <table class="table table-striped" id="blog_post_tbl">
                             <thead>
@@ -60,6 +63,7 @@
                             </tbody>
                         </table>
                     </div>
+                    @endcan
                 </div>
             </div>
         </div>
