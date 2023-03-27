@@ -1,5 +1,6 @@
 @section('sidebar')
 <?php
+
 use App\Models\OnlineApplicant;
 use App\Models\Contact;
 use App\Models\Candidate;
@@ -151,6 +152,14 @@ use App\Models\Candidate;
                 </li>
                 @endcan
                 <li class="nav-header">SETTINGS</li>
+                @can('view-log-routes')
+                <li class="nav-item">
+                    <a href="/log-viewer" class="nav-link {{ Request::is('logout') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-history"></i>
+                        <p>View Log Routes</p>
+                    </a>
+                </li>
+                @endcan
                 @can('view-user')
                 <li class="nav-item">
                     <a href="{{ url('/user_profile') }}" class="nav-link {{ Request::is('user_profile') ? 'active' : '' }}">
@@ -160,7 +169,7 @@ use App\Models\Candidate;
                 </li>
                 @endcan
                 <li class="nav-item">
-                    <a href="/logout" class="nav-link {{ Request::is('logout') ? 'active' : '' }}">
+                    <a href="/logout_user" class="nav-link {{ Request::is('logout') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>Logout</p>
                     </a>

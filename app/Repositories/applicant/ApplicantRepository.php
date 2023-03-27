@@ -4,6 +4,7 @@ namespace App\Repositories\applicant;
 
 use Exception;
 use App\Models\Applicant;
+use App\Models\ApplicantPreviousEmployeement;
 use App\Models\Commission;
 use App\Repositories\applicant\ApplicantInterface;
 use Illuminate\Support\Facades\Gate;
@@ -23,7 +24,7 @@ class ApplicantRepository implements ApplicantInterface
     public function store($request)
     {
         if (Gate::denies('create-offline-applicant', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to create applicants  as staff member!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create applicants  as staff member!');
         }
         $log = [
             'route' => '/api/save_applicant',
@@ -41,7 +42,7 @@ class ApplicantRepository implements ApplicantInterface
                 'passport_exp_date' => 'nullable|sometimes|string|max: 255',
                 'birth_date' => 'nullable|sometimes|string|max: 255',
                 'gender' => 'nullable|sometimes|string|max: 8',
-                'height' => 'nullable|sometimes|string|max: 5',
+                'height' => 'nullable|sometimes|string|max: 20',
                 'weight' => 'nullable|sometimes|string|max: 5',
                 'complexion' =>  'nullable|sometimes|string|max: 255',
                 'nationality' => 'nullable|sometimes|string|max: 255',
@@ -66,6 +67,8 @@ class ApplicantRepository implements ApplicantInterface
                 'ticket_pdf' => 'nullable|sometimes',
                 'applicant_image' => 'nullable|sometimes',
                 'agency_agreement_pdf' => 'nullable|sometimes',
+                'other_pdf' => 'nullable|sometimes',
+                'hform_pdf' => 'nullable|sometimes',
                 'commision_price' => 'nullable|string',
                 'decorating' => 'nullable|sometimes|string',
                 'baby_sitting' => 'nullable|sometimes|string',
@@ -125,7 +128,9 @@ class ApplicantRepository implements ApplicantInterface
                 'personal_form_pdf' => $request->personal_form_pdf,
                 'job_order_pdf' => $request->job_order_pdf,
                 'ticket_pdf' => $request->ticket_pdf,
-                'agency_agreement_pdf' => $request->agency_agreement_pdf
+                'agency_agreement_pdf' => $request->agency_agreement_pdf,
+                'other_pdf' => $request->other_pdf,
+                'hform_pdf' => $request->hform_pdf
             ];
             
             foreach ($documents as $key => $document) {
@@ -187,7 +192,7 @@ class ApplicantRepository implements ApplicantInterface
     public function editApplicant($id)
     {
         if (Gate::denies('update-offline-applicant', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to update the applicant as a staff member!');
+            return array('status' => 4, 'msg' => 'You are not authorised to update the applicant as a staff member!');
         }
         return view('applicant.registration', array('applicant_data' => Applicant::find($id)));
     }
@@ -195,7 +200,7 @@ class ApplicantRepository implements ApplicantInterface
     public function update($request, $id)
     {
         if (Gate::denies('update-offline-applicant', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to applicant!');
+            return array('status' => 4, 'msg' => 'You are not authorised to applicant!');
         }
         $log = [
             'route' => '/api/update_applicant/id/' . $id,
@@ -213,7 +218,7 @@ class ApplicantRepository implements ApplicantInterface
                 'passport_exp_date' => 'nullable|sometimes|string|max: 255',
                 'birth_date' => 'nullable|sometimes|string|max: 255',
                 'gender' => 'nullable|sometimes|string|max: 8',
-                'height' => 'nullable|sometimes|string|max: 5',
+                'height' => 'nullable|sometimes|string|max: 20',
                 'weight' => 'nullable|sometimes|string|max: 5',
                 'complexion' =>  'nullable|sometimes|string|max: 255',
                 'nationality' => 'nullable|sometimes|string|max: 255',
@@ -237,6 +242,8 @@ class ApplicantRepository implements ApplicantInterface
                 'job_order_pdf' => 'nullable|sometimes',
                 'ticket_pdf' => 'nullable|sometimes',
                 'agency_agreement_pdf' => 'nullable|sometimes',
+                'other_pdf' => 'nullable|sometimes',
+                'hform_pdf' => 'nullable|sometimes',
                 'commision_price' => 'nullable|string',
                 'decorating' => 'nullable|sometimes|string',
                 'baby_sitting' => 'nullable|sometimes|string',
@@ -279,6 +286,7 @@ class ApplicantRepository implements ApplicantInterface
             $applicant->sewing = ($request->sewing == 'true') ? 1 : 0;
             $applicant->washing = ($request->washing == 'true') ? 1 : 0;
             $applicant->driving = ($request->driving == 'true') ? 1 : 0;
+            $applicant->updated_by = auth()->user()->id;
 
             $documents = [
                 'passport_pdf' => $request->passport_pdf,
@@ -292,7 +300,9 @@ class ApplicantRepository implements ApplicantInterface
                 'personal_form_pdf' => $request->personal_form_pdf,
                 'job_order_pdf' => $request->job_order_pdf,
                 'ticket_pdf' => $request->ticket_pdf,
-                'agency_agreement_pdf' => $request->agency_agreement_pdf
+                'agency_agreement_pdf' => $request->agency_agreement_pdf,
+                'other_pdf' => $request->other_pdf,
+                'hform_pdf' => $request->hform_pdf
             ];
 
             foreach ($documents as $key => $document) {
@@ -355,7 +365,7 @@ class ApplicantRepository implements ApplicantInterface
     public function getApplicantDetail($id)
     {
         if (Gate::denies('view-offline-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view applicants as staff!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view applicants as staff!');
         }
         $log = [
             'route' => '/api/get_applicant/id/' . $id,
@@ -368,7 +378,7 @@ class ApplicantRepository implements ApplicantInterface
     public function applicantProfile($id)
     {
         if (Gate::denies('view-offline-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view applicant as staff!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view applicant as staff!');
         }
         $log = [
             'route' => '/api/applicant_profile/id/' . $id,
@@ -381,21 +391,22 @@ class ApplicantRepository implements ApplicantInterface
             'applicant_data' => $applicant_data,
             'commision_price' => $applicant_data->commision_price,
             'paid_total_commision' => Commission::where('applicant_id', $id)->sum('price'),
-            'post_status_array' => Applicant::find($id)->post_status_array
+            'post_status_array' => Applicant::find($id)->post_status_array,
+            'previous_emp_count' => ApplicantPreviousEmployeement::where('applicant_id', $id)->count()
         ]);
     }
 
     public function viewApplication($id)
     {
         if (Gate::denies('view-offline-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view applicants as staff!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view applicants as staff!');
         }
         $applicant_details = Applicant::where('id', $id)
             ->with([
                 'ApplicantEducationalQualification',
                 'ApplicantLanguage',
                 'ApplicantPreviousEmployeement' => function ($prev_emp) {
-                    $prev_emp->orderBy('id', 'DESC')->limit(1);
+                    $prev_emp->orderBy('id', 'DESC')->limit(3);
                 },
                 'ApplicationStaffResponse',
                 'Commission'
@@ -407,7 +418,7 @@ class ApplicantRepository implements ApplicantInterface
     public function show()
     {
         if (Gate::denies('view-offline-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view applicants as staff!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view applicants as staff!');
         }
         $log = [
             'route' => '/api/get_applicants',
@@ -420,14 +431,19 @@ class ApplicantRepository implements ApplicantInterface
     public function destroy($id)
     {
         if (Gate::denies('delete-offline-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete applicant as staff!');
+            return array('status' => 4, 'msg' => 'You are not authorised to delete applicant as staff!');
         }
         $log = [
             'route' => '/api/delete_applicant/id/' . $id,
             'msg' => 'Successfully deleted the applicant!',
         ];
         Log::channel('daily')->info(json_encode($log));
-        $status = Applicant::find($id)->delete();
+        
+        $applicant = Applicant::find($id);
+        $applicant->deleted_by = auth()->user()->id;
+        $applicant->save();
+        $status = $applicant->delete();
+
         if ($status == true) {
             return array('status' => 1, 'msg' => 'Successfully deleted the applicant!');
         } else {

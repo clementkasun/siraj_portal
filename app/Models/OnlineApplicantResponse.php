@@ -20,11 +20,22 @@ class OnlineApplicantResponse extends Model
         'name',
         'designation',
         'response',
-        'online_applicant_id'
+        'online_applicant_id',
+        'added_by'
     ];
 
     public function OnlineApplicant()
     {
         return $this->belongsTo(OnlineApplicant::class);
+    }
+
+    public function Designation()
+    {
+        return $this->belongsTo(Role::class, 'designation');
+    }
+
+    public function AddedBy()
+    {
+        return $this->belongsTo(User::class, 'added_by');
     }
 }

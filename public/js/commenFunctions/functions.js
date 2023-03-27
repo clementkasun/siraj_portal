@@ -12,6 +12,13 @@ function ajaxRequest(Method, url, data, callBack) {
         dataType: "json",
         cache: false,
         success: function (result) {
+            if(result.status == 4){
+                Toast.fire({
+                    type: 'warning',
+                    title: result.msg
+                });
+                return false;
+            }
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
@@ -38,7 +45,7 @@ function ajaxRequest(Method, url, data, callBack) {
             }
             Toast.fire({
                 type: 'error',
-                title: 'Error</br>' + msg
+                title: msg
             });
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(msg);

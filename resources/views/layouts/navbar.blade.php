@@ -27,7 +27,7 @@
                 <i class="fas fa-address-card mr-2"></i>My Profile
             </a>
             <div class="dropdown-divider"></div>
-            <a href="{{ url('/logout') }}" class="dropdown-item">
+            <a href="{{ url('/logout_user') }}" class="dropdown-item">
                 <i class="fas fa-power-off mr-2"></i> Sign Out
             </a>
         </div>

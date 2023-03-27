@@ -22,6 +22,8 @@ class CreateContactsTable extends Migration
             $table->string('subject', 255);
             $table->string('file', 255);
             $table->text('message');
+            $table->unsignedBigInteger('added_by')->nullable();
+            $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

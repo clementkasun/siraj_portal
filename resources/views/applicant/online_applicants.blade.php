@@ -36,6 +36,7 @@
                             <td>{{ $online_applicant->phone_no_01 }}</td>
                             <td>{{ $online_applicant->phone_no_02 }}</td>
                             <td>{{ $online_applicant->job_type }}</td>
+                            <td><a href="/online_applicant_response/id/{{ $online_applicant->id }}" class="btn btn-primary btn-sm m-1">Respond</a></td>
                         </tr>
                         @empty
                         <tr>
@@ -49,7 +50,6 @@
     </div>
 </section>
 @endsection
-
 @section('pageScripts')
 <script>
     $('#online_applicants').DataTable({

@@ -102,12 +102,15 @@ load_comission_tbl = (id) => {
     ajaxRequest('get', '/api/get_comissions/id/'+id, null, function(result) {
         if (result != '') {
             result.forEach(comission => {
+                let created_at = new Date(comission.created_at);
+                let formatted_date = created_at.getFullYear()+'-'+created_at.getMonth()+'-'+created_at.getDate();
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
                 html += '<td>' + comission.staff_mem_name + '</td>';
                 html += '<td>' + comission.designation.name + '</td>';
                 html += '<td>' + comission.price + '</td>';
                 html += '<td>' + comission.response + '</td>';
+                html += '<td>' + formatted_date + '</td>';
                 html += '<td><button type="button" class="btn btn-primary btn-sm edit-comission m-1" data-id="' + comission.id + '"> Edit </button>';
                 html += '<button type="button" class="btn btn-danger btn-sm delete-comission m-1" data-id="' + comission.id + '"> Delete </button></td>';
             });
@@ -118,45 +121,13 @@ load_comission_tbl = (id) => {
                 "retrieve": true
             });
         } else {
-            $('#commission_tbl tbody').html('<tr><td colspan="6" class="text-center text-bold"><span>No Data</span></td></tr>');
+            $('#commission_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
         }
     });
 }
 
 $("#commission_form").validate({
     errorClass: "invalid",
-    // rules: {
-    //     firstName: {
-    //         valid_name: true,
-    //     },
-    //     lastName: {
-    //         valid_name: true,
-    //     },
-    //     fullName: {
-    //         valid_name: true,
-    //     },
-    //     prefferedName: {
-    //         valid_name: true,
-    //     },
-    //     email: {
-    //         valid_email: true,
-    //     },
-    //     address: {
-    //         valid_name: true,
-    //     },
-    //     mobileNo: {
-    //         valid_lk_phone: true,
-    //     },
-    //     landNo: {
-    //         valid_lk_phone: true,
-    //     },
-    //     nic: {
-    //         valid_nic: true,
-    //     },
-    //     birthDate: {
-    //         valid_date: true,
-    //     },
-    // },
     highlight: function(element) {
         $(element).addClass('is-invalid');
     },

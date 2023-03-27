@@ -28,6 +28,8 @@ class PrivillageSeeder extends Seeder
             ['id' => 11, 'name' => 'Commission'],
             ['id' => 12, 'name' => 'PreviousEmployeement'],
             ['id' => 13, 'name' => 'ApplicantLanguage'],
+            ['id' => 14, 'name' => 'OnlineApplicantResponse'],
+            ['id' => 15, 'name' => 'ViewLogRoute']
         ];
         \DB::table('privillages')->insert($privileges);
     }

@@ -20,7 +20,8 @@ class PhoneNumberResponse extends Model
         'user_id',
         'response',
         'designation',
-        'phone_number_id'
+        'phone_number_id',
+        'added_by'
     ];
 
     public function PhoneNumber()

@@ -21,7 +21,10 @@ class ApplicantLanguage extends Model
         'poor',
         'fair',
         'fluent',
-        'applicant_id'
+        'applicant_id',
+        'added_by',
+        'updated_by',
+        'deleted_by'
     ];
 
     public function Applicant(){

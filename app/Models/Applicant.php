@@ -55,6 +55,9 @@ class Applicant extends Model
         'applicant_image_passport',
         'applicant_image_full_size',
         'agency_agrement_pdf',
+        'other_pdf',
+        'hfform_pdf',
+        'agency_agrement_pdf',
         'commision_price',
         'decorating',
         'baby_sitting',
@@ -62,7 +65,10 @@ class Applicant extends Model
         'cooking',
         'sewing',
         'washing',
-        'driving'
+        'driving',
+        'added_by',
+        'updated_by',
+        'deleted_by'
     ];
 
     public $status = ['Pending', 'Working', 'Leaving'];

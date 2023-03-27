@@ -21,7 +21,8 @@ class Commission extends Model
         'designation',
         'price',
         'response',
-        'applicant_id'
+        'applicant_id',
+        'added_by'
     ];
 
     public function Applicant(){

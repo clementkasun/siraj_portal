@@ -15,7 +15,7 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
     public function store($request)
     {
         if (Gate::denies('create-applicant-language', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to create applicant language!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create applicant language!');
         }
         $log = [
             'route' => '/api/save_applicant_language',
@@ -57,7 +57,7 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
     public function update($request, $id)
     {
         if (Gate::denies('update-applicant-language', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to applicant language!');
+            return array('status' => 4, 'msg' => 'You are not authorised to applicant language!');
         }
         $log = [
             'route' => '/api/update_applicant_language/id/' . $id,
@@ -97,7 +97,7 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
     public function show($id)
     {
         if (Gate::denies('view-applicant-language', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view applicant languages!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view applicant languages!');
         }
         $log = [
             'route' => '/api/get_applicant_languages/id/' . $id,
@@ -110,7 +110,7 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
     public function getApplicantLanguage($applicant_lan_id)
     {
         if (Gate::denies('view-applicant-languages', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view applicant languages!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view applicant languages!');
         }
         $log = [
             'route' => '/api/get_applicant_language/id/' . $applicant_lan_id,
@@ -123,7 +123,7 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
     public function destroy($id)
     {
         if (Gate::denies('delete-applicant-language', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete applicant language!');
+            return array('status' => 4, 'msg' => 'You are not authorised to delete applicant language!');
         }
         $log = [
             'route' => '/api/delete_application_language/id/' . $id,

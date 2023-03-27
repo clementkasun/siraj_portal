@@ -193,91 +193,105 @@
                                         <div class="card card-success">
                                             <div class="card-header">Attachments</div>
                                             <div class="card-body row">
-                                                @if(!isset($applicant_data->passport_pdf) && !isset($applicant_data->nic_pdf) && !isset($applicant_data->police_record_pdf) && !isset($applicant_data->gs_certificate_pdf) && !isset($applicant_data->family_back_pdf) && !isset($applicant_data->visa_pdf) && !isset($applicant_data->medical_pdf) && !isset($applicant_data->agreement_pdf) && !isset($applicant_data->personal_form_pdf) && !isset($applicant_data->job_order_pdf) && !isset($applicant_data->ticket_pdf) && !isset($applicant_data->agency_agreement_pdf))
+                                                @if(!isset($applicant_data->passport_pdf) && !isset($applicant_data->nic_pdf) && !isset($applicant_data->police_record_pdf) && !isset($applicant_data->gs_certificate_pdf) && !isset($applicant_data->family_back_pdf) && !isset($applicant_data->visa_pdf) && !isset($applicant_data->medical_pdf) && !isset($applicant_data->agreement_pdf) && !isset($applicant_data->personal_form_pdf) && !isset($applicant_data->job_order_pdf) && !isset($applicant_data->ticket_pdf) && !isset($applicant_data->agency_agreement_pdf) && !isset($applicant_data->hform_pdf) &&  !isset($applicant_data->other_pdf))
                                                 <div>No attachments available</div>
                                                 @endif
                                                 @if(isset($applicant_data->passport_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->passport_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->passport_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>Passport PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->passport_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->nic_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->nic_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->nic_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>NIC PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->nic_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->police_record_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->police_record_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->police_record_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>Police Record PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->police_record_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->gs_certificate_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->gs_certificate_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->gs_certificate_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>GS Certificate PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->gs_certificate_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->family_back_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->family_back_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->family_back_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>Family Background PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->family_back_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->visa_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->visa_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->visa_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>Visa PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->visa_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->medical_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->medical_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->medical_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>Medical PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->medical_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->agreement_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->agreement_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->agreement_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>Agreement PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->agreement_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->personal_form_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->personal_form_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->personal_form_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>Personal Form PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->personal_form_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->job_order_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->job_order_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->job_order_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>Job Order PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->job_order_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->ticket_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->ticket_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->ticket_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>Ticket PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->ticket_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                                 @if(isset($applicant_data->agency_agreement_pdf))
                                                 <div class="form-group col-md-3">
-                                                    <embed src="{{'/storage/'.$applicant_data->agency_agreement_pdf}}" class="border" width="250px" height="250px" />
+                                                    <embed src="{{'/storage/'.$applicant_data->agency_agreement_pdf}}" class="border" width="250px" height="250px" /><br>
                                                     <span><b>Agency Agreement PDF</b></span><br>
                                                     <a href="{{'/storage/'.$applicant_data->agency_agreement_pdf}}" target="blank" class="btn btn-success">More</a>
+                                                </div>
+                                                @endif
+                                                @if(isset($applicant_data->other_pdf))
+                                                <div class="form-group col-md-3">
+                                                    <embed src="{{'/storage/'.$applicant_data->other_pdf}}" class="border" width="250px" height="250px" /><br>
+                                                    <span><b>Other PDF</b></span><br>
+                                                    <a href="{{'/storage/'.$applicant_data->other_pdf}}" target="blank" class="btn btn-success">More</a>
+                                                </div>
+                                                @endif
+                                                @if(isset($applicant_data->hform_pdf))
+                                                <div class="form-group col-md-3">
+                                                    <embed src="{{'/storage/'.$applicant_data->hform_pdf}}" class="border" width="250px" height="250px" /><br>
+                                                    <span><b>H-FORM PDF</b></span><br>
+                                                    <a href="{{'/storage/'.$applicant_data->hform_pdf}}" target="blank" class="btn btn-success">More</a>
                                                 </div>
                                                 @endif
                                             </div>
@@ -335,6 +349,7 @@
                                     <!-- /.tab-pane -->
                                     <div class="tab-pane" id="previous_employeements">
                                         <div class="row">
+                                            @if($previous_emp_count < 4)
                                             <div class="col-md-3">
                                                 <form id="previous_employeement_form">
                                                     <div class="form-group">
@@ -350,42 +365,42 @@
                                                         <div>
                                                             <select class="form-select form-control select2 select2-purple" aria-label="Select the country" id="country" name="country" required>
                                                                 <option selected value="">Choose Country</option>
-                                                                <option value="srilanka">Sri Lanka</option>
-                                                                <option value="india">India</option>
-                                                                <option value="bangladesh">Bangladesh</option>
-                                                                <option value="maldives">Maldives</option>
-                                                                <option value="singapore">Singapore</option>
-                                                                <option value="malaysia">Malaysia</option>
-                                                                <option value="thailand">Thailand</option>
-                                                                <option value="china">China</option>
-                                                                <option value="kuwait">Kuwait</option>
-                                                                <option value="quatar">Quatar</option>
-                                                                <option value="lebonon">Lebanon</option>
-                                                                <option value="turkey">Turkey</option>
-                                                                <option value="uae">UAE</option>
-                                                                <option value="dubai">Dubai</option>
-                                                                <option value="baharen">Baharen</option>
-                                                                <option value="iran">Iran</option>
-                                                                <option value="syria">Syria</option>
-                                                                <option value="afghanisthan">Afghnisthan</option>
-                                                                <option value="ishrael">Ishrael</option>
-                                                                <option value="pakisthan">Pakisthan</option>
-                                                                <option value="nepal">Nepal</option>
-                                                                <option value="russia">Russia</option>
-                                                                <option value="usa">USA</option>
-                                                                <option value="spain">Spain</option>
-                                                                <option value="france">France</option>
-                                                                <option value="germany">Germaney</option>
-                                                                <option value="ukraine">Ukraine</option>
-                                                                <option value="poland">Poland</option>
-                                                                <option value="italy">Italy</option>
-                                                                <option value="uk">UK</option>
-                                                                <option value="brazil">Brazil</option>
-                                                                <option value="panama">Panama</option>
-                                                                <option value="cuba">Cuba</option>
-                                                                <option value="westindies">West Indies</option>
+                                                                <option value="Sri Lanka">Sri Lanka</option>
+                                                                <option value="India">India</option>
+                                                                <option value="Bangladesh">Bangladesh</option>
+                                                                <option value="Maldives">Maldives</option>
+                                                                <option value="Singapore">Singapore</option>
+                                                                <option value="Malaysia">Malaysia</option>
+                                                                <option value="Thailand">Thailand</option>
+                                                                <option value="China">China</option>
+                                                                <option value="Kuwait">Kuwait</option>
+                                                                <option value="Quatar">Quatar</option>
+                                                                <option value="Lebonon">Lebanon</option>
+                                                                <option value="Turkey">Turkey</option>
+                                                                <option value="UAE">UAE</option>
+                                                                <option value="Dubai">Dubai</option>
+                                                                <option value="Baharen">Baharen</option>
+                                                                <option value="Iran">Iran</option>
+                                                                <option value="Syria">Syria</option>
+                                                                <option value="Afghanisthan">Afghnisthan</option>
+                                                                <option value="Ishrael">Ishrael</option>
+                                                                <option value="Pakisthan">Pakisthan</option>
+                                                                <option value="Nepal">Nepal</option>
+                                                                <option value="Russia">Russia</option>
+                                                                <option value="USA">USA</option>
+                                                                <option value="Spain">Spain</option>
+                                                                <option value="France">France</option>
+                                                                <option value="Germany">Germaney</option>
+                                                                <option value="Ukraine">Ukraine</option>
+                                                                <option value="Poland">Poland</option>
+                                                                <option value="Italy">Italy</option>
+                                                                <option value="UK">UK</option>
+                                                                <option value="Brazil">Brazil</option>
+                                                                <option value="Panama">Panama</option>
+                                                                <option value="Cuba">Cuba</option>
+                                                                <option value="West Indies">West Indies</option>
                                                                 <option value="Austrailia">Austrailia</option>
-                                                                <option value="Newzealand">New Zealand</option>
+                                                                <option value="New zealand">New Zealand</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -395,6 +410,7 @@
                                                     </div>
                                                 </form>
                                             </div>
+                                            @endif
                                             <div class="col-md-9">
                                                 <table class="table table-striped" id="previous_emp_tbl">
                                                     <thead>
@@ -480,10 +496,11 @@
                                                         <th>Name</th>
                                                         <th>Designation</th>
                                                         <th>Response</th>
+                                                        <th>Created at</th>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td colspan="4" class="text-center text-bold"><span>No Data</span></td>
+                                                            <td colspan="5" class="text-center text-bold"><span>No Data</span></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -496,7 +513,7 @@
                                                 <form id="commission_form">
                                                     <div class="form-group">
                                                         <label for="com_price">Price *</label>
-                                                        <div><input type="text" class="form-control" name="com_price" id="com_price" placeholder="Please enter the price" required></div>
+                                                        <div><input type="number" class="form-control" name="com_price" id="com_price" min="0" placeholder="Please enter the price" required></div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="com_response">Response *</label>
@@ -516,11 +533,12 @@
                                                         <th>Designation</th>
                                                         <th>Installment</th>
                                                         <th>Response</th>
+                                                        <th>Created at</th>
                                                         <th>Action</th>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td colspan="6" class="text-center text-bold"><span>No Data</span></td>
+                                                            <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

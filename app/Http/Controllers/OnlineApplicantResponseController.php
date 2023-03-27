@@ -14,6 +14,10 @@ class OnlineApplicantResponseController extends Controller
         $this->onlineApplicantResponseRepository = $onlineApplicantResponseRepository;
     }
 
+    public function index($id){
+        return $this->onlineApplicantResponseRepository->index($id);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -23,5 +27,16 @@ class OnlineApplicantResponseController extends Controller
     public function store(Request $request)
     {
         return $this->onlineApplicantResponseRepository->store($request);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function show()
+    {
+        return $this->onlineApplicantResponseRepository->show();
     }
 }

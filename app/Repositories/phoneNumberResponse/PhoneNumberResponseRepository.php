@@ -16,7 +16,7 @@ class PhoneNumberResponseRepository implements PhoneNumberResponseInterface
     public function index($id)
     {
         if (Gate::denies('view-phone-number-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to create phone number response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create phone number response!');
         }
         return view('phone_number.phone_number_response', ['phone_number_id' => $id]);
     }
@@ -24,7 +24,7 @@ class PhoneNumberResponseRepository implements PhoneNumberResponseInterface
     public function store($request)
     {
         if (Gate::denies('create-phone-number-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to create phone number response!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create phone number response!');
         }
         $log = [
             'route' => '/api/save_phone_number_response',
@@ -43,6 +43,7 @@ class PhoneNumberResponseRepository implements PhoneNumberResponseInterface
                 'response' => $request->response,
                 'user_id' => $user->id,
                 'phone_number_id' => $request->phone_number_id,
+                'added_by' => auth()->user()->id
             ]);
 
             // $user = auth()->user();
@@ -64,7 +65,7 @@ class PhoneNumberResponseRepository implements PhoneNumberResponseInterface
     public function show($id)
     {
         if (Gate::denies('view-phone-number-resp', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view phone number responses!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view phone number responses!');
         }
         return PhoneNumberResponse::where('phone_number_id', $id)->with(['PhoneNumber', 'Designation' , 'User'])->get();
     }

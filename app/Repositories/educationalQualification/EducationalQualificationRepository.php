@@ -4,7 +4,6 @@ namespace App\Repositories\educationalQualification;
 
 use App\Models\ApplicantEducationalQualification;
 use Exception;
-use App\Models\EducationalQualification;
 use App\Repositories\educationalQualification\EducationalQualificationInterface;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +16,7 @@ class EducationalQualificationRepository implements EducationalQualificationInte
     public function store($request)
     {
         if (Gate::denies('create-educational-qualification', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to educational qualification!');
+            return array('status' => 4, 'msg' => 'You are not authorised to educational qualification!');
         }
         $log = [
             'route' => '/api/save_educational_qualification',
@@ -61,7 +60,7 @@ class EducationalQualificationRepository implements EducationalQualificationInte
     public function update($request, $id)
     {
         if (Gate::denies('update-educational-qualification', auth()->user())) {
-            return array('status' => 0, 'msg' => 'You are not authorised to educational qualification!');
+            return array('status' => 4, 'msg' => 'You are not authorised to educational qualification!');
         }
         $log = [
             'route' => '/api/update_educational_qualification/id/' . $id,
@@ -104,7 +103,7 @@ class EducationalQualificationRepository implements EducationalQualificationInte
     public function getEducationalQualification($id)
     {
         if (Gate::denies('view-edcuational-qualification', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view educational qualification!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view educational qualification!');
         }
         $log = [
             'route' => '/api/get_educational_qualification/id/'.$id,
@@ -117,7 +116,7 @@ class EducationalQualificationRepository implements EducationalQualificationInte
     public function show($id)
     {
         if (Gate::denies('view-applicants', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view applicants!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view applicants!');
         }
         $log = [
             'route' => '/api/get_educational_qualification/id/'.$id,
@@ -130,7 +129,7 @@ class EducationalQualificationRepository implements EducationalQualificationInte
     public function destroy($id)
     {
         if (Gate::denies('delete-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to delete applicant!');
+            return array('status' => 4, 'msg' => 'You are not authorised to delete applicant!');
         }
         $log = [
             'route' => '/api/delete_educational_qualification/id/' . $id,

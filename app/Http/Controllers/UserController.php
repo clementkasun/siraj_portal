@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\SystemNotification;
 use App\Rules\nationalID;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ class UserController extends Controller
     public function index()
     {
         if (Gate::denies('view-user', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view users!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view users!');
         }
         $users = User::get();
         $level = Level::get();
@@ -36,8 +37,9 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
+        $logged_user = auth()->user();
         if (Gate::denies('create-user', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to create user!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create user!');
         }
         try {
             \DB::transaction(function () use ($request) {
@@ -56,7 +58,7 @@ class UserController extends Controller
                     'userImg' => 'sometimes|nullable',
                     'nic' => ['sometimes', 'nullable', 'unique:users', new nationalID],
                     'role' => 'integer|required',
-                    'password' => 'required|min:6',
+                    'password' => 'required|min:4',
                 ]);
 
                 $user = User::create([
@@ -104,18 +106,17 @@ class UserController extends Controller
                     $nic_back_img_photo_path = '/storage/user/nic/' . $user->id . '/' . $random_name . '.' . $nic_back_img_photo_ext;
                     $user->nic_back_image = $nic_back_img_photo_path;
                 }
-
                 if ($request->hasFile('userImg')) {
                     $path = public_path('/storage/user/user_image/' . $user->id . '/');
                     \File::exists($path) or \File::makeDirectory($path);
                     $random_name = uniqid($user->id);
-
+                    
                     $user_image_photo     = $request->file('userImg');
                     $user_image_photo_ext    = $user_image_photo->extension();
 
                     // I am saying to create the dir if it's not there.
                     $user_image_photo = \Image::make($user_image_photo->getRealPath())->resize(500, 500);
-                    $user_image_photo->save($path . $random_name . '.' . $nic_front_img_photo_ext);
+                    $user_image_photo->save($path . $random_name . '.' . $user_image_photo_ext);
                     $user_image_photo_path = '/storage/user/user_image/' . $user->id . '/' . $random_name . '.' . $user_image_photo_ext;
                     $user->user_image = $user_image_photo_path;
                 }
@@ -126,17 +127,17 @@ class UserController extends Controller
             $log = [
                 'route' => '/api/save_applicant',
             ];
-            $user = auth()->user();
+
             $log['msg'] = 'Saving user is successful!';
 
-            Notification::send($user, new SystemNotification($user, $log['msg']));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 1, 'msg' => 'User has successfully registered!');
         } catch (Exception $ex) {
             $log['msg'] = 'User saving was unsuccessful!';
             $log['error'] = $ex;
 
-            Notification::send($user, new SystemNotification($user, $log['msg']));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
             Log::channel('error')->info(json_encode($log));
 
             return array('status' => 0, 'msg' => 'User registration failed!');
@@ -146,7 +147,7 @@ class UserController extends Controller
     public function edit($id)
     {
         if (Gate::denies('view-user', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to view user!');
+            return array('status' => 4, 'msg' => 'You are not authorised to view user!');
         }
         $user = User::findOrFail($id);
         $level = $user->Role()->with('Level')->first()->Level;
@@ -210,7 +211,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         if (Gate::denies('update-user', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to update user!');
+            return array('status' => 4, 'msg' => 'You are not authorised to update user!');
         }
         try {
 
@@ -281,7 +282,7 @@ class UserController extends Controller
     public function storePassword(Request $request, $id)
     {
         if (Gate::denies('update-user', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to update user!');
+            return array('status' => 4, 'msg' => 'You are not authorised to update user!');
         }
         $user = User::findOrFail($id);
         request()->validate([
@@ -305,7 +306,7 @@ class UserController extends Controller
     public function activeStatus(Request $request, $id)
     {
         if (Gate::denies('update-user', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to update user!');
+            return array('status' => 4, 'msg' => 'You are not authorised to update user!');
         }
         $user = User::findOrFail($id);
 
@@ -340,12 +341,12 @@ class UserController extends Controller
     public function delete($id)
     {
         // if (Gate::denies('delete-user', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to delete user!');
+        //     return array('status' => 4, 'msg' => 'You are not authorised to delete user!');
         // }
         $delete_user = User::findOrFail($id)->delete();
-        if($delete_user){
+        if ($delete_user) {
             return ['status' => 1, 'msg' => 'User has deleted successsfully!'];
-        }else{
+        } else {
             return ['status' => 0, 'msg' => 'User deletion was unsuccesssful!'];
         }
     }
@@ -365,7 +366,7 @@ class UserController extends Controller
     public function changeMyPass()
     {
         if (Gate::denies('update-user', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to update user!');
+            return array('status' => 4, 'msg' => 'You are not authorised to update user!');
         }
         $aUser = User::find(Auth::user()->id);
         request()->validate([
@@ -439,5 +440,13 @@ class UserController extends Controller
         if ($email_status == false && $nic_status == false) {
             return ['status' => 0];
         }
+    }
+
+    public function logout_user(Request $request) : RedirectResponse
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }

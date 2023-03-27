@@ -22,6 +22,9 @@ class Vacancy extends Model
         'period',
         'location',
         'vacancy_image',
+        'added_by',
+        'updated_by',
+        'deleted_by'
     ];
 
     public function User(){

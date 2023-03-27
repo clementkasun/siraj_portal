@@ -15,16 +15,13 @@ class OnlineApplicantRepository implements OnlineApplicantInterface
 {
     public function index(){
         if (Gate::denies('view-online-applicant', auth()->user())) {
-            return array('status' => 2, 'msg' => 'You are not authorised to create online applicant!');
+            return array('status' => 4, 'msg' => 'You are not authorised to create online applicant!');
         }
         return view('applicant.online_applicants', ['online_applicants' => OnlineApplicant::all()]);
     }
 
     public function store($request)
     {
-        // if (Gate::denies('create-online-applicant', auth()->user())) {
-        //     return array('status' => 2, 'msg' => 'You are not authorised to create online applicant!');
-        // }
         $log = [
             'route' => '/api/save_online_applicant',
         ];
@@ -49,6 +46,7 @@ class OnlineApplicantRepository implements OnlineApplicantInterface
                 'phone_no_01' => $request->phone_no_01,
                 'phone_no_02' => $request->phone_no_02,
                 'job_type' => $request->job_type,
+                'added_by' => auth()->user()->id
             ]);
 
             // $user = auth()->user();

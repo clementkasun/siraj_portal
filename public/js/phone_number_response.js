@@ -54,36 +54,6 @@ load_phone_number_resp_tbl = () => {
 $("#phone_number_respone_form").validate({
     errorClass: "invalid",
     rules: {
-        // full_name: {
-        //     valid_name: true,
-        // },
-        // address: {
-        //     valid_name: true,
-        // },
-        // phone_no_one: {
-        //     valid_lk_phone: true,
-        // },
-        // phone_no_two: {
-        //     valid_lk_phone: true,
-        // },
-        // nic: {
-        //     valid_nic: true,
-        // },
-        // passport_issue_date: {
-        //     valid_date: true,
-        // },
-        // passport_exp_date: {
-        //     valid_date: true,
-        // },
-        // birth_date: {
-        //     valid_date: true,
-        // },
-        // nationality: {
-        //     valid_name: true,
-        // },
-        // religion: {
-        //     valid_name: true,
-        // },
     },
     highlight: function (element) {
         $(element).addClass('is-invalid');

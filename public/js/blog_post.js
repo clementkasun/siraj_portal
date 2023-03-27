@@ -132,11 +132,6 @@ edit_blog_post = (id) => {
 
 $("#blog_post_form").validate({
     errorClass: "invalid",
-    // rules: {
-    //     post_image: {
-    //         require: true,
-    //     },
-    // },
     highlight: function(element) {
         $(element).addClass('is-invalid');
     },

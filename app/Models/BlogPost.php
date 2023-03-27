@@ -21,6 +21,9 @@ class BlogPost extends Model
        'post_image',
        'description',
        'user_id',
+       'added_by',
+       'updated_by',
+       'deleted_by'
     ];
 
     public function User()

@@ -21,6 +21,7 @@ class ContactResponse extends Model
         'designation',
         'response',
         'contact_id',
+        'added_by'
     ];
 
     public function Contact(){

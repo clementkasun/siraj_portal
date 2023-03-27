@@ -33,4 +33,9 @@ class Role extends Model
     {
         return $this->hasMany(PhoneNumberResponse::class);
     }
+
+    public function OnlineApplicantResponse()
+    {
+        return $this->hasMany(OnlineApplicantResponse::class);
+    }
 }

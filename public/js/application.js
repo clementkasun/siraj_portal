@@ -46,6 +46,8 @@ $('#save_applicant').click(function() {
         'job_order_pdf': $('#job_order_pdf')[0].files[0],
         'ticket_pdf': $('#ticket_pdf')[0].files[0],
         'agency_agreement_pdf': $('#agency_agreement_pdf')[0].files[0],
+        'other_pdf': $('#other_pdf')[0].files[0],
+        'hform_pdf': $('#hform_pdf')[0].files[0],
         'applicant_image_passport': $('#applicant_image_passport')[0].files[0],
         'applicant_image_full_size': $('#applicant_image_full_size')[0].files[0],
     };
@@ -112,6 +114,8 @@ $('#update_applicant').click(function() {
         'job_order_pdf': $('#job_order_pdf')[0].files[0],
         'ticket_pdf': $('#ticket_pdf')[0].files[0],
         'agency_agreement_pdf': $('#agency_agreement_pdf')[0].files[0],
+        'other_pdf': $('#other_pdf')[0].files[0],
+        'hform_pdf': $('#hform_pdf')[0].files[0],
         'applicant_image_passport': $('#applicant_image_passport')[0].files[0],
         'applicant_image_full_size': $('#applicant_image_full_size')[0].files[0],
     };
