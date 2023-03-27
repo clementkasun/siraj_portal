@@ -30,7 +30,7 @@ class LogRoutes
                 $log['RESPONSE'] = $response->getContent();
             }
 
-            Log::info(json_encode($log));
+            Log::channel('daily')->info(json_encode($log));
         }
 
         return $response;

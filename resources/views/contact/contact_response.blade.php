@@ -18,14 +18,6 @@
                     <div class="col-md-3">
                         <form id="contact_response_form">
                             <div class="form-group">
-                                <label for="name"> Name *</label>
-                                <div><input type="text" class="form-control" name="name" id="name" placeholder="Please enter the name" required></div>
-                            </div>
-                            <!-- <div class="form-group">
-                                <label for="designation">Designation *</label>
-                                <div><input type="text" class="form-control" name="designation" id="designation" placeholder="Please enter the designation" required></div>
-                            </div> -->
-                            <div class="form-group">
                                 <label for="response">Response *</label>
                                 <div><input type="text" class="form-control" name="response" id="response" placeholder="Please enter the phone response" required></div>
                             </div>
@@ -63,7 +55,11 @@
     var CONTACT_ID = '{{$contact_id}}';
 
     $(document).ready(function() {
-        load_contact_response();
+        let privillages = {
+            'is_update' : '{{ Gate::allows("update-contact-response") }}',
+            'is_delete' : '{{ Gate::allows("delete-contact-response") }}'
+        };
+        load_contact_response(privillages);
     });
 </script>
 @endsection

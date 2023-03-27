@@ -18,23 +18,23 @@ function changeAciveStatus(id, data, callBack) {
         }
     });
 }
-function deleteRole(id, callBack) {
-    $.ajax({
-        type: "DELETE",
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "/rolls/rollId/" + id,
-        cache: false,
-        success: function (result) {
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        }
-    });
-}
+// function deleteRole(id, callBack) {
+//     $.ajax({
+//         type: "DELETE",
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+//             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+//             "Accept": "application/json"
+//         },
+//         url: "/rolls/rollId/" + id,
+//         cache: false,
+//         success: function (result) {
+//             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+//                 callBack(result);
+//             }
+//         }
+//     });
+// }
 function updateRole(id, data, callBack) {
     $.ajax({
         type: "POST",
@@ -54,27 +54,27 @@ function updateRole(id, data, callBack) {
     });
 }
 
-function activeDeletedUser(id, callBack) {
-    $.ajax({
-        type: "PUT",
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
+// function activeDeletedUser(id, callBack) {
+//     $.ajax({
+//         type: "PUT",
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+//             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+//             "Accept": "application/json"
+//         },
 
-        url: "/user/active/" + id,
-        cache: false,
-        success: function (result) {
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
+//         url: "/user/active/" + id,
+//         cache: false,
+//         success: function (result) {
+//             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+//                 callBack(result);
+//             }
 
-            if (result.id == 1) {
-                location.reload();
-            }
+//             if (result.id == 1) {
+//                 location.reload();
+//             }
 
 
-        }
-    });
-}
+//         }
+//     });
+// }

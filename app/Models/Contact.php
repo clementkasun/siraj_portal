@@ -23,8 +23,7 @@ class Contact extends Model
         'phone_number',
         'subject',
         'file',
-        'message',
-        'added_by'
+        'message'
     ];
 
     public function User(){

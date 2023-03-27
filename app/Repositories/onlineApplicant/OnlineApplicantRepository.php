@@ -22,9 +22,6 @@ class OnlineApplicantRepository implements OnlineApplicantInterface
 
     public function store($request)
     {
-        $log = [
-            'route' => '/api/save_online_applicant',
-        ];
         try {
             $request->validate([
                 'applicant_name' => 'required|string|max:255',
@@ -46,12 +43,14 @@ class OnlineApplicantRepository implements OnlineApplicantInterface
                 'phone_no_01' => $request->phone_no_01,
                 'phone_no_02' => $request->phone_no_02,
                 'job_type' => $request->job_type,
-                'added_by' => auth()->user()->id
             ]);
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
             $log['msg'] = 'Saving online applicant is successful!';
             Log::channel('daily')->info(json_encode($log));
 

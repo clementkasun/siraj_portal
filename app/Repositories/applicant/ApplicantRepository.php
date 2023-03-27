@@ -23,13 +23,11 @@ class ApplicantRepository implements ApplicantInterface
 
     public function store($request)
     {
-        if (Gate::denies('create-offline-applicant', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to create applicants  as staff member!');
-        }
-        $log = [
-            'route' => '/api/save_applicant',
-        ];
         try {
+            $logged_user = auth()->user();
+            if (Gate::denies('create-offline-applicant', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to create applicants  as staff member!');
+            }
             $request->validate([
                 'full_name' => 'nullable|sometimes|string|max: 255',
                 'address' => 'nullable|sometimes|string|max: 255',
@@ -113,7 +111,7 @@ class ApplicantRepository implements ApplicantInterface
                 'driving' => ($request->driving == 'true') ? 1 : 0,
                 'added_by' => auth()->user()->id,
             ]);
-            
+
             $applicant->reff_no = $this->getZeroPaddedNumber($applicant->id, 5);
 
             $documents = [
@@ -132,7 +130,7 @@ class ApplicantRepository implements ApplicantInterface
                 'other_pdf' => $request->other_pdf,
                 'hform_pdf' => $request->hform_pdf
             ];
-            
+
             foreach ($documents as $key => $document) {
                 if ($request->hasFile($key)) {
                     $path = 'applicant/' . $applicant->id;
@@ -140,72 +138,84 @@ class ApplicantRepository implements ApplicantInterface
                     $applicant->$key = Storage::disk('public')->put($path . '/', $request->file($key));
                 }
             }
-            
+
             if ($request->hasFile('applicant_image_passport')) {
                 $path = public_path('/storage/applicant/' . $applicant->id . '/');
                 \File::exists($path) or \File::makeDirectory($path);
                 $random_name = uniqid($applicant->id);
-                
+
                 $applicant_img     = $request->file('applicant_image_passport');
                 $applicant_img_ext    = $applicant_img->extension();
-                
+
                 // I am saying to create the dir if it's not there.
                 $applicant_img = \Image::make($applicant_img->getRealPath());
                 $applicant_img->save($path . $random_name . '.' . $applicant_img_ext);
                 $applicant_img_path = '/storage/applicant/' . $applicant->id . '/' . $random_name . '.' . $applicant_img_ext;
                 $applicant->applicant_image_passport = $applicant_img_path;
             }
-            
+
             if ($request->hasFile('applicant_image_full_size')) {
                 $path = public_path('/storage/applicant/' . $applicant->id . '/');
                 \File::exists($path) or \File::makeDirectory($path);
                 $random_name = uniqid($applicant->id);
-                
+
                 $applicant_img     = $request->file('applicant_image_full_size');
                 $applicant_img_ext    = $applicant_img->extension();
-                
+
                 // I am saying to create the dir if it's not there.
                 $applicant_img = \Image::make($applicant_img->getRealPath());
                 $applicant_img->save($path . $random_name . '.' . $applicant_img_ext);
                 $applicant_img_path = '/storage/applicant/' . $applicant->id . '/' . $random_name . '.' . $applicant_img_ext;
                 $applicant->applicant_image_full_size = $applicant_img_path;
             }
-            
+
             $applicant->save();
-            
-            $user = auth()->user();
+
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             $log['msg'] = 'Saving applicant is successful!';
-            Notification::send($user, new SystemNotification($user, $log['msg']));
             Log::channel('daily')->info(json_encode($log));
-            
+
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 1, 'msg' => 'Saving applicant is successful!');
-        } catch (Exception $e) {
-            $log['msg'] = 'Saving candidate was unsuccessful!';
-            // Notification::send($user, new SystemNotification($user, $log['msg']));
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
+            $log['msg'] = 'Applicant saving was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
-            
+
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 0, 'msg' => 'Saving applicant was unsuccessful!');
         }
     }
-    
+
     public function editApplicant($id)
     {
-        if (Gate::denies('update-offline-applicant', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to update the applicant as a staff member!');
+        try {
+            if (Gate::denies('update-offline-applicant', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to update the applicant as a staff member!');
+            }
+            return view('applicant.registration', array('applicant_data' => Applicant::find($id)));
+        } catch (Exception $ex) {
+            $log['msg'] = 'Edit Applicant was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        return view('applicant.registration', array('applicant_data' => Applicant::find($id)));
     }
-    
+
     public function update($request, $id)
     {
-        if (Gate::denies('update-offline-applicant', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to applicant!');
-        }
-        $log = [
-            'route' => '/api/update_applicant/id/' . $id,
-        ];
         try {
+            if (Gate::denies('update-offline-applicant', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to applicant!');
+            }
             $request->validate([
                 'full_name' => 'nullable|sometimes|string|max: 255',
                 'address' => 'nullable|sometimes|string|max: 255',
@@ -345,18 +355,27 @@ class ApplicantRepository implements ApplicantInterface
 
             $applicant->save();
 
-            $user = auth()->user();
-            $log['msg'] = 'Updating applicant is successful!';
-            $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $log['msg']));
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
+            $log['msg'] = 'Saving applicant is successful!';
             Log::channel('daily')->info(json_encode($log));
-            
+
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 1, 'msg' => 'Updating candidate is successful!');
-        } catch (Exception $e) {
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
             $log['msg'] = 'Updating applicant was unsuccessful!';
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
-            // Notification::send($user, new SystemNotification($user, $log['msg']));
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Updating applicant was unsuccessful!');
         }
@@ -364,89 +383,115 @@ class ApplicantRepository implements ApplicantInterface
 
     public function getApplicantDetail($id)
     {
-        if (Gate::denies('view-offline-applicant', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view applicants as staff!');
+        try {
+            if (Gate::denies('view-offline-applicant', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view applicants as staff!');
+            }
+            return Applicant::find($id);
+        } catch (Exception $ex) {
+            $log['msg'] = 'Updating applicant was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        $log = [
-            'route' => '/api/get_applicant/id/' . $id,
-            'msg' => 'Successfully accessed the applicant details!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return Applicant::find($id);
     }
 
     public function applicantProfile($id)
     {
-        if (Gate::denies('view-offline-applicant', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view applicant as staff!');
-        }
-        $log = [
-            'route' => '/api/applicant_profile/id/' . $id,
-            'msg' => 'Successfully accessed the applicant details!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
+        try {
+            if (Gate::denies('view-offline-applicant', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view applicant as staff!');
+            }
 
-        $applicant_data = Applicant::find($id);
-        return view('applicant.applicant_profile', [
-            'applicant_data' => $applicant_data,
-            'commision_price' => $applicant_data->commision_price,
-            'paid_total_commision' => Commission::where('applicant_id', $id)->sum('price'),
-            'post_status_array' => Applicant::find($id)->post_status_array,
-            'previous_emp_count' => ApplicantPreviousEmployeement::where('applicant_id', $id)->count()
-        ]);
+            $applicant_data = Applicant::find($id);
+            return view('applicant.applicant_profile', [
+                'applicant_data' => $applicant_data,
+                'commision_price' => $applicant_data->commision_price,
+                'paid_total_commision' => Commission::where('applicant_id', $id)->sum('price'),
+                'post_status_array' => Applicant::find($id)->post_status_array,
+                'previous_emp_count' => ApplicantPreviousEmployeement::where('applicant_id', $id)->count()
+            ]);
+        } catch (Exception $ex) {
+            $log['msg'] = 'accessing applicant profile was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+        }
     }
 
     public function viewApplication($id)
     {
-        if (Gate::denies('view-offline-applicant', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view applicants as staff!');
+        try {
+            if (Gate::denies('view-offline-applicant', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view applicants as staff!');
+            }
+            $applicant_details = Applicant::where('id', $id)
+                ->with([
+                    'ApplicantEducationalQualification',
+                    'ApplicantLanguage',
+                    'ApplicantPreviousEmployeement' => function ($prev_emp) {
+                        $prev_emp->orderBy('id', 'DESC')->limit(3);
+                    },
+                    'ApplicationStaffResponse',
+                    'Commission'
+                ])
+                ->first();
+            return view('applicant.application', array('applicant_details' => $applicant_details));
+        } catch (Exception $ex) {
+            $log['msg'] = 'accessing applicant application was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        $applicant_details = Applicant::where('id', $id)
-            ->with([
-                'ApplicantEducationalQualification',
-                'ApplicantLanguage',
-                'ApplicantPreviousEmployeement' => function ($prev_emp) {
-                    $prev_emp->orderBy('id', 'DESC')->limit(3);
-                },
-                'ApplicationStaffResponse',
-                'Commission'
-            ])
-            ->first();
-        return view('applicant.application', array('applicant_details' => $applicant_details));
     }
 
     public function show()
     {
-        if (Gate::denies('view-offline-applicant', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view applicants as staff!');
+        try {
+            if (Gate::denies('view-offline-applicant', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view applicants as staff!');
+            }
+            $log = [
+                'route' => '/api/get_applicants',
+                'msg' => 'Successfully accessed the applicants!',
+            ];
+            Log::channel('daily')->info(json_encode($log));
+            return Applicant::all();
+        } catch (Exception $ex) {
+            $log['msg'] = 'accessing applicants details was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        $log = [
-            'route' => '/api/get_applicants',
-            'msg' => 'Successfully accessed the applicants!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return Applicant::all();
     }
 
     public function destroy($id)
     {
-        if (Gate::denies('delete-offline-applicant', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to delete applicant as staff!');
-        }
-        $log = [
-            'route' => '/api/delete_applicant/id/' . $id,
-            'msg' => 'Successfully deleted the applicant!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        
-        $applicant = Applicant::find($id);
-        $applicant->deleted_by = auth()->user()->id;
-        $applicant->save();
-        $status = $applicant->delete();
+        try{
+            if (Gate::denies('delete-offline-applicant', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to delete applicant as staff!');
+            }
+            $log = [
+                'route' => '/api/delete_applicant/id/' . $id,
+                'msg' => 'Successfully deleted the applicant!',
+            ];
+            Log::channel('daily')->info(json_encode($log));
+    
+            $logged_user = auth()->user();
+            $applicant = Applicant::find($id);
+            $applicant->deleted_by = $logged_user->id;
+            $applicant->save();
+            $status = $applicant->delete();
 
-        if ($status == true) {
+            $log['msg'] = 'Successfully deleted the applicant!';
+            Log::channel('daily')->info(json_encode($log));
+
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+            
             return array('status' => 1, 'msg' => 'Successfully deleted the applicant!');
-        } else {
+        }catch(Exception $ex){
+            $logged_user = auth()->user();
+            $log['msg'] = 'Applicant deletion was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 0, 'msg' => 'Applicant deletion was unsuccessful!');
         }
     }

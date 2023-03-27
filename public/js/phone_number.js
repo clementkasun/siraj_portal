@@ -96,7 +96,7 @@ edit_phone_number = (id) => {
     });
 }
 
-load_phone_number_tbl = () => {
+load_phone_number_tbl = (privillages = []) => {
     let index = 1;
     let html = '';
     ajaxRequest('get', '/api/get_phone_numbers', null, function (result) {
@@ -116,10 +116,23 @@ load_phone_number_tbl = () => {
                 html += '<td>' + assigned_name + '</td>';
                 html += '<td>' + phone_num_response + '</td>';
                 html += '<td>';
-                html += '<button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + phone_number.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + phone_number.id + '"> Delete </button>';
-                html += '<a href="/phone_number_profile/id/' + phone_number.id + '" class="btn btn-success btn-sm m-1">Profile</a>';
-                html += '<a href="/phone_number_response/id/' + phone_number.id + '" class="btn btn-primary btn-sm m-1">response</a>';
+                if(privillages['is_update'] == '1'){
+                    html += '<button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + phone_number.id + '"> Edit </button>';
+                    html += '<a href="/phone_number_response/id/' + phone_number.id + '" class="btn btn-primary btn-sm m-1">response</a>';
+                }else{
+                    html += '<button type="button" class="btn btn-primary btn-sm edit m-1" disabled> Edit </button>';
+                    html += '<a href="/phone_number_response/id/' + phone_number.id + '" class="btn btn-primary btn-sm m-1" style="pointer-events: none; cursor: default;">response</a>';
+                }
+                if(privillages['is_delete'] == '1'){
+                    html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + phone_number.id + '"> Delete </button>';
+                }else{
+                    html += '<button type="button" class="btn btn-danger btn-sm delete m-1" disabled> Delete </button>';
+                }
+                if(privillages['is_read'] == '1'){
+                    html += '<a href="/phone_number_profile/id/' + phone_number.id + '" class="btn btn-success btn-sm m-1">Profile</a>';
+                }else{
+                    html += '<a href="#" class="btn btn-success btn-sm m-1" onclick="return false;" style="pointer-events: none; cursor: default;">Profile</a>';
+                }
                 html += '</td>';
             });
             $('#phone_number_tbl tbody').html(html);

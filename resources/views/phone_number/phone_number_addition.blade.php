@@ -19,12 +19,12 @@
                     <div class="col-md-3">
                         <form id="phone_number_form">
                             <div class="form-group">
-                                <label for="phone_number"> Phone Number *</label>
-                                <div><input type="text" class="form-control" name="phone_number" id="phone_number" placeholder="Please enter the phone number" required></div>
-                            </div>
-                            <div class="form-group">
                                 <label for="name">Name *</label>
                                 <div><input type="text" class="form-control" name="name" id="name" placeholder="Please enter the name"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number"> Phone Number *</label>
+                                <div><input type="text" class="form-control" name="phone_number" id="phone_number" placeholder="Please enter the phone number" required></div>
                             </div>
                             <div class="form-group">
                                 <button id="save_phone_number" type="button" class="btn btn-success pl-5 pr-5">Save</button>
@@ -34,7 +34,7 @@
                     </div>
                     @endcan
                     @can('view-phone-number')
-                    <div class="col-md-9">
+                    <div class="col-12 col-md-9">
                         <table class="table table-striped" id="phone_number_tbl">
                             <thead>
                                 <th>#</th>
@@ -63,7 +63,12 @@
 <script src="{{asset('js/phone_number.js')}}"></script>
 <script>
     $(document).ready(function() {
-        load_phone_number_tbl();
+        let privillages = {
+            'is_read' : '{{ Gate::allows("view-phone-number") }}',
+            'is_update' : '{{ Gate::allows("update-phone-number") }}',
+            'is_delete' : '{{ Gate::allows("delete-phone-number") }}'
+        };
+        load_phone_number_tbl(privillages);
     });
 </script>
 @endsection

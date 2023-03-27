@@ -23,8 +23,6 @@ class CreateOnlineApplicantsTable extends Migration
             $table->string('phone_no_01', 255);
             $table->string('phone_no_02', 255);
             $table->string('job_type', 255);
-            $table->unsignedBigInteger('added_by')->nullable();
-            $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

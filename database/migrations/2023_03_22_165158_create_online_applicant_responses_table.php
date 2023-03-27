@@ -15,7 +15,6 @@ class CreateOnlineApplicantResponsesTable extends Migration
     {
         Schema::create('online_applicant_responses', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
             $table->string('designation', 255);
             $table->string('response', 255);
             $table->unsignedBigInteger('online_applicant_id')->nullable();

@@ -8,7 +8,7 @@
     <!-- API Token -->
     <meta name="api-token" content="{{ (auth()->user() != null) ? auth()->user()->createToken('auth-token')->plainTextToken : '' }}" />
     <title>
-        {{ (isset($applicant_details->passport_no)) ? $applicant_details->passport_no : '' }} - {{ (isset($applicant_details->full_name)) ? $applicant_details->full_name : '-' }} - {{ (isset($applicant_details->applied_country)) ? ucfirst($applicant_details->applied_country) : '-' }} - {{ (isset($applicant_details->applied_post)) ? $applicant_details->applied_post : '-' }}
+        Siraj Manpower Service | Application {{ (isset($applicant_details->passport_no)) ? $applicant_details->passport_no : '' }}  {{ (isset($applicant_details->full_name)) ? $applicant_details->full_name : '' }} {{ (isset($applicant_details->applied_country)) ? ucfirst($applicant_details->applied_country) : '' }}  {{ (isset($applicant_details->applied_post)) ? $applicant_details->applied_post : '' }}
     </title>
     <title>Document</title>
     <link rel="icon" type="image/x-icon" href="{{url('./dist/img/favicon.png')}}">

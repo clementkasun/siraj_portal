@@ -52,6 +52,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 // ->middleware('auth:sanctum')
                 ->group(base_path('routes/web.php'));
+                
         });
     }
 
