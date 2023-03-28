@@ -17,43 +17,46 @@ class ContactResponseRepository implements ContactResponseInterface
         if (Gate::denies('view-contact-us-resp', auth()->user())) {
             return array('status' => 4, 'msg' => 'You are not authorised to view contact response!');
         }
-        return view('contact.contact_response', ['contact_id' => $id]);
+        return view('contact.contact_response', ['contact_id' => $id, 'contact_responses' => ContactResponse::with(['Designation', 'AddedBy'])->get()]);
     }
 
     public function store($request)
     {
-        if (Gate::denies('create-contact-us-resp', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to register contact response!');
-        }
-        $log = [
-            'route' => '/api/save_contact_response',
-        ];
-
         try {
+            if (Gate::denies('create-contact-us-resp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to register contact response!');
+            }
             $request->validate([
-                'name' => 'required|string|max:255',
                 'response' => 'required|string|max:255',
                 'contact_id' => 'required|string',
             ]);
 
             ContactResponse::create([
-                'name' => $request->name,
                 'designation' => auth()->user()->role_id,
                 'response' => $request->response,
                 'contact_id' => $request->contact_id,
                 'added_by' => auth()->user()->id
             ]);
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             $log['msg'] = 'Contact Response saved Successfully!';
             Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 1, 'msg' => 'Contact Response saved Successfully!');
-        } catch (Exception $e) {
-            $log['error']  = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
+            $log['msg'] = 'Contact Response saving was failed!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Contact Response saving was failed!');
         }
@@ -61,37 +64,40 @@ class ContactResponseRepository implements ContactResponseInterface
 
     public function update($request, $id)
     {
-        if (Gate::denies('update-contact-us-resp', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to update contact response!');
-        }
-        $log = [
-            'route' => '/api/save_contact_response',
-        ];
-
         try {
+            if (Gate::denies('update-contact-us-resp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to update contact response!');
+            }
             $request->validate([
-                'name' => 'required|string|max:255',
                 'response' => 'required|string|max:255',
                 'contact_id' => 'required|string',
             ]);
 
             $contact = ContactResponse::find($id);
-            $contact->name = $request->name;
             $contact->designation = auth()->user()->role_id;
             $contact->response = $request->response;
             $contact->contact_id = $request->contact_id;
             $contact->save();
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             $log['msg'] = 'Contact Response updated Successfully!';
             Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 1, 'msg' => 'Contact Response updated Successfully!');
-        } catch (Exception $e) {
-            $log['error']  = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
+            $log['msg'] = 'Contact Response updating was failed!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Contact Response updated was failed!');
         }
@@ -99,45 +105,74 @@ class ContactResponseRepository implements ContactResponseInterface
 
     public function show()
     {
-        if (Gate::denies('view-contact-us-resp', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view contact responses!');
+        try {
+            if (Gate::denies('view-contact-us-resp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view contact responses!');
+            }
+            $log = [
+                'URI' => '/api/get_contact_responses',
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => []
+            ];
+            Log::channel('daily')->info(json_encode($log));
+            
+            return ContactResponse::with('Designation')->get();
+        } catch (Exception $ex) {
+            $log['msg'] = 'Contact Responses accessing was failed!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        $log = [
-            'route' => '/api/get_contact_responses',
-            'msg' => 'Successfully accessed the contact responses!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return ContactResponse::with('Designation')->get();
     }
 
     public function getContactResponse($id)
     {
-        if (Gate::denies('view-contact-us-resp', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view contact response!');
+        try {
+            if (Gate::denies('view-contact-us-resp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view contact response!');
+            }
+            $log = [
+                'URI' => '/api/get_contact_response/id/' . $id,
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => []
+            ];
+            Log::channel('daily')->info(json_encode($log));
+            return ContactResponse::find($id);
+        } catch (Exception $ex) {
+            $log['msg'] = 'Contact Response accessing was failed!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        $log = [
-            'route' => '/api/get_contact_response/id/' . $id,
-            'msg' => 'Successfully accessed the contact response!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return ContactResponse::find($id);
     }
 
 
     public function destroy($id)
     {
-        if (Gate::denies('delete-contact-us-resp', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to delete contact response!');
-        }
-        $log = [
-            'route' => '/api/delete_contact_response/id/' . $id,
-            'msg' => 'Successfully delete the contact response!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        $status = ContactResponse::find($id)->delete();
-        if ($status == true) {
+        try {
+            if (Gate::denies('delete-contact-us-resp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to delete contact response!');
+            }
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => '/api/delete_contact_response/id/'.$id,
+                'METHOD' => 'DELETE',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => ['status' => 1, 'msg' => 'Successfully deleted the contact response!'] 
+            ];
+
+            $log['msg'] = 'Contact Response deleted Successfully!';
+            Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 1, 'msg' => 'Successfully deleted the contact response!');
-        } else {
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
+            $log['msg'] = 'Contact response deletion was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 0, 'msg' => 'Contact response deletion was unsuccessful!');
         }
     }

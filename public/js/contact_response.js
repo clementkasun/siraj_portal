@@ -10,8 +10,7 @@ $('#save_contact_response').click(function (privillages) {
     ulploadFileWithData('/api/save_contact_response', data, function (result) {
         if (result.status == 1) {
             toastr.success('Contact response saving is successful!');
-            $('#contact_response_form').trigger("reset");
-            load_contact_response(privillages);
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -21,118 +20,110 @@ $('#save_contact_response').click(function (privillages) {
     });
 });
 
-$('#update_contact_response').click(function (privillages) {
-    let contact_resp_id = $('#update_contact_response').attr('data-id');
-    update_contact_response(contact_resp_id);
-});
+// $('#update_contact_response').click(function (privillages) {
+//     let contact_resp_id = $('#update_contact_response').attr('data-id');
+//     update_contact_response(contact_resp_id);
+// });
 
-update_contact_response = (contact_resp_id) => {
-    if (!jQuery("#contact_response_form").valid()) {
-        return false;
-    }
-    let data = {
-        'response': $('#response').val(),
-        'contact_id': CONTACT_ID
-    };
+// update_contact_response = (contact_resp_id) => {
+//     if (!jQuery("#contact_response_form").valid()) {
+//         return false;
+//     }
+//     let data = {
+//         'response': $('#response').val(),
+//         'contact_id': CONTACT_ID
+//     };
 
-    ulploadFileWithData('/api/update_contact_response/id/' + contact_resp_id, data, function (result) {
-        if (result.status == 1) {
-            toastr.success('Contact response updating is successful!');
-            $('#contact_response_form').trigger("reset");
-            load_contact_response(privillages);
-            reset_buttons();
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack();
-            }
-        } else {
-            toastr.error('Contact response updating was failed!');
-        }
-    });
-}
+//     ulploadFileWithData('/api/update_contact_response/id/' + contact_resp_id, data, function (result) {
+//         if (result.status == 1) {
+//             toastr.success('Contact response updating is successful!');
+//             location.reload();
+//             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+//                 callBack();
+//             }
+//         } else {
+//             toastr.error('Contact response updating was failed!');
+//         }
+//     });
+// }
 
-load_contact_response = (privillages = []) => {
-    let index = 1;
-    let html = '';
-    ajaxRequest('get', '/api/get_contact_responses', null, function (result) {
-        if (result != '') {
-            result.forEach(contact_response => {
-                html += '<tr>';
-                html += '<td>' + index++ + '</td>';
-                html += '<td style="width: 15em">' + contact_response.name + '</td>';
-                html += '<td>' + contact_response.designation.name + '</td>';
-                html += '<td>' + contact_response.response + '</td>';
-                if (privillages['is_update'] == '1') {
-                    html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + contact_response.id + '"> Edit </button>';
-                }else{
-                    html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" disabled> Edit </button>';
-                }
-                if (privillages['is_delete'] == '1') {
-                    html += '<button type="button" class="btn btn-danger del btn-sm m-1" data-id="' + contact_response.id + '"> Delete </button></td>';
-                }else{
-                    html += '<button type="button" class="btn btn-danger del btn-sm m-1" disabled> Delete </button></td>';
-                }
-            });
-            $('#contact_resp_tbl tbody').html(html);
-            $('#contact_resp_tbl').DataTable({
-                "pageLength": 10,
-                "destroy": true,
-                "retrieve": true
-            });
-        } else {
-            $('#contact_resp_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
-        }
-    });
-}
+// load_contact_response = (privillages = []) => {
+//     let index = 1;
+//     let html = '';
+//     ajaxRequest('get', '/api/get_contact_responses', null, function (result) {
+//         if (result != '') {
+//             result.forEach(contact_response => {
+//                 html += '<tr>';
+//                 html += '<td>' + index++ + '</td>';
+//                 html += '<td style="width: 15em">' + contact_response.name + '</td>';
+//                 html += '<td>' + contact_response.designation.name + '</td>';
+//                 html += '<td>' + contact_response.response + '</td>';
+//                 if (privillages['is_update'] == '1') {
+//                     html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + contact_response.id + '"> Edit </button>';
+//                 }else{
+//                     html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" disabled> Edit </button>';
+//                 }
+//                 if (privillages['is_delete'] == '1') {
+//                     html += '<button type="button" class="btn btn-danger del btn-sm m-1" data-id="' + contact_response.id + '"> Delete </button></td>';
+//                 }else{
+//                     html += '<button type="button" class="btn btn-danger del btn-sm m-1" disabled> Delete </button></td>';
+//                 }
+//             });
+//             $('#contact_resp_tbl tbody').html(html);
+//             $('#contact_resp_tbl').DataTable({
+//                 "pageLength": 10,
+//                 "destroy": true,
+//                 "retrieve": true
+//             });
+//         } else {
+//             $('#contact_resp_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
+//         }
+//     });
+// }
 
-$(document).on('click', '.del', function () {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "Record will be deleted!",
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes!'
-    }).then((result) => {
-        if (result.value) {
-            let id = $(this).attr('data-id');
-            reset_buttons();
-            delete_contact_response(id);
-        }
-    });
-});
+// $(document).on('click', '.del', function () {
+//     Swal.fire({
+//         title: 'Are you sure?',
+//         text: "Record will be deleted!",
+//         showCancelButton: true,
+//         confirmButtonColor: '#3085d6',
+//         cancelButtonColor: '#d33',
+//         confirmButtonText: 'Yes!'
+//     }).then((result) => {
+//         if (result.value) {
+//             let id = $(this).attr('data-id');
+//             reset_buttons();
+//             delete_contact_response(id);
+//         }
+//     });
+// });
 
-delete_contact_response = (id) => {
-    ajaxRequest('delete', '/api/delete_contact_response/id/' + id, null, function (result) {
-        if (result.status == 1) {
-            $('#contact_response_form').trigger("reset");
-            load_contact_response(privillages);
-            toastr.success('Deleting contact response was successful!');
-        } else {
-            toastr.error('Deleting contact response was failed!');
-        }
-    });
-}
+// delete_contact_response = (id) => {
+//     ajaxRequest('delete', '/api/delete_contact_response/id/' + id, null, function (result) {
+//         if (result.status == 1) {
+//             location.reload();
+//             toastr.success('Deleting contact response was successful!');
+//         } else {
+//             toastr.error('Deleting contact response was failed!');
+//         }
+//     });
+// }
 
-reset_buttons = () => {
-    $('#save_contact_response').removeClass('d-none');
-    $('#update_contact_response').addClass('d-none');
-}
+// $(document).on('click', '.edit', function () {
+//     let id = $(this).attr('data-id');
+//     edit_contact_response(id);
+// });
 
-$(document).on('click', '.edit', function () {
-    let id = $(this).attr('data-id');
-    edit_contact_response(id);
-});
-
-edit_contact_response = (id) => {
-    let url = '/api/get_contact_response/id/' + id;
-    ajaxRequest('get', url, null, function (result) {
-        $('#designation').val(result.designation);
-        $('#response').val(result.response);
-        $('#save_contact_response').addClass('d-none');
-        $('#update_contact_response').removeClass('d-none');
-        $('#update_contact_response').attr('data-id', result.id);
-    });
-}
+// edit_contact_response = (id) => {
+//     let url = '/api/get_contact_response/id/' + id;
+//     ajaxRequest('get', url, null, function (result) {
+//         $('#designation').val(result.designation);
+//         $('#response').val(result.response);
+//         $('#save_contact_response').addClass('d-none');
+//         $('#update_contact_response').removeClass('d-none');
+//         $('#update_contact_response').attr('data-id', result.id);
+//     });
+// }
 
 $("#candidate_response_form").validate({
     errorClass: "invalid",

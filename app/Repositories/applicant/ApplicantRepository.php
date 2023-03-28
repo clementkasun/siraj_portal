@@ -397,12 +397,19 @@ class ApplicantRepository implements ApplicantInterface
 
     public function applicantProfile($id)
     {
-        try {
+        // try {
             if (Gate::denies('view-offline-applicant', auth()->user())) {
                 return array('status' => 4, 'msg' => 'You are not authorised to view applicant as staff!');
             }
 
-            $applicant_data = Applicant::find($id);
+            $applicant_data = Applicant::find($id)->with([
+                'ApplicantPreviousEmployeement.AddedBy',
+                'ApplicationStaffResponse',
+                'ApplicantLanguage',
+                'Commission.Designation',
+                'Commission.AddedBy'
+            ])->first();
+            
             return view('applicant.applicant_profile', [
                 'applicant_data' => $applicant_data,
                 'commision_price' => $applicant_data->commision_price,
@@ -410,11 +417,11 @@ class ApplicantRepository implements ApplicantInterface
                 'post_status_array' => Applicant::find($id)->post_status_array,
                 'previous_emp_count' => ApplicantPreviousEmployeement::where('applicant_id', $id)->count()
             ]);
-        } catch (Exception $ex) {
-            $log['msg'] = 'accessing applicant profile was unsuccessful!';
-            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
-            Log::channel('daily')->error(json_encode($log));
-        }
+        // } catch (Exception $ex) {
+        //     $log['msg'] = 'accessing applicant profile was unsuccessful!';
+        //     $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+        //     Log::channel('daily')->error(json_encode($log));
+        // }
     }
 
     public function viewApplication($id)
@@ -463,7 +470,7 @@ class ApplicantRepository implements ApplicantInterface
 
     public function destroy($id)
     {
-        try{
+        try {
             if (Gate::denies('delete-offline-applicant', auth()->user())) {
                 return array('status' => 4, 'msg' => 'You are not authorised to delete applicant as staff!');
             }
@@ -472,7 +479,7 @@ class ApplicantRepository implements ApplicantInterface
                 'msg' => 'Successfully deleted the applicant!',
             ];
             Log::channel('daily')->info(json_encode($log));
-    
+
             $logged_user = auth()->user();
             $applicant = Applicant::find($id);
             $applicant->deleted_by = $logged_user->id;
@@ -483,9 +490,9 @@ class ApplicantRepository implements ApplicantInterface
             Log::channel('daily')->info(json_encode($log));
 
             Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
-            
+
             return array('status' => 1, 'msg' => 'Successfully deleted the applicant!');
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             $logged_user = auth()->user();
             $log['msg'] = 'Applicant deletion was unsuccessful!';
             $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();

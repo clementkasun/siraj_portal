@@ -95,7 +95,7 @@ class Applicant extends Model
 
     public function Commission()
     {
-        return $this->belongsTo(Commission::class);
+        return $this->hasMany(Commission::class);
     }
 
     public $post_status_array = [

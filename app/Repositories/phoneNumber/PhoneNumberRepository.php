@@ -16,25 +16,30 @@ class PhoneNumberRepository implements PhoneNumberInterface
 {
     public function index()
     {
-        if (Gate::denies('view-phone-number', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to add phone number!');
-        }
-        $phone_number_data = PhoneNumber::with(['AddedBy', 'AssignedTo', 'PhoneNumberResponse' => function ($phone_num_resp) {
-            $phone_num_resp->orderBy('id', 'DESC')->limit(1);
-        }])->get();
+        try {
+            if (Gate::denies('view-phone-number', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view phone number details!');
+            }
+            $phone_number_data = PhoneNumber::with(['AddedBy', 'AssignedTo', 'PhoneNumberResponse' => function ($phone_num_resp) {
+                $phone_num_resp->orderBy('id', 'DESC')->limit(1);
+            }])->get();
 
-        return view('phone_number.phone_number_addition', ['phone_number_data' => $phone_number_data]);
+            $log['msg'] = 'Phone number detail has accessed successfully!';
+            Log::channel('daily')->info(json_encode($log));
+            return view('phone_number.phone_number_addition', ['phone_number_data' => $phone_number_data]);
+        } catch (Exception $ex) {
+            $log['msg'] = 'Phone number detail accessing was failed!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+        }
     }
 
     public function store($request)
     {
-        if (Gate::denies('create-phone-number', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to add phone number!');
-        }
-        $log = [
-            'route' => '/api/add_phone_number',
-        ];
         try {
+            if (Gate::denies('create-phone-number', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to add phone number!');
+            }
             $request->validate([
                 'phone_number' => 'required|string|max:12',
                 'name' => 'sometimes|nullable|string|max:255',
@@ -172,8 +177,8 @@ class PhoneNumberRepository implements PhoneNumberInterface
         if ($user_count > 0) {
             $random_user_index = rand(1, $user_count);
             $user_array = $assignable_users->toArray();
-            $selected_user = $user_array[$random_user_index-1]['id'];
-            
+            $selected_user = $user_array[$random_user_index - 1]['id'];
+
             $phone_number = PhoneNumber::where('id', $id)->first();
             $phone_number->assigned_staff_member = $selected_user;
             $phone_number->save();

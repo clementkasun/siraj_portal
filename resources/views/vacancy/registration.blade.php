@@ -156,7 +156,7 @@
         bsCustomFileInput.init();
     });
 
-    ('#vacancy_tbl').DataTable({
+    $('#vacancy_tbl').DataTable({
         "pageLength": 10,
         "destroy": true,
         "retrieve": true

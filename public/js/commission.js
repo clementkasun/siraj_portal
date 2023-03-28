@@ -96,45 +96,45 @@ edit_comission = (id) => {
     });
 }
 
-load_comission_tbl = (id, privillages = []) => {
-    let index = 1;
-    let html = '';
-    ajaxRequest('get', '/api/get_comissions/id/'+id, null, function(result) {
-        if (result != '') {
-            result.forEach(comission => {
-                let created_at = new Date(comission.created_at);
-                let formatted_date = created_at.getFullYear()+'-'+created_at.getMonth()+'-'+created_at.getDate();
-                html += '<tr>';
-                html += '<td>' + index++ + '</td>';
-                html += '<td>' + comission.staff_mem_name + '</td>';
-                html += '<td>' + comission.designation.name + '</td>';
-                html += '<td>' + comission.price + '</td>';
-                html += '<td>' + comission.response + '</td>';
-                html += '<td>' + formatted_date + '</td>';
-                html += '<td>';
-                if(privillages['is_update'] == '1'){
-                    html += '<button type="button" class="btn btn-primary btn-sm edit-comission m-1" data-id="' + comission.id + '"> Edit </button>';
-                }else{
-                    html += '<button type="button" class="btn btn-primary btn-sm edit-comission m-1" disabled> Edit </button>';
-                }
-                if(privillages['is_delete'] == '1'){
-                    html += '<button type="button" class="btn btn-danger btn-sm delete-comission m-1" data-id="' + comission.id + '"> Delete </button>';
-                }else{
-                    html += '<button type="button" class="btn btn-danger btn-sm delete-comission m-1" disabled> Delete </button>';
-                }
-                html += '</td>';
-            });
-            $('#commission_tbl tbody').html(html);
-            $('#commission_tbl').DataTable({
-                "pageLength": 10,
-                "destroy": true,
-                "retrieve": true
-            });
-        } else {
-            $('#commission_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
-        }
-    });
-}
+// load_comission_tbl = (id, privillages = []) => {
+//     let index = 1;
+//     let html = '';
+//     ajaxRequest('get', '/api/get_comissions/id/'+id, null, function(result) {
+//         if (result != '') {
+//             result.forEach(comission => {
+//                 let created_at = new Date(comission.created_at);
+//                 let formatted_date = created_at.getFullYear()+'-'+created_at.getMonth()+'-'+created_at.getDate();
+//                 html += '<tr>';
+//                 html += '<td>' + index++ + '</td>';
+//                 html += '<td>' + comission.staff_mem_name + '</td>';
+//                 html += '<td>' + comission.designation.name + '</td>';
+//                 html += '<td>' + comission.price + '</td>';
+//                 html += '<td>' + comission.response + '</td>';
+//                 html += '<td>' + formatted_date + '</td>';
+//                 html += '<td>';
+//                 if(privillages['is_update'] == '1'){
+//                     html += '<button type="button" class="btn btn-primary btn-sm edit-comission m-1" data-id="' + comission.id + '"> Edit </button>';
+//                 }else{
+//                     html += '<button type="button" class="btn btn-primary btn-sm edit-comission m-1" disabled> Edit </button>';
+//                 }
+//                 if(privillages['is_delete'] == '1'){
+//                     html += '<button type="button" class="btn btn-danger btn-sm delete-comission m-1" data-id="' + comission.id + '"> Delete </button>';
+//                 }else{
+//                     html += '<button type="button" class="btn btn-danger btn-sm delete-comission m-1" disabled> Delete </button>';
+//                 }
+//                 html += '</td>';
+//             });
+//             $('#commission_tbl tbody').html(html);
+//             $('#commission_tbl').DataTable({
+//                 "pageLength": 10,
+//                 "destroy": true,
+//                 "retrieve": true
+//             });
+//         } else {
+//             $('#commission_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
+//         }
+//     });
+// }
 
 $("#commission_form").validate({
     errorClass: "invalid",

@@ -17,12 +17,13 @@ class Commission extends Model
      * @var array
      */
     protected $fillable = [
-        'staff_mem_name',
         'designation',
         'price',
         'response',
         'applicant_id',
-        'added_by'
+        'added_by',
+        'updated_by',
+        'deleted_by'
     ];
 
     public function Applicant(){
@@ -31,5 +32,9 @@ class Commission extends Model
 
     public function Designation(){
         return $this->belongsTo(Role::class, 'designation');
+    }
+
+    public function AddedBy(){
+        return $this->belongsTo(User::class, 'added_by');
     }
 }

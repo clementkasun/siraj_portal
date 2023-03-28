@@ -5,6 +5,10 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
+<?php
+
+use Illuminate\Support\Carbon;
+?>
 <section class="content-header">
     <div class="container-fluid">
         <div class="card card-primary">
@@ -349,9 +353,9 @@
                                     <!-- /.tab-pane -->
                                     <div class="tab-pane" id="previous_employeements">
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="{{ Gate::denies('view-previous-emp') ? 'col-12' : 'col-12 col-md-3' }}">
                                                 @can('create-previous-emp')
-                                                @if(!($previous_emp_count > 4)) 
+                                                @if(!($previous_emp_count > 4))
                                                 <form id="previous_employeement_form">
                                                     <div class="form-group">
                                                         <label for="job_type">Job type *</label>
@@ -438,9 +442,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        @can('create-previous-emp')
                                                         <button id="save_previous_emp" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
-                                                        @endcan
                                                         @can('update-previous-emp')
                                                         <button id="update_previous_emp" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
                                                         @endcan
@@ -448,174 +450,240 @@
                                                 </form>
                                                 @endif
                                                 @endcan
+                                            </div>
+                                            <div class="{{ Gate::denies('create-previous-emp') ?  'col-12' : 'col-12 col-md-9'}}">
+                                                @can('view-previous-emp')
+                                                <table class="table table-striped" id="previous_emp_tbl">
+                                                    <thead>
+                                                        <th>#</th>
+                                                        <th>Job Type</th>
+                                                        <th>Country</th>
+                                                        <th>Period</th>
+                                                        <th>Added by</th>
+                                                        <th>Created at</th>
+                                                        <th>Action</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if(isset($applicant_data->ApplicantPreviousEmployeement))
+                                                        @forelse($applicant_data->ApplicantPreviousEmployeement as $key => $previous_emp)
+                                                        <tr>
+                                                            <td>{{ ++$key }}</td>
+                                                            <td>{{ $previous_emp->job_type }}</td>
+                                                            <td>{{ $previous_emp->country }}</td>
+                                                            <td>{{ $previous_emp->period }}</td>
+                                                            <td>{{ (isset($previous_emp->AddedBy)) ? ($previous_emp->AddedBy->preffered_name != null) ? $previous_emp->AddedBy->preffered_name : '': '' }}</td>
+                                                            <td>{{ Carbon::parse($previous_emp->created_at)->format('Y-m-d') }}</td>
+                                                            <td>
+                                                                @can('update-previous-emp')
+                                                                <button type="button" class="btn btn-primary btn-sm edit-previous-emp m-1" data-id="{{ $previous_emp->id }}"> Edit </button>
+                                                                @endcan
+                                                                @can('delete-previous-emp')
+                                                                <button type="button" class="btn btn-danger btn-sm delete-prev-emp m-1" data-id="{{ $previous_emp->id }}'"> Delete </button>
+                                                                @endcan
+                                                            </td>
+                                                        </tr>
+                                                        @empty
+                                                        <tr>
+                                                            <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
+                                                        </tr>
+                                                        @endforelse
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                                @endcan
+                                            </div>
                                         </div>
-                                        <div class="col-md-9">
-                                            @can('view-previous-emp')
-                                            <table class="table table-striped" id="previous_emp_tbl">
-                                                <thead>
-                                                    <th>#</th>
-                                                    <th>Job Type</th>
-                                                    <th>Country</th>
-                                                    <th>Period</th>
-                                                    <th>Added by</th>
-                                                    <th>Created at</th>
-                                                    <th>Action</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                    </div>
+                                    <div class="tab-pane" id="languages">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                @can('create-applicant-language')
+                                                <form id="languages_form">
+                                                    <div class="form-group">
+                                                        <label for="language">Language*</label>
+                                                        <select class="custom-select select2 select2-purple" data-dropdown-css-class="select2-purple" id="language" name="language" required>
+                                                            <option value="">Select the post language</option>
+                                                            <option value="english">English</option>
+                                                            <option value="arabic">Arabic</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="poor">Poor</label>
+                                                        <input type="radio" id="poor" name="language_status" class="float-right" required /><br>
+                                                        <label for="fair">Fair</label>
+                                                        <input type="radio" id="fair" name="language_status" class="float-right" required /><br>
+                                                        <label for="fluent">Fluent</label>
+                                                        <input type="radio" id="fluent" name="language_status" class="float-right" required />
+                                                    </div>
+                                                    <button id="save_language" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
+                                                    @can('update-applicant-language')
+                                                    <button id="update_language" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
+                                                    @endcan
+                                                </form>
+                                                @endcan
+                                            </div>
+                                            <div class="col-md-8">
+                                                @can('view-applicant-language')
+                                                <table class="table table-striped" id="language_tbl">
+                                                    <thead>
+                                                        <th>#</th>
+                                                        <th>Language Name</th>
+                                                        <th>Poor</th>
+                                                        <th>Fair</th>
+                                                        <th>Fluent</th>
+                                                        <th>Action</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if(isset($applicant_data->ApplicantLanguage))
+                                                        @forelse($applicant_data->ApplicantLanguage as $key => $language)
+                                                        <tr>
+                                                            <td>{{ ++$key }}</td>
+                                                            <td>{{ $language->language_name }}</td>
+                                                            <td><?php echo ($language->poor == 1) ?  '<span class="badge badge-info pl-2 pr-2">Yes</span>' :  '<span class="badge badge-warning pl-2 pr-2">No</span>'; ?></td>
+                                                            <td><?php echo ($language->fair == 1) ?  '<span class="badge badge-info pl-2 pr-2">Yes</span>'  :  '<span class="badge badge-warning pl-2 pr-2">No</span>'; ?></td>
+                                                            <td><?php echo ($language->fluent == 1) ?  '<span class="badge badge-info pl-2 pr-2">Yes</span>' :  '<span class="badge badge-warning pl-2 pr-2">No</span>'; ?></td>
+                                                            <td>
+                                                                @can('update-applicant-language')
+                                                                <button type="button" class="btn btn-primary btn-sm edit-app-lan m-1" data-id="{{ $language->id }}"> Edit </button>
+                                                                @endcan
+                                                                @can('delete-applicant-language')
+                                                                <button type="button" class="btn btn-danger btn-sm delete-app-lan m-1" data-id="{{ $language->id }}"> Delete </button>
+                                                                @endcan
+                                                            </td>
+                                                        </tr>
+                                                        @empty
+                                                        <tr>
+                                                            <td colspan="6" class="text-center text-bold"><span>No Data</span></td>
+                                                        </tr>
+                                                        @endforelse
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                                @endcan
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                    <div class="tab-pane" id="staff_response">
+                                        <div class="row">
+                                            @can('create-application-staff-resp')
+                                            <div class="col-md-3">
+                                                <form id="staff_response_form">
+                                                    <div class="form-group">
+                                                        <label for="response">Response *</label>
+                                                        <div><input type="text" class="form-control" name="response" id="response" placeholder="Please enter the staff response" required></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button id="save_staff_response" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
+                                                        <button id="update_staff_response" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            @endcan
+                                            @can('view-application-staff-resp')
+                                            <div class="col-md-9">
+                                                <table class="table table-striped" id="app_staff_resp_tbl">
+                                                    <thead>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Designation</th>
+                                                        <th>Response</th>
+                                                        <th>Created at</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="5" class="text-center text-bold"><span>No Data</span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                             @endcan
                                         </div>
                                     </div>
-                                </div>
-                                <div class="tab-pane" id="languages">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            @can('create-applicant-language')
-                                            <form id="languages_form">
-                                                <div class="form-group">
-                                                    <label for="language">Language*</label>
-                                                    <select class="custom-select select2 select2-purple" data-dropdown-css-class="select2-purple" id="language" name="language" required>
-                                                        <option value="">Select the post language</option>
-                                                        <option value="english">English</option>
-                                                        <option value="arabic">Arabic</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="poor">Poor</label>
-                                                    <input type="radio" id="poor" name="language_status" class="float-right" required /><br>
-                                                    <label for="fair">Fair</label>
-                                                    <input type="radio" id="fair" name="language_status" class="float-right" required /><br>
-                                                    <label for="fluent">Fluent</label>
-                                                    <input type="radio" id="fluent" name="language_status" class="float-right" required />
-                                                </div>
-                                                <button id="save_language" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
-                                                <button id="update_language" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
-                                            </form>
-                                            @endcan
+                                    <div class="tab-pane" id="commission">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @can('create-commission')
+                                                <form id="commission_form">
+                                                    <div class="form-group">
+                                                        <label for="com_price">Price *</label>
+                                                        <div><input type="number" class="form-control" name="com_price" id="com_price" min="0" placeholder="Please enter the price" required></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="com_response">Response *</label>
+                                                        <div><input type="text" class="form-control" name="com_response" id="com_response" placeholder="Please enter the staff response" required></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button id="save_comission" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
+                                                        @can('update-commission')
+                                                        <button id="update_comission" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
+                                                        @endcan
+                                                    </div>
+                                                </form>
+                                                @endcan
+                                            </div>
+                                            <div class="col-md-9">
+                                                @can('view-commission')
+                                                <table class="table table-striped" id="commission_tbl">
+                                                    <thead>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Designation</th>
+                                                        <th>Installment</th>
+                                                        <th>Response</th>
+                                                        <th>Created at</th>
+                                                        <th>Action</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if(isset($applicant_data->Commission))
+                                                        @forelse($applicant_data->Commission as $key => $commission)
+                                                        <tr>
+                                                            <td> {{ ++$key }} </td>
+                                                            <td> {{ $commission->AddedBy->preffered_name }} </td>
+                                                            <td> {{ $commission->Designation->preffered_name }} </td>
+                                                            <td> {{ $commission->price }} </td>
+                                                            <td> {{ $commission->response }} </td>
+                                                            <td> {{ Carbon::parse($commission->created_at)->format('Y-m-d') }} </td>
+                                                            <td>
+                                                                @can('update-commission')
+                                                                <button type="button" class="btn btn-primary btn-sm edit-comission m-1" data-id="{{ $commission->id }}"> Edit </button>
+                                                                @endcan
+                                                                @can('delete-commission')
+                                                                <button type="button" class="btn btn-danger btn-sm delete-comission m-1" data-id="{{ $commission->id }}"> Delete </button>
+                                                                @endcan
+                                                            </td>
+                                                        </tr>
+                                                        @empty
+                                                        <tr>
+                                                            <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
+                                                        </tr>
+                                                        @endforelse
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                                @endcan
+                                            </div>
                                         </div>
-                                        <div class="col-md-8">
-                                            @can('view-applicant-language')
-                                            <table class="table table-striped" id="language_tbl">
-                                                <thead>
-                                                    <th>#</th>
-                                                    <th>Language Name</th>
-                                                    <th>Poor</th>
-                                                    <th>Fair</th>
-                                                    <th>Fluent</th>
-                                                    <th>Action</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan="6" class="text-center text-bold"><span>No Data</span></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            @endcan
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /.tab-pane -->
-                                <div class="tab-pane" id="staff_response">
-                                    <div class="row">
-                                        @can('create-application-staff-resp')
-                                        <div class="col-md-3">
-                                            <form id="staff_response_form">
-                                                <div class="form-group">
-                                                    <label for="response">Response *</label>
-                                                    <div><input type="text" class="form-control" name="response" id="response" placeholder="Please enter the staff response" required></div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <button id="save_staff_response" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
-                                                    <button id="update_staff_response" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
-                                                </div>
-                                            </form>
+                                        @can('view-commission')
+                                        <div class="row float-right">
+                                            <span class="col-4">Promised Total Commission:</span><span class="col-8"><b>{{ $commision_price }}</b></span>
+                                            <span class="col-4">Paid Total Commission:</span><span class="col-8"><b>{{ $paid_total_commision }}</b></span>
+                                            <span class="col-4">Available Commission:</span><span class="col-8"><b>{{ $commision_price - $paid_total_commision }}</b></span>
                                         </div>
                                         @endcan
-                                        @can('view-application-staff-resp')
-                                        <div class="col-md-9">
-                                            <table class="table table-striped" id="app_staff_resp_tbl">
-                                                <thead>
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>Designation</th>
-                                                    <th>Response</th>
-                                                    <th>Created at</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan="5" class="text-center text-bold"><span>No Data</span></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        @endcan
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="commission">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            @can('create-commission')
-                                            <form id="commission_form">
-                                                <div class="form-group">
-                                                    <label for="com_price">Price *</label>
-                                                    <div><input type="number" class="form-control" name="com_price" id="com_price" min="0" placeholder="Please enter the price" required></div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="com_response">Response *</label>
-                                                    <div><input type="text" class="form-control" name="com_response" id="com_response" placeholder="Please enter the staff response" required></div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <button id="save_comission" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
-                                                    <button id="update_comission" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
-                                                </div>
-                                            </form>
-                                            @endcan
-                                        </div>
-                                        <div class="col-md-9">
-                                            @can('view-commission')
-                                            <table class="table table-striped" id="commission_tbl">
-                                                <thead>
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>Designation</th>
-                                                    <th>Installment</th>
-                                                    <th>Response</th>
-                                                    <th>Created at</th>
-                                                    <th>Action</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            @endcan
-                                        </div>
-                                    </div>
-                                    @can('view-commission')
-                                    <div class="row float-right">
-                                        <span class="col-4">Promised Total Commission:</span><span class="col-8"><b>{{ $commision_price }}</b></span>
-                                        <span class="col-4">Paid Total Commission:</span><span class="col-8"><b>{{ $paid_total_commision }}</b></span>
-                                        <span class="col-4">Available Commission:</span><span class="col-8"><b>{{ $commision_price - $paid_total_commision }}</b></span>
-                                    </div>
-                                    @endcan
-                                </div>
+                                <!-- /.tab-content -->
                             </div>
                             <!-- /.tab-content -->
-                        </div>
-                        <!-- /.tab-content -->
-                    </div><!-- /.card-body -->
+                        </div><!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
                 </div>
-                <!-- /.card -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
         </div>
-    </div>
-    <!-- /.row -->
+        <!-- /.row -->
     </div>
 </section>
 @endsection
@@ -629,15 +697,31 @@
 <script>
     var APPLICANT_ID = '{{ $applicant_data->id }}';
 
-    $(document).ready(function() {
-        let privillages = {
-            'is_update': '{{ Gate::allows("update-previous-emp") }}',
-            'is_delete': '{{ Gate::allows("delete-previous-emp") }}'
-        };
-        load_previous_employeement_table(APPLICANT_ID, privillages);
-        load_language_table(APPLICANT_ID, privillages);
-        load_application_staff_table(APPLICANT_ID);
-        load_comission_tbl(APPLICANT_ID, privillages);
+    $('#previous_emp_tbl').DataTable({
+        "pageLength": 10,
+        "destroy": true,
+        "retrieve": true
     });
+
+    $('#language_tbl').DataTable({
+        "pageLength": 10,
+        "destroy": true,
+        "retrieve": true
+    });
+
+    $('a[data-toggle="tab"]').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+    $('a[data-toggle="tab"]').on("shown.bs.tab", function(e) {
+        var id = $(e.target).attr("href");
+        localStorage.setItem('selectedTab', id)
+    });
+
+    var selectedTab = localStorage.getItem('selectedTab');
+    if (selectedTab != null) {
+        $('a[data-toggle="tab"][href="' + selectedTab + '"]').tab('show');
+    }
 </script>
 @endsection
