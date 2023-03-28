@@ -438,8 +438,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
+                                                        @can('create-previous-emp')
                                                         <button id="save_previous_emp" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
+                                                        @endcan
+                                                        @can('update-previous-emp')
                                                         <button id="update_previous_emp" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
+                                                        @endcan
                                                     </div>
                                                 </form>
                                                 @endif

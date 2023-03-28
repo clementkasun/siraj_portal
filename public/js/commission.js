@@ -1,4 +1,4 @@
-$('#save_comission').click(function() {
+$('#save_comission').click(function(privillages) {
     if (!jQuery("#commission_form").valid()) {
         return false;
     }
@@ -22,7 +22,7 @@ $('#save_comission').click(function() {
     });
 });
 
-$('#update_comission').click(function() {
+$('#update_comission').click(function(privillages) {
     let data = {
         'com_price': $('#com_price').val(),
         'com_response': $('#com_response').val(),

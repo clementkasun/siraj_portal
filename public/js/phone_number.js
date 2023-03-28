@@ -1,4 +1,4 @@
-$('#save_phone_number').click(function () {
+$('#save_phone_number').click(function (privillages) {
     if (!jQuery("#phone_number_form").valid()) {
         return false;
     }
@@ -10,8 +10,7 @@ $('#save_phone_number').click(function () {
     ulploadFileWithData('/api/save_phone_number', data, function (result) {
         if (result.status == 1) {
             toastr.success('Phone number adding is successful!')
-            $('#phone_number_form').trigger("reset");
-            load_phone_number_tbl();
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -21,7 +20,7 @@ $('#save_phone_number').click(function () {
     });
 });
 
-$('#update_phone_number').click(function () {
+$('#update_phone_number').click(function (privillages) {
     let id = $(this).attr('data-id');
     if (!jQuery("#phone_number_form").valid()) {
         return false;
@@ -34,8 +33,7 @@ $('#update_phone_number').click(function () {
     ulploadFileWithData('/api/update_phone_number/id/' + id, data, function (result) {
         if (result.status == 1) {
             toastr.success('Phone number updating is successful!');
-            reset_phone_num_buttons();
-            load_phone_number_tbl();
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -56,7 +54,6 @@ $(document).on('click', '.delete', function () {
     }).then((result) => {
         if (result.value) {
             let id = $(this).attr('data-id');
-            reset_phone_num_buttons();
             delete_phone_number(id);
         }
     });
@@ -65,19 +62,12 @@ $(document).on('click', '.delete', function () {
 delete_phone_number = (id) => {
     ajaxRequest('delete', '/api/delete_phone_number/id/' + id, null, function (result) {
         if (result.status == 1) {
-            $('#phone_number_form').trigger("reset");
-            reset_phone_num_buttons();
-            load_phone_number_tbl($('#save_phone_number').attr('data-id'));
+            location.reload();
             toastr.success('Deleting phone number was successful!');
         } else {
             toastr.error('Deleting phone number was failed!');
         }
     });
-}
-
-reset_phone_num_buttons = () => {
-    $('#save_phone_number').removeClass('d-none');
-    $('#update_phone_number').addClass('d-none');
 }
 
 $(document).on('click', '.edit', function () {
@@ -96,57 +86,57 @@ edit_phone_number = (id) => {
     });
 }
 
-load_phone_number_tbl = (privillages = []) => {
-    console.log(privillages);
-    let index = 1;
-    let html = '';
-    ajaxRequest('get', '/api/get_phone_numbers', null, function (result) {
-        if (result != '') {
-            result.forEach(phone_number => {
+// load_phone_number_tbl = (privillages = []) => {
+//     console.log(privillages);
+//     let index = 1;
+//     let html = '';
+//     ajaxRequest('get', '/api/get_phone_numbers', null, function (result) {
+//         if (result != '') {
+//             result.forEach(phone_number => {
 
-                let added_name = (phone_number.added_by != null) ? (phone_number.added_by.preffered_name != null) ? phone_number.added_by.preffered_name : '' : '';
-                let assigned_name = (phone_number.assigned_to != null) ? (phone_number.assigned_to.preffered_name != null) ? phone_number.assigned_to.preffered_name : '' : '';
-                let phone_num_response = (phone_number.phone_number_response != null) ? (phone_number.phone_number_response[0] != null) ? phone_number.phone_number_response[0].response : '' : '';  
-                let phone_number_name =  (phone_number.name != null) ? phone_number.name : '';
+//                 let added_name = (phone_number.added_by != null) ? (phone_number.added_by.preffered_name != null) ? phone_number.added_by.preffered_name : '' : '';
+//                 let assigned_name = (phone_number.assigned_to != null) ? (phone_number.assigned_to.preffered_name != null) ? phone_number.assigned_to.preffered_name : '' : '';
+//                 let phone_num_response = (phone_number.phone_number_response != null) ? (phone_number.phone_number_response[0] != null) ? phone_number.phone_number_response[0].response : '' : '';  
+//                 let phone_number_name =  (phone_number.name != null) ? phone_number.name : '';
 
-                html += '<tr>';
-                html += '<td>' + index++ + '</td>';
-                html += '<td style="width: 8em">' + phone_number.phone_number + '</td>';
-                html += '<td>' + phone_number_name + '</td>';
-                html += '<td>' + added_name + '</td>';
-                html += '<td>' + assigned_name + '</td>';
-                html += '<td>' + phone_num_response + '</td>';
-                html += '<td>';
-                if(privillages['is_update'] == '1'){
-                    html += '<button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + phone_number.id + '"> Edit </button>';
-                    html += '<a href="/phone_number_response/id/' + phone_number.id + '" class="btn btn-primary btn-sm m-1">response</a>';
-                }else{
-                    html += '<button type="button" class="btn btn-primary btn-sm edit m-1" disabled> Edit </button>';
-                    html += '<a href="/phone_number_response/id/' + phone_number.id + '" class="btn btn-primary btn-sm m-1" style="pointer-events: none; cursor: default;">response</a>';
-                }
-                if(privillages['is_delete'] == '1'){
-                    html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + phone_number.id + '"> Delete </button>';
-                }else{
-                    html += '<button type="button" class="btn btn-danger btn-sm delete m-1" disabled> Delete </button>';
-                }
-                if(privillages['is_read'] == '1'){
-                    html += '<a href="/phone_number_profile/id/' + phone_number.id + '" class="btn btn-success btn-sm m-1">Profile</a>';
-                }else{
-                    html += '<a href="#" class="btn btn-success btn-sm m-1" onclick="return false;" style="pointer-events: none; cursor: default;">Profile</a>';
-                }
-                html += '</td>';
-            });
-            $('#phone_number_tbl tbody').html(html);
-            $('#phone_number_tbl').DataTable({
-                "pageLength": 10,
-                "destroy": true,
-                "retrieve": true
-            });
-        } else {
-            $('#phone_number_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
-        }
-    });
-}
+//                 html += '<tr>';
+//                 html += '<td>' + index++ + '</td>';
+//                 html += '<td style="width: 8em">' + phone_number.phone_number + '</td>';
+//                 html += '<td>' + phone_number_name + '</td>';
+//                 html += '<td>' + added_name + '</td>';
+//                 html += '<td>' + assigned_name + '</td>';
+//                 html += '<td>' + phone_num_response + '</td>';
+//                 html += '<td>';
+//                 if(privillages['is_update'] == '1'){
+//                     html += '<button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + phone_number.id + '"> Edit </button>';
+//                     html += '<a href="/phone_number_response/id/' + phone_number.id + '" class="btn btn-primary btn-sm m-1">Response</a>';
+//                 }else{
+//                     html += '<button type="button" class="btn btn-primary btn-sm edit m-1" disabled> Edit </button>';
+//                     html += '<a href="#" class="btn btn-primary btn-sm m-1" style="pointer-events: none; cursor: default;">response</a>';
+//                 }
+//                 if(privillages['is_delete'] == '1'){
+//                     html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + phone_number.id + '"> Delete </button>';
+//                 }else{
+//                     html += '<button type="button" class="btn btn-danger btn-sm delete m-1" disabled> Delete </button>';
+//                 }
+//                 if(privillages['is_read'] == '1'){
+//                     html += '<a href="/phone_number_profile/id/' + phone_number.id + '" class="btn btn-success btn-sm m-1">Profile</a>';
+//                 }else{
+//                     html += '<a href="#" class="btn btn-success btn-sm m-1" onclick="return false;" style="pointer-events: none; cursor: default;">Profile</a>';
+//                 }
+//                 html += '</td>';
+//             });
+//             $('#phone_number_tbl tbody').html(html);
+//             $('#phone_number_tbl').DataTable({
+//                 "pageLength": 10,
+//                 "destroy": true,
+//                 "retrieve": true
+//             });
+//         } else {
+//             $('#phone_number_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
+//         }
+//     });
+// }
 
 $("#phone_number_form").validate({
     errorClass: "invalid",

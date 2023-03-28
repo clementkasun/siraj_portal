@@ -1,4 +1,4 @@
-$('#save_phone_number_response').click(function () {
+$('#save_phone_number_response').click(function (privillages) {
     if (!jQuery("#phone_number_respone_form").valid()) {
         return false;
     }
