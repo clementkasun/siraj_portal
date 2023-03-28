@@ -14,13 +14,10 @@ class ComissionRepository implements ComissionInterface
 {
     public function store($request)
     {
-        if (Gate::denies('create-commission', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to create comission!');
-        }
-        $log = [
-            'route' => '/api/save_comission',
-        ];
         try {
+            if (Gate::denies('create-commission', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to create comission!');
+            }
             $request->validate([
                 'com_price' => 'nullable|sometimes|string|max: 255',
                 'com_response' => 'nullable|sometimes|string|max: 255',
@@ -28,7 +25,7 @@ class ComissionRepository implements ComissionInterface
             ]);
 
             Commission::create([
-                'staff_mem_name' => auth()->user()->first_name.' '.auth()->user()->last_name,
+                'staff_mem_name' => auth()->user()->first_name . ' ' . auth()->user()->last_name,
                 'designation' => auth()->user()->role_id,
                 'price' => $request->com_price,
                 'response' => $request->com_response,
@@ -36,17 +33,24 @@ class ComissionRepository implements ComissionInterface
                 'added_by' => auth()->user()->id
             ]);
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
-            $log['msg'] = 'Saving comission is successful!';
-            Log::channel('daily')->info(json_encode($log));
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
 
-            return array('status' => 1, 'msg' => 'Saving comission is successful!');
-        } catch (Exception $e) {
+            Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
+            return array('status' => 1, 'msg' => 'Saving comission was unsuccessful!');
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
             $log['msg'] = 'Saving comission was unsuccessful!';
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Saving comission was unsuccessful!');
         }
@@ -54,13 +58,10 @@ class ComissionRepository implements ComissionInterface
 
     public function update($request, $id)
     {
-        if (Gate::denies('update-commission', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to comission!');
-        }
-        $log = [
-            'route' => '/api/update_comission/id/' . $id,
-        ];
         try {
+            if (Gate::denies('update-commission', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to comission!');
+            }
             $request->validate([
                 'com_price' => 'nullable|sometimes|string|max: 255',
                 'com_response' => 'nullable|sometimes|string|max: 255',
@@ -68,18 +69,23 @@ class ComissionRepository implements ComissionInterface
             ]);
 
             $commision = Commission::find($id);
-            $commision->staff_mem_name = auth()->user()->first_name.' '.auth()->user()->last_name;
+            $commision->staff_mem_name = auth()->user()->first_name . ' ' . auth()->user()->last_name;
             $commision->designation = auth()->user()->role_id;
             $commision->price = $request->com_price;
             $commision->response = $request->com_response;
             $commision->applicant_id = $request->applicant_id;
             $commision->save();
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
-            $log['msg'] = 'Updating comission is successful!';
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 1, 'msg' => 'Updating comission is successful!');
         } catch (Exception $e) {
@@ -93,44 +99,76 @@ class ComissionRepository implements ComissionInterface
 
     public function show($id)
     {
-        if (Gate::denies('view-commission', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view comissions!');
-        }
-        $log = [
-            'route' => '/api/get_comission/id/' . $id,
-            'msg' => 'Successfully accessed the comissions!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return Commission::where('applicant_id', $id)->with(['Applicant', 'Designation'])->get();
-    }
+        try {
+            if (Gate::denies('view-commission', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view comissions!');
+            }
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => '/get_comissions/id/'.$id,
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => []
+            ];
 
+            Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+            
+            return Commission::where('applicant_id', $id)->with(['Applicant', 'Designation'])->get();
+        } catch (Exception $ex) {
+            $log['msg'] = 'accessing comissions was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+            return [];
+        }
+    }
+    
     public function getComission($applicant_lan_id)
     {
-        if (Gate::denies('view-commission', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view comission!');
+        try{
+            if (Gate::denies('view-commission', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view comission!');
+            }
+            $log = [
+                'URI' => '/get_comission/id/'.$applicant_lan_id,
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => []
+            ];
+            Log::channel('daily')->info(json_encode($log));
+            return Commission::find($applicant_lan_id);
+        }catch(Exception $ex){
+            $log['msg'] = 'Accessing comission was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+            return [];
         }
-        $log = [
-            'route' => '/api/get_comission/id/' . $applicant_lan_id,
-            'msg' => 'Successfully accessed the comission!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return Commission::find($applicant_lan_id);
     }
-
+    
     public function destroy($id)
     {
-        if (Gate::denies('delete-commission', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to delete comission!');
-        }
-        $log = [
-            'route' => '/api/delete_comission/id/' . $id,
-            'msg' => 'Successfully deleted the comission!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        $status = Commission::find($id)->delete();
-        if ($status == true) {
+        try{
+            if (Gate::denies('delete-commission', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to delete comission!');
+            }
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => '/api/delete_comission/id/'.$id,
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => ['status' => 1, 'msg' => 'Successfully deleted the comission language!']
+            ];
+            Log::channel('daily')->info(json_encode($log));
+            Commission::find($id)->delete();
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 1, 'msg' => 'Successfully deleted the comission language!');
-        } else {
+        }catch(Exception $ex){
+            $log['msg'] = 'Deleting commission was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 0, 'msg' => 'Comission deletion was unsuccessful!');
         }
     }

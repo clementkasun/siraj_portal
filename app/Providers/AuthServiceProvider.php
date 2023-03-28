@@ -699,17 +699,17 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
-        Gate::define('view-log-routes', function ($user) {
-            $role_privillages =RolePrivillage::where('role_id', $user->role_id)->with('Privillage')->get();
-            if (isset($role_privillages) && $user->status == 'Active') {
-                foreach ($role_privillages as $role_privillage) {
-                    if (isset($role_privillage)) {
-                        if ($role_privillage->Privillage->name == 'ViewLogRoute' && $role_privillage->is_read == 1) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        });
+        // Gate::define('view-log-routes', function ($user) {
+        //     $role_privillages =RolePrivillage::where('role_id', $user->role_id)->with('Privillage')->get();
+        //     if (isset($role_privillages) && $user->status == 'Active') {
+        //         foreach ($role_privillages as $role_privillage) {
+        //             if (isset($role_privillage)) {
+        //                 if ($role_privillage->Privillage->name == 'ViewLogRoute' && $role_privillage->is_read == 1) {
+        //                     return true;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // });
     }
 }

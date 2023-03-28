@@ -1,4 +1,4 @@
-$('#save_contact_response').click(function () {
+$('#save_contact_response').click(function (privillages) {
     if (!jQuery("#contact_response_form").valid()) {
         return false;
     }
@@ -21,7 +21,7 @@ $('#save_contact_response').click(function () {
     });
 });
 
-$('#update_contact_response').click(function () {
+$('#update_contact_response').click(function (privillages) {
     let contact_resp_id = $('#update_contact_response').attr('data-id');
     update_contact_response(contact_resp_id);
 });

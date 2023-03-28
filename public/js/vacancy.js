@@ -12,8 +12,7 @@ $('#save_vacancy').click(function() {
     ulploadFileWithData('/api/save_vacancy', data, function(result) {
         if (result.status == 1) {
             toastr.success('Vacancy saving was successful!')
-            $('#vacancy_form').trigger("reset");
-            load_vacancy_table();
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -38,9 +37,7 @@ $('#update_vacancy').click(function() {
     ulploadFileWithData('/api/update_vacancy/id/' + $(this).attr('data-id'), data, function(result) {
         if (result.status == 1) {
             toastr.success('Vacancy updating was successful!')
-            $('#vacancy_form').trigger("reset");
-            load_vacancy_table();
-            reset_btn();
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -74,15 +71,10 @@ load_edit_form = (vacancy_id) => {
     });
 }
 
-reset_btn = () => {
-    $('#save_vacancy').removeClass('d-none');
-    $('#update_vacancy').addClass('d-none');
-}
-
 delete_vacancy = (vacancy_id) => {
     ajaxRequest('delete', '/api/delete_vacancy/id/' + vacancy_id, null, function(result) {
         if (result.status == 1) {
-            load_vacancy_table();
+            location.reload();
             toastr.success('Deleting vacancy was successful!')
         } else {
             toastr.error('Deleting vacancy was failed!');
@@ -90,42 +82,42 @@ delete_vacancy = (vacancy_id) => {
     });
 }
 
-load_vacancy_table = (privillages = []) => {
-    let index = 1;
-    let html = '';
-    ajaxRequest('get', '/api/get_vacancies', null, function(result) {
-        if (result != '') {
-            result.forEach(vacancy => {
-                html += '<tr>';
-                html += '<td>' + index++ + '</td>';
-                let vacancy_image = (vacancy.vacancy_image != '') ? vacancy.vacancy_image : './dist/img/no-image.jpg';
-                html += '<td><img src="' + vacancy_image + '" alt="vacancy image" style="width: 100px; height: 100px"/></td>';
-                html += '<td style="width: 15em">' + vacancy.title + '</td>';
-                html += '<td style="width: 15em">' + vacancy.salary + '</td>';
-                html += '<td style="width: 15em">' + vacancy.period + '</td>';
-                html += '<td style="width: 15em">' + vacancy.location + '</td>';
-                if(privillages['is_update'] == '1'){
-                    html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + vacancy.id + '"> Edit </button>';
-                }else{
-                    html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" disabled> Edit </button>';
-                }
-                if(privillages['is_delete'] == '1'){
-                    html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + vacancy.id + '"> Delete </button></td>';
-                }else{
-                    html += '<button type="button" class="btn btn-danger btn-sm delete m-1" disabled> Delete </button></td>';
-                }
-            });
-            $('#vacancy_tbl tbody').html(html);
-            $('#vacancy_tbl').DataTable({
-                "pageLength": 10,
-                "destroy": true,
-                "retrieve": true
-            });;
-        }else{
-            $('#vacancy_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
-        }
-    });
-}
+// load_vacancy_table = (privillages = []) => {
+//     let index = 1;
+//     let html = '';
+//     ajaxRequest('get', '/api/get_vacancies', null, function(result) {
+//         if (result != '') {
+//             result.forEach(vacancy => {
+//                 html += '<tr>';
+//                 html += '<td>' + index++ + '</td>';
+//                 let vacancy_image = (vacancy.vacancy_image != '') ? vacancy.vacancy_image : './dist/img/no-image.jpg';
+//                 html += '<td><img src="' + vacancy_image + '" alt="vacancy image" style="width: 100px; height: 100px"/></td>';
+//                 html += '<td style="width: 15em">' + vacancy.title + '</td>';
+//                 html += '<td style="width: 15em">' + vacancy.salary + '</td>';
+//                 html += '<td style="width: 15em">' + vacancy.period + '</td>';
+//                 html += '<td style="width: 15em">' + vacancy.location + '</td>';
+//                 if(privillages['is_update'] == '1'){
+//                     html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" data-id="' + vacancy.id + '"> Edit </button>';
+//                 }else{
+//                     html += '<td><button type="button" class="btn btn-primary btn-sm edit m-1" disabled> Edit </button>';
+//                 }
+//                 if(privillages['is_delete'] == '1'){
+//                     html += '<button type="button" class="btn btn-danger btn-sm delete m-1" data-id="' + vacancy.id + '"> Delete </button></td>';
+//                 }else{
+//                     html += '<button type="button" class="btn btn-danger btn-sm delete m-1" disabled> Delete </button></td>';
+//                 }
+//             });
+//             $('#vacancy_tbl tbody').html(html);
+//             $('#vacancy_tbl').DataTable({
+//                 "pageLength": 10,
+//                 "destroy": true,
+//                 "retrieve": true
+//             });
+//         }else{
+//             $('#vacancy_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
+//         }
+//     });
+// }
 
 $("#vacancy_form").validate({
     errorClass: "invalid",

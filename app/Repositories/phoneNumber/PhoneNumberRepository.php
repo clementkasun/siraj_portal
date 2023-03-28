@@ -19,7 +19,11 @@ class PhoneNumberRepository implements PhoneNumberInterface
         if (Gate::denies('view-phone-number', auth()->user())) {
             return array('status' => 4, 'msg' => 'You are not authorised to add phone number!');
         }
-        return view('phone_number.phone_number_addition');
+        $phone_number_data = PhoneNumber::with(['AddedBy', 'AssignedTo', 'PhoneNumberResponse' => function ($phone_num_resp) {
+            $phone_num_resp->orderBy('id', 'DESC')->limit(1);
+        }])->get();
+
+        return view('phone_number.phone_number_addition', ['phone_number_data' => $phone_number_data]);
     }
 
     public function store($request)

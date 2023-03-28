@@ -20,14 +20,13 @@ class BlogPost extends Model
        'post_name',
        'post_image',
        'description',
-       'user_id',
        'added_by',
        'updated_by',
        'deleted_by'
     ];
 
-    public function User()
+    public function AddedBy()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'added_by');
     }
 }

@@ -46,9 +46,34 @@
                                 <th>Action</th>
                             </thead>
                             <tbody>
+                                @forelse($phone_number_data as $key=> $phone_number)
+                                <tr>
+                                    <td>{{ ++$key }}</td>
+                                    <td style="width: 8em">{{ $phone_number->phone_number }}</td>
+                                    <td>{{ (isset($phone_number->name)) ? $phone_number->name : '' }}</td>
+                                    <td>{{ (isset($phone_number->AddedBy)) ? ($phone_number->AddedBy->preffered_name != null) ? $phone_number->AddedBy->preffered_name : '' : '' }}</td>
+                                    <td>{{ (isset($phone_number->AssignedTo)) ? ($phone_number->AssignedTo->preffered_name != null) ? $phone_number->AssignedTo->preffered_name : '' : '' }}</td>
+                                    <td>{{ (isset($phone_number->PhoneNumberResponse)) ? (isset($phone_number->PhoneNumberResponse[0])) ? $phone_number->PhoneNumberResponse[0]->response : '' : '' }}</td>
+                                    <td>
+                                        @can('update-phone-number')
+                                        <button type="button" class="btn btn-primary btn-sm edit m-1" data-id="{{ $phone_number->id }}"> Edit </button>
+                                        @endcan
+                                        @can('create-phone-number-response')
+                                        <a href="/phone_number_response/id/{{ $phone_number->id }}" class="btn btn-primary btn-sm m-1">Response</a>
+                                        @endcan
+                                        @can('delete-phone-number')
+                                        <button type="button" class="btn btn-danger btn-sm delete m-1" data-id="{{ $phone_number->id }}"> Delete </button>
+                                        @endcan
+                                        @can('view-phone-number')
+                                        <a href="/phone_number_profile/id/{{ $phone_number->id }}" class="btn btn-success btn-sm m-1">Profile</a>
+                                        @endcan
+                                    </td>
+                                </tr>
+                                @empty
                                 <tr>
                                     <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
                                 </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -62,13 +87,10 @@
 @section('pageScripts')
 <script src="{{asset('js/phone_number.js')}}"></script>
 <script>
-    $(document).ready(function() {
-        let privillages = {
-            'is_read' : '{{ Gate::allows("view-phone-number") }}',
-            'is_update' : '{{ Gate::allows("update-phone-number") }}',
-            'is_delete' : '{{ Gate::allows("delete-phone-number") }}'
-        };
-        load_phone_number_tbl(privillages);
+    $('#phone_number_tbl').DataTable({
+        "pageLength": 10,
+        "destroy": true,
+        "retrieve": true
     });
 </script>
 @endsection

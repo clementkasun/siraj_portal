@@ -1,4 +1,4 @@
-$('#save_language').click(function() {
+$('#save_language').click(function(privillages) {
     if (!jQuery("#languages_form").valid()) {
         return false;
     }
@@ -24,7 +24,7 @@ $('#save_language').click(function() {
     });
 });
 
-$('#update_language').click(function() {
+$('#update_language').click(function(privillages) {
     let data = {
         'language': $('#language').val(),
         'poor': $('#poor').is(':checked'),

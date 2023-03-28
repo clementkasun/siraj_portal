@@ -15,7 +15,8 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-3">
+                   @can('create-phone-number-resp') 
+                   <div class="col-md-3">
                         <form id="phone_number_respone_form">
                             <div class="form-group">
                                 <label for="response"> Response *</label>
@@ -23,10 +24,11 @@
                             </div>
                             <div class="form-group">
                                 <button id="save_phone_number_response" type="button" class="btn btn-success pl-5 pr-5">Save</button>
-                                <button id="update_phone_number_response" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
                             </div>
                         </form>
                     </div>
+                    @endcan
+                    @can('view-phone-number-resp')
                     <div class="col-md-9">
                         <table class="table table-striped" id="phone_number_response_tbl">
                             <thead>
@@ -44,6 +46,7 @@
                             </tbody>
                         </table>
                     </div>
+                    @endcan
                 </div>
             </div>
         </div>

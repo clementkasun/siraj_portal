@@ -1,4 +1,4 @@
-$('#save_online_app_response').click(function () {
+$('#save_online_app_response').click(function (privillages) {
     if (!jQuery("#online_applicant_response_form").valid()) {
         return false;
     }
