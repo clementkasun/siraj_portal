@@ -67,7 +67,7 @@ delete_comission = (id) => {
         if (result.status == 1) {
             $('#comission_form').trigger("reset");
             reset_comission_buttons();
-            load_comission_tbl($('#save_comission').attr('data-id'));
+            load_comission_tbl($('#save_comission').attr('data-id'), privillages);
             toastr.success('Deleting comission was successful!');
         } else {
             toastr.error('Deleting comission was failed!');
@@ -96,7 +96,7 @@ edit_comission = (id) => {
     });
 }
 
-load_comission_tbl = (id) => {
+load_comission_tbl = (id, privillages = []) => {
     let index = 1;
     let html = '';
     ajaxRequest('get', '/api/get_comissions/id/'+id, null, function(result) {
@@ -111,8 +111,18 @@ load_comission_tbl = (id) => {
                 html += '<td>' + comission.price + '</td>';
                 html += '<td>' + comission.response + '</td>';
                 html += '<td>' + formatted_date + '</td>';
-                html += '<td><button type="button" class="btn btn-primary btn-sm edit-comission m-1" data-id="' + comission.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger btn-sm delete-comission m-1" data-id="' + comission.id + '"> Delete </button></td>';
+                html += '<td>';
+                if(privillages['is_update'] == '1'){
+                    html += '<button type="button" class="btn btn-primary btn-sm edit-comission m-1" data-id="' + comission.id + '"> Edit </button>';
+                }else{
+                    html += '<button type="button" class="btn btn-primary btn-sm edit-comission m-1" disabled> Edit </button>';
+                }
+                if(privillages['is_delete'] == '1'){
+                    html += '<button type="button" class="btn btn-danger btn-sm delete-comission m-1" data-id="' + comission.id + '"> Delete </button>';
+                }else{
+                    html += '<button type="button" class="btn btn-danger btn-sm delete-comission m-1" disabled> Delete </button>';
+                }
+                html += '</td>';
             });
             $('#commission_tbl tbody').html(html);
             $('#commission_tbl').DataTable({

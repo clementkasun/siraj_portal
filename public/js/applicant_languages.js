@@ -14,7 +14,7 @@ $('#save_language').click(function() {
         if (result.status == 1) {
             toastr.success('Language saving is successful!')
             $('#languages_form').trigger("reset");
-            load_language_table($('#save_language').attr('data-id'));
+            load_language_table($('#save_language').attr('data-id'), privillages);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -37,7 +37,7 @@ $('#update_language').click(function() {
         if (result.status == 1) {
             toastr.success('Language updating is successful!')
             $('#languages_form').trigger("reset");
-            load_language_table($('#save_language').attr('data-id'));
+            load_language_table($('#save_language').attr('data-id'), privillages);
             reset_app_lan_buttons();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
@@ -69,7 +69,7 @@ delete_language = (id) => {
     ajaxRequest('delete', '/api/delete_application_language/id/' + id, null, function(result) {
         if (result.status == 1) {
             $('#languages_form').trigger("reset");
-            load_language_table($('#save_language').attr('data-id'));
+            load_language_table($('#save_language').attr('data-id'), privillages);
             toastr.success('Deleting language was successful!');
         } else {
             toastr.error('Deleting language was failed!');
@@ -91,16 +91,16 @@ edit_applicant_language = (id) => {
     let url = '/api/get_applicant_language/id/' + id;
     ajaxRequest('get', url, null, function(result) {
         $('#language').val(result.language_name);
-        $('#poor').val(result.poor);
-        $('#fair').val(result.fair);
-        $('#fluent').val(result.fluent);
+        (result.poor == '1') ? $('#poor').prop( "checked", true ) : '';
+        (result.fair == '1') ? $('#fair').prop( "checked", true ) : '';
+        (result.fluent == '1') ? $('#fluent').prop( "checked", true ) : '';
         $('#save_language').addClass('d-none');
         $('#update_language').removeClass('d-none');
         $('#update_language').attr('data-id', result.id);
     });
 }
 
-load_language_table = (id) => {
+load_language_table = (id, privillages = []) => {
     let index = 1;
     let html = '';
     ajaxRequest('get', '/api/get_applicant_languages/id/'+id, null, function(result) {
@@ -118,8 +118,18 @@ load_language_table = (id) => {
                 html += '<td>' + poor_status + '</td>';
                 html += '<td>' + fair_status + '</td>';
                 html += '<td>' + fluent_status + '</td>';
-                html += '<td><button type="button" class="btn btn-primary btn-sm edit-app-lan m-1" data-id="' + language.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger btn-sm delete-app-lan m-1" data-id="' + language.id + '"> Delete </button></td>';
+                html += '<td>';
+                if(privillages['is_update'] == '1'){
+                    html += '<button type="button" class="btn btn-primary btn-sm edit-app-lan m-1" data-id="' + language.id + '"> Edit </button>';
+                }else{
+                    html += '<button type="button" class="btn btn-primary btn-sm edit-app-lan m-1" disabled> Edit </button>';
+                }
+                if(privillages['is_delete'] == '1'){
+                    html += '<button type="button" class="btn btn-danger btn-sm delete-app-lan m-1" data-id="' + language.id + '"> Delete </button>';
+                }else{
+                    html += '<button type="button" class="btn btn-danger btn-sm delete-app-lan m-1" disabled> Delete </button>';
+                }
+                html += '</td>';
             });
             $('#language_tbl tbody').html(html);
             $('#language_tbl').DataTable({

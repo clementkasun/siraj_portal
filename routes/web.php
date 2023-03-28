@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
   Route::middleware('can:update-user', 'routeLog')->put('/users/my_password', [UserController::class, 'changeMyPass']);
   Route::middleware('can:update-user', 'routeLog')->put('/users/password/{id}', [UserController::class, 'storePassword']);
   Route::middleware('routeLog')->get('/user_profile', [UserController::class, 'myProfile']);
+  Route::middleware('routeLog')->get('/user_profile/id/{user_id}', [UserController::class, 'userProfile']);
   Route::middleware('can:update-user', 'routeLog')->get('/user/activity/{id}', [UserController::class, 'activeStatus']);
   Route::middleware('can:view-user', 'routeLog')->get('/user/deleted', [UserController::class, 'getDeletedUser']);
   Route::middleware('can:update-user', 'routeLog')->put('/user/active/{id}', [UserController::class, 'activeDeletedUser']); //restore deleted users

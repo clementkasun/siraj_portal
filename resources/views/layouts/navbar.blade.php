@@ -11,6 +11,34 @@
 
 <!-- Right navbar links -->
 <ul class="navbar-nav ml-auto">
+    @php
+    $notifications = App\Models\Notification::getSummary(auth()->user()->id);
+    @endphp
+    <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+            <i class="far fa-bell"></i>
+            @if ($notifications['count'] > 0)
+            <span class="badge badge-success text-white navbar-badge">{{ $notifications['count'] }}</span>
+            @endif
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+            @if ($notifications['count'] > 0)
+            <span class="dropdown-item dropdown-header">{{ $notifications['count'] }} Notifications</span>
+            <div class="dropdown-divider"></div>
+            @endif
+            @forelse ($notifications['notifications'] as $notification)
+            <a href="#" class="dropdown-item" style="white-space: normal;">
+                <i class="fas fa-envelope mr-2"></i>
+                {{ $notification->data['msg'] }}
+                <span class="text-muted text-sm d-block">{{ $notification->created_at->diffForHumans() }}
+                </span>
+            </a>
+            <div class="dropdown-divider"></div>
+            @empty
+            <span class="dropdown-item dropdown-header">No Notifications</span>
+            @endforelse
+        </div>
+    </li>
     <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
             <i class="fas fa-expand-arrows-alt"></i>

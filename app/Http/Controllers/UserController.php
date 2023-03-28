@@ -395,6 +395,21 @@ class UserController extends Controller
         }
     }
 
+    public function userProfile($id)
+    {
+        try {
+            $logged_user = auth()->user();
+            $user = User::where('id', $id)->with('Role')->first();
+            return view('user_profile', ['user' => $user]);
+        } catch (Exception $ex) {
+            $log['msg'] = 'Accessing the user profile has failed!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+        }
+    }
+
     public function is_nic_or_email_exist(Request $request)
     {
         try {

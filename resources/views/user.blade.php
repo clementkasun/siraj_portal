@@ -115,11 +115,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input id="password" name="password" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password')}}" required>
+                                <input id="password" name="password" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password')}}" minlength="4" required>
                             </div>
                             <div class="form-group">
                                 <label>Confirm Password</label>
-                                <input id="password_confirmation" name="password_confirmation" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password_confirmation')}}" required>
+                                <input id="password_confirmation" name="password_confirmation" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password_confirmation')}}" minlength="4" required>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -160,10 +160,23 @@
                                     <td>{{ ($user->last_name != null) ? $user->last_name : '-'}}</td>
                                     <td>{{ $user->Role->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td><span class="p-2 {{ ($user->status != '') ? $status_color_array[$user->status] : '' }}">{{ ($user->status != '') ? $user->status : '' }}</span></td>
+                                    <td><span class="p-2 {{ ($user->status != '') ? $status_color_array[$user->status] : '' }}"> {{ ($user->status != '') ? $user->status : '' }} </span></td>
                                     <td>
+                                        @can('update-user')
                                         <a href="/users/id/{{$user->id}}" class="btn btn-sm btn-primary">Select</a>
-                                        <button class="btn btn-sm btn-danger del" data-id="{{$user->id}}" {{ ($user->id == auth()->user()->id) ? 'disabled' : '' }}> Delete </button>
+                                        @else
+                                        <a href="" class="btn btn-sm btn-primary" style="pointer-events: none; cursor: default;">Select</a>
+                                        @endcan 
+                                        @can('view-user')
+                                        <a href="/user_profile/id/{{$user->id}}" class="btn btn-sm btn-primary">Profile</a>
+                                        @else
+                                        <a href="#" class="btn btn-sm btn-primary" style="pointer-events: none; cursor: default;">Profile</a>
+                                        @endcan
+                                        @can('delete-user') 
+                                        <button class="btn btn-sm btn-danger del" {{ ($user->id == auth()->user()->id) ? 'disabled' : '' }}> Delete </button>
+                                        @else
+                                        <button class="btn btn-sm btn-danger del" disabled> Delete </button>
+                                        @endcan
                                     </td>
                                 </tr>
                                 @endif

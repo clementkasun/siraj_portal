@@ -11,7 +11,7 @@ $('#save_contact_response').click(function () {
         if (result.status == 1) {
             toastr.success('Contact response saving is successful!');
             $('#contact_response_form').trigger("reset");
-            load_contact_response();
+            load_contact_response(privillages);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -39,7 +39,7 @@ update_contact_response = (contact_resp_id) => {
         if (result.status == 1) {
             toastr.success('Contact response updating is successful!');
             $('#contact_response_form').trigger("reset");
-            load_contact_response();
+            load_contact_response(privillages);
             reset_buttons();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
@@ -105,7 +105,7 @@ delete_contact_response = (id) => {
     ajaxRequest('delete', '/api/delete_contact_response/id/' + id, null, function (result) {
         if (result.status == 1) {
             $('#contact_response_form').trigger("reset");
-            load_contact_response();
+            load_contact_response(privillages);
             toastr.success('Deleting contact response was successful!');
         } else {
             toastr.error('Deleting contact response was failed!');
@@ -126,7 +126,6 @@ $(document).on('click', '.edit', function () {
 edit_contact_response = (id) => {
     let url = '/api/get_contact_response/id/' + id;
     ajaxRequest('get', url, null, function (result) {
-        $('#name').val(result.name);
         $('#designation').val(result.designation);
         $('#response').val(result.response);
         $('#save_contact_response').addClass('d-none');

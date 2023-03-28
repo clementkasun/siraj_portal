@@ -347,10 +347,11 @@
                                         </div>
                                     </div> -->
                                     <!-- /.tab-pane -->
-                                    @can('update-offline-applicant')
                                     <div class="tab-pane" id="previous_employeements">
                                         <div class="row">
-                                            @if($previous_emp_count < 4) <div class="col-md-3">
+                                            <div class="col-md-3">
+                                                @can('create-previous-emp')
+                                                @if(!($previous_emp_count > 4)) 
                                                 <form id="previous_employeement_form">
                                                     <div class="form-group">
                                                         <label for="job_type">Job type *</label>
@@ -441,9 +442,11 @@
                                                         <button id="update_previous_emp" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
                                                     </div>
                                                 </form>
+                                                @endif
+                                                @endcan
                                         </div>
-                                        @endif
                                         <div class="col-md-9">
+                                            @can('view-previous-emp')
                                             <table class="table table-striped" id="previous_emp_tbl">
                                                 <thead>
                                                     <th>#</th>
@@ -460,12 +463,14 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                            @endcan
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="languages">
                                     <div class="row">
                                         <div class="col-md-4">
+                                            @can('create-applicant-language')
                                             <form id="languages_form">
                                                 <div class="form-group">
                                                     <label for="language">Language*</label>
@@ -486,8 +491,10 @@
                                                 <button id="save_language" type="button" class="btn btn-success pl-5 pr-5" data-id="{{ $applicant_data->id }}">Save</button>
                                                 <button id="update_language" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
                                             </form>
+                                            @endcan
                                         </div>
                                         <div class="col-md-8">
+                                            @can('view-applicant-language')
                                             <table class="table table-striped" id="language_tbl">
                                                 <thead>
                                                     <th>#</th>
@@ -503,12 +510,14 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                            @endcan
                                         </div>
                                     </div>
                                 </div>
                                 <!-- /.tab-pane -->
                                 <div class="tab-pane" id="staff_response">
                                     <div class="row">
+                                        @can('create-application-staff-resp')
                                         <div class="col-md-3">
                                             <form id="staff_response_form">
                                                 <div class="form-group">
@@ -521,6 +530,8 @@
                                                 </div>
                                             </form>
                                         </div>
+                                        @endcan
+                                        @can('view-application-staff-resp')
                                         <div class="col-md-9">
                                             <table class="table table-striped" id="app_staff_resp_tbl">
                                                 <thead>
@@ -537,11 +548,13 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                        @endcan
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="commission">
                                     <div class="row">
                                         <div class="col-md-3">
+                                            @can('create-commission')
                                             <form id="commission_form">
                                                 <div class="form-group">
                                                     <label for="com_price">Price *</label>
@@ -556,8 +569,10 @@
                                                     <button id="update_comission" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
                                                 </div>
                                             </form>
+                                            @endcan
                                         </div>
                                         <div class="col-md-9">
+                                            @can('view-commission')
                                             <table class="table table-striped" id="commission_tbl">
                                                 <thead>
                                                     <th>#</th>
@@ -574,15 +589,17 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                            @endcan
                                         </div>
                                     </div>
+                                    @can('view-commission')
                                     <div class="row float-right">
                                         <span class="col-4">Promised Total Commission:</span><span class="col-8"><b>{{ $commision_price }}</b></span>
                                         <span class="col-4">Paid Total Commission:</span><span class="col-8"><b>{{ $paid_total_commision }}</b></span>
                                         <span class="col-4">Available Commission:</span><span class="col-8"><b>{{ $commision_price - $paid_total_commision }}</b></span>
                                     </div>
+                                    @endcan
                                 </div>
-                                @endcan
                             </div>
                             <!-- /.tab-content -->
                         </div>
@@ -609,10 +626,14 @@
     var APPLICANT_ID = '{{ $applicant_data->id }}';
 
     $(document).ready(function() {
-        load_previous_employeement_table(APPLICANT_ID);
-        load_language_table(APPLICANT_ID);
+        let privillages = {
+            'is_update': '{{ Gate::allows("update-previous-emp") }}',
+            'is_delete': '{{ Gate::allows("delete-previous-emp") }}'
+        };
+        load_previous_employeement_table(APPLICANT_ID, privillages);
+        load_language_table(APPLICANT_ID, privillages);
         load_application_staff_table(APPLICANT_ID);
-        load_comission_tbl(APPLICANT_ID);
+        load_comission_tbl(APPLICANT_ID, privillages);
     });
 </script>
 @endsection
