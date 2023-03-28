@@ -14,7 +14,7 @@ $('#save_blog_post').click(function() {
         if (result.status == 1) {
             toastr.success('Blog post saving is successful!')
             $('#blog_post_form').trigger("reset");
-            load_blog_posts();
+            load_blog_posts(privillages);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -37,7 +37,7 @@ $('#update_blog_post').click(function() {
             toastr.success('Blog post updating is successful!');
             $('#blog_post_form').trigger("reset");
             reset_buttons();
-            load_blog_posts();
+            load_blog_posts(privillages);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -109,7 +109,7 @@ delete_blog_post = (id) => {
     ajaxRequest('delete', '/api/delete_blog_post/id/' + id, null, function (result) {
         if (result.status == 1) {
             $('#blog_post_form').trigger("reset");
-            load_blog_posts();
+            load_blog_posts(privillages);
             toastr.success('Deleting blog post was successful!');
         } else {
             toastr.error('Deleting blog post was failed!');

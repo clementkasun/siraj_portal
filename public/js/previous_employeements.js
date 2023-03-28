@@ -13,7 +13,7 @@ $('#save_previous_emp').click(function () {
         if (result.status == 1) {
             toastr.success('Previous employeement saving is successful!')
             $('#previous_employeement_form').trigger("reset");
-            load_previous_employeement_table($('#save_previous_emp').attr('data-id'));
+            load_previous_employeement_table($('#save_previous_emp').attr('data-id'), privillages);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -36,7 +36,7 @@ $('#update_previous_emp').click(function () {
         if (result.status == 1) {
             toastr.success('Previous employeement update is successful!')
             $('#previous_employeement_form').trigger("reset");
-            load_previous_employeement_table($('#save_previous_emp').attr('data-id'));
+            load_previous_employeement_table($('#save_previous_emp').attr('data-id'), privillages);
             reset_prev_emp_buttons();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
@@ -68,7 +68,7 @@ delete_previous_emp = (id) => {
     ajaxRequest('delete', '/api/delete_previous_employeement/id/' + id, null, function (result) {
         if (result.status == 1) {
             $('#previous_employeement_form').trigger("reset");
-            load_previous_employeement_table($('#save_previous_emp').attr('data-id'));
+            load_previous_employeement_table($('#save_previous_emp').attr('data-id'), privillages);
             toastr.success('Deleting previous employee details is successful!')
         } else {
             toastr.error('Deleting previous employee details was failed!');
@@ -98,7 +98,7 @@ edit_prev_experience = (id) => {
     });
 }
 
-load_previous_employeement_table = (id) => {
+load_previous_employeement_table = (id, privillages = []) => {
     let index = 1;
     let html = '';
     ajaxRequest('get', '/api/get_previous_employeements/id/' + id, null, function (result) {
@@ -116,8 +116,18 @@ load_previous_employeement_table = (id) => {
                 html += '<td>' + previous_emp.period + '</td>';
                 html += '<td>' + first_name +' '+ last_name + '</td>';
                 html += '<td>' + formatted_created_at + '</td>';
-                html += '<td><button type="button" class="btn btn-primary btn-sm edit-previous-emp m-1" data-id="' + previous_emp.id + '"> Edit </button>';
-                html += '<button type="button" class="btn btn-danger btn-sm delete-prev-emp m-1" data-id="' + previous_emp.id + '"> Delete </button></td>';
+                html += '<td>';
+                if(privillages['is_update'] == '1'){
+                    html += '<button type="button" class="btn btn-primary btn-sm edit-previous-emp m-1" data-id="' + previous_emp.id + '"> Edit </button>';
+                }else{
+                    html += '<button type="button" class="btn btn-primary btn-sm edit-previous-emp m-1" disabled> Edit </button>';
+                }
+                if(privillages['is_delete'] == '1'){
+                    html += '<button type="button" class="btn btn-danger btn-sm delete-prev-emp m-1" data-id="' + previous_emp.id + '"> Delete </button>';
+                }else{
+                    html += '<button type="button" class="btn btn-danger btn-sm delete-prev-emp m-1" disabled> Delete </button>';
+                }
+                html += '</td>';
             });
             $('#previous_emp_tbl tbody').html(html);
             $('#previous_emp_tbl').DataTable({

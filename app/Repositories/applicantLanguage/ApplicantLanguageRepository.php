@@ -14,13 +14,10 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
 {
     public function store($request)
     {
-        if (Gate::denies('create-applicant-language', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to create applicant language!');
-        }
-        $log = [
-            'route' => '/api/save_applicant_language',
-        ];
         try {
+            if (Gate::denies('create-applicant-language', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to create applicant language!');
+            }
             $request->validate([
                 'language' => 'nullable|sometimes|string|max: 255',
                 'poor' => 'nullable|sometimes|string',
@@ -38,17 +35,27 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
                 'added_by' => auth()->user()->id
             ]);
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             $log['msg'] = 'Saving applicant language is successful!';
             Log::channel('daily')->info(json_encode($log));
 
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 1, 'msg' => 'Saving applicant language is successful!');
-        } catch (Exception $e) {
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
             $log['msg'] = 'Saving applicant language was unsuccessful!';
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Saving applicant language was unsuccessful!');
         }
@@ -56,13 +63,10 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
 
     public function update($request, $id)
     {
-        if (Gate::denies('update-applicant-language', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to applicant language!');
-        }
-        $log = [
-            'route' => '/api/update_applicant_language/id/' . $id,
-        ];
         try {
+            if (Gate::denies('update-applicant-language', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to applicant language!');
+            }
             $request->validate([
                 'language' => 'nullable|sometimes|string|max: 255',
                 'poor' => 'nullable|sometimes|string',
@@ -78,17 +82,27 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
             $applicant_language->updated_by = auth()->user()->id;
             $applicant_language->save();
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             $log['msg'] = 'Updating applicant language is successful!';
             Log::channel('daily')->info(json_encode($log));
 
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 1, 'msg' => 'Updating applicant language is successful!');
-        } catch (Exception $e) {
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
             $log['msg'] = 'Updating applicant language was unsuccessful!';
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Updating applicant language was unsuccessful!');
         }
@@ -96,49 +110,67 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
 
     public function show($id)
     {
-        if (Gate::denies('view-applicant-language', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view applicant languages!');
+        try {
+            if (Gate::denies('view-applicant-language', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view applicant languages!');
+            }
+            return ApplicantLanguage::where('applicant_id', $id)->get();
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
+            $log['msg'] = 'Accessing applicant language is unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
         }
-        $log = [
-            'route' => '/api/get_applicant_languages/id/' . $id,
-            'msg' => 'Successfully accessed the applicant languages!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return ApplicantLanguage::where('applicant_id', $id)->get();
     }
 
     public function getApplicantLanguage($applicant_lan_id)
     {
-        if (Gate::denies('view-applicant-languages', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view applicant languages!');
+        try {
+            if (Gate::denies('view-applicant-language', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view applicant languages!');
+            }
+            return ApplicantLanguage::find($applicant_lan_id);
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
+            $log['msg'] = 'Accessing applicant language is unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
         }
-        $log = [
-            'route' => '/api/get_applicant_language/id/' . $applicant_lan_id,
-            'msg' => 'Successfully accessed the applicant languages!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return ApplicantLanguage::find($applicant_lan_id);
     }
 
     public function destroy($id)
     {
-        if (Gate::denies('delete-applicant-language', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to delete applicant language!');
-        }
-        $log = [
-            'route' => '/api/delete_application_language/id/' . $id,
-            'msg' => 'Successfully deleted the applicant language!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        $delete_record = ApplicantLanguage::find($id);
-        $delete_record->deleted_by = auth()->user()->id;
-        $delete_record->save();
-
-        $status = $delete_record->delete();
-
-        if ($status == true) {
+        try{
+            if (Gate::denies('delete-applicant-language', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to delete applicant language!');
+            }
+            $log = [
+                'route' => '/api/delete_application_language/id/' . $id,
+                'msg' => 'Successfully deleted the applicant language!',
+            ];
+            Log::channel('daily')->info(json_encode($log));
+            $delete_record = ApplicantLanguage::find($id);
+            $delete_record->deleted_by = auth()->user()->id;
+            $delete_record->save();
+            $delete_record->delete();
+    
+            $logged_user = auth()->user();
+            $log['msg'] = 'Deleting applicant language is successful!';
+            Log::channel('daily')->info(json_encode($log));
+    
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
             return array('status' => 1, 'msg' => 'Successfully deleted the applicant language!');
-        } else {
+        }catch(Exception $ex){
+            $logged_user = auth()->user();
+            $log['msg'] = 'Accessing applicant language is unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+    
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
             return array('status' => 0, 'msg' => 'Applicant language deletion was unsuccessful!');
         }
     }
