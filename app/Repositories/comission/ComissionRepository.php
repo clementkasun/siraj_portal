@@ -25,7 +25,6 @@ class ComissionRepository implements ComissionInterface
             ]);
 
             Commission::create([
-                'staff_mem_name' => auth()->user()->first_name . ' ' . auth()->user()->last_name,
                 'designation' => auth()->user()->role_id,
                 'price' => $request->com_price,
                 'response' => $request->com_response,
@@ -41,6 +40,7 @@ class ComissionRepository implements ComissionInterface
                 'RESPONSE' => $request->getContent()
             ];
 
+            $log['msg'] = 'Saving comission was unsuccessful!';
             Log::channel('daily')->info(json_encode($log));
             Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
@@ -69,11 +69,11 @@ class ComissionRepository implements ComissionInterface
             ]);
 
             $commision = Commission::find($id);
-            $commision->staff_mem_name = auth()->user()->first_name . ' ' . auth()->user()->last_name;
             $commision->designation = auth()->user()->role_id;
             $commision->price = $request->com_price;
             $commision->response = $request->com_response;
             $commision->applicant_id = $request->applicant_id;
+            $commision->updated_by = auth()->user()->id;
             $commision->save();
 
             $logged_user = auth()->user();
@@ -84,6 +84,7 @@ class ComissionRepository implements ComissionInterface
                 'RESPONSE' => $request->getContent()
             ];
 
+            $log['msg'] = 'Updating comission is successful!';
             Log::channel('daily')->info(json_encode($log));
             Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
@@ -112,7 +113,6 @@ class ComissionRepository implements ComissionInterface
             ];
 
             Log::channel('daily')->info(json_encode($log));
-            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
             
             return Commission::where('applicant_id', $id)->with(['Applicant', 'Designation'])->get();
         } catch (Exception $ex) {
@@ -158,11 +158,16 @@ class ComissionRepository implements ComissionInterface
                 'REQUEST_BODY' => [],
                 'RESPONSE' => ['status' => 1, 'msg' => 'Successfully deleted the comission language!']
             ];
+            $commission = Commission::find($id);
+            $commission->deleted_by = auth()->user()->id;
+            $commission->save();
+            $commission->delete();
+            
             Log::channel('daily')->info(json_encode($log));
-            Commission::find($id)->delete();
+            $log['msg'] = 'Successfully deleted the comission language!';
             Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
-
             return array('status' => 1, 'msg' => 'Successfully deleted the comission language!');
+
         }catch(Exception $ex){
             $log['msg'] = 'Deleting commission was unsuccessful!';
             $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();

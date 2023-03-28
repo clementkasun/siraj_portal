@@ -24,7 +24,6 @@
                             </div>
                             <div class="form-group">
                                 <button id="save_online_app_response" type="button" class="btn btn-success pl-5 pr-5">Save</button>
-                                <button id="update_online_app_response" type="button" class="btn btn-warning pl-5 pr-5 d-none">Update</button>
                             </div>
                         </form>
                     </div>

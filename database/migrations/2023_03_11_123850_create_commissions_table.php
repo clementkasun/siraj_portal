@@ -15,7 +15,6 @@ class CreateCommissionsTable extends Migration
     {
         Schema::create('commissions', function (Blueprint $table) {
             $table->id();
-            $table->string('staff_mem_name', 255);
             $table->string('designation', 255);
             $table->string('price', 255);
             $table->string('response', 255);
@@ -23,6 +22,10 @@ class CreateCommissionsTable extends Migration
             $table->foreign('applicant_id')->references('id')->on('commissions')->onDelete('restrict')->onUpdate('cascade');
             $table->unsignedBigInteger('added_by')->nullable();
             $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('deleted_by')->nullable();
+            $table->foreign('deleted_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

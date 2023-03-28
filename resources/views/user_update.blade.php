@@ -192,6 +192,15 @@
             ignoreError: false
         });
 
+        $("#userImage").checkImageSize({
+            minWidth: 500,
+            minHeight: 500,
+            maxWidth: 500,
+            maxHeight: 500,
+            showError: true,
+            ignoreError: false
+        });
+
         loadAllRoles('rollCombo', roleId);
 
         //Initialize Select2 Elements

@@ -12,8 +12,7 @@ $('#save_previous_emp').click(function () {
     ulploadFileWithData('/api/save_previous_employeement', data, function (result) {
         if (result.status == 1) {
             toastr.success('Previous employeement saving is successful!')
-            $('#previous_employeement_form').trigger("reset");
-            load_previous_employeement_table($('#save_previous_emp').attr('data-id'), privillages);
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -35,9 +34,7 @@ $('#update_previous_emp').click(function () {
     ulploadFileWithData(url, data, function (result) {
         if (result.status == 1) {
             toastr.success('Previous employeement update is successful!')
-            $('#previous_employeement_form').trigger("reset");
-            load_previous_employeement_table($('#save_previous_emp').attr('data-id'), privillages);
-            reset_prev_emp_buttons();
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -58,7 +55,6 @@ $(document).on('click', '.delete-prev-emp', function () {
     }).then((result) => {
         if (result.value) {
             let id = $(this).attr('data-id');
-            reset_prev_emp_buttons();
             delete_previous_emp(id);
         }
     });
@@ -67,18 +63,12 @@ $(document).on('click', '.delete-prev-emp', function () {
 delete_previous_emp = (id) => {
     ajaxRequest('delete', '/api/delete_previous_employeement/id/' + id, null, function (result) {
         if (result.status == 1) {
-            $('#previous_employeement_form').trigger("reset");
-            load_previous_employeement_table($('#save_previous_emp').attr('data-id'), privillages);
+            location.reload();
             toastr.success('Deleting previous employee details is successful!')
         } else {
             toastr.error('Deleting previous employee details was failed!');
         }
     });
-}
-
-reset_prev_emp_buttons = () => {
-    $('#save_previous_emp').removeClass('d-none');
-    $('#update_previous_emp').addClass('d-none');
 }
 
 $(document).on('click', '.edit-previous-emp', function () {
@@ -98,60 +88,60 @@ edit_prev_experience = (id) => {
     });
 }
 
-load_previous_employeement_table = (id, privillages = []) => {
-    let index = 1;
-    let html = '';
-    ajaxRequest('get', '/api/get_previous_employeements/id/' + id, null, function (result) {
-        if (result != '') {
-            result.forEach(previous_emp => {
-                let first_name = (previous_emp.added_by != null) ? (previous_emp.added_by.first_name != null) ? previous_emp.added_by.first_name : '': '';
-                let last_name = (previous_emp.added_by != null) ? (previous_emp.added_by.last_name != null) ? previous_emp.added_by.last_name : '': '';
-                let created_at = new Date(previous_emp.created_at);
-                let formatted_created_at = created_at.getFullYear()+'-'+created_at.getMonth()+'-'+created_at.getDate();
+// load_previous_employeement_table = (id, privillages = []) => {
+//     let index = 1;
+//     let html = '';
+//     ajaxRequest('get', '/api/get_previous_employeements/id/' + id, null, function (result) {
+//         if (result != '') {
+//             result.forEach(previous_emp => {
+//                 let first_name = (previous_emp.added_by != null) ? (previous_emp.added_by.first_name != null) ? previous_emp.added_by.first_name : '': '';
+//                 let last_name = (previous_emp.added_by != null) ? (previous_emp.added_by.last_name != null) ? previous_emp.added_by.last_name : '': '';
+//                 let created_at = new Date(previous_emp.created_at);
+//                 let formatted_created_at = created_at.getFullYear()+'-'+created_at.getMonth()+'-'+created_at.getDate();
 
-                html += '<tr>';
-                html += '<td>' + index++ + '</td>';
-                html += '<td>' + previous_emp.job_type + '</td>';
-                html += '<td>' + previous_emp.country + '</td>';
-                html += '<td>' + previous_emp.period + '</td>';
-                html += '<td>' + first_name +' '+ last_name + '</td>';
-                html += '<td>' + formatted_created_at + '</td>';
-                html += '<td>';
-                if(privillages['is_update'] == '1'){
-                    html += '<button type="button" class="btn btn-primary btn-sm edit-previous-emp m-1" data-id="' + previous_emp.id + '"> Edit </button>';
-                }else{
-                    html += '<button type="button" class="btn btn-primary btn-sm edit-previous-emp m-1" disabled> Edit </button>';
-                }
-                if(privillages['is_delete'] == '1'){
-                    html += '<button type="button" class="btn btn-danger btn-sm delete-prev-emp m-1" data-id="' + previous_emp.id + '"> Delete </button>';
-                }else{
-                    html += '<button type="button" class="btn btn-danger btn-sm delete-prev-emp m-1" disabled> Delete </button>';
-                }
-                html += '</td>';
-            });
-            $('#previous_emp_tbl tbody').html(html);
-            $('#previous_emp_tbl').DataTable({
-                "pageLength": 10,
-                "destroy": true,
-                "retrieve": true
-            });
-        } else {
-            $('#previous_emp_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
-        }
-    });
-}
+//                 html += '<tr>';
+//                 html += '<td>' + index++ + '</td>';
+//                 html += '<td>' + previous_emp.job_type + '</td>';
+//                 html += '<td>' + previous_emp.country + '</td>';
+//                 html += '<td>' + previous_emp.period + '</td>';
+//                 html += '<td>' + first_name +' '+ last_name + '</td>';
+//                 html += '<td>' + formatted_created_at + '</td>';
+//                 html += '<td>';
+//                 if(privillages['is_update'] == '1'){
+//                     html += '<button type="button" class="btn btn-primary btn-sm edit-previous-emp m-1" data-id="' + previous_emp.id + '"> Edit </button>';
+//                 }else{
+//                     html += '<button type="button" class="btn btn-primary btn-sm edit-previous-emp m-1" disabled> Edit </button>';
+//                 }
+//                 if(privillages['is_delete'] == '1'){
+//                     html += '<button type="button" class="btn btn-danger btn-sm delete-prev-emp m-1" data-id="' + previous_emp.id + '"> Delete </button>';
+//                 }else{
+//                     html += '<button type="button" class="btn btn-danger btn-sm delete-prev-emp m-1" disabled> Delete </button>';
+//                 }
+//                 html += '</td>';
+//             });
+//             $('#previous_emp_tbl tbody').html(html);
+//             $('#previous_emp_tbl').DataTable({
+//                 "pageLength": 10,
+//                 "destroy": true,
+//                 "retrieve": true
+//             });
+//         } else {
+//             $('#previous_emp_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
+//         }
+//     });
+// }
 
 $("#previous_employeement_form").validate({
     errorClass: "invalid",
-    highlight: function(element) {
+    highlight: function (element) {
         $(element).addClass('is-invalid');
     },
-    unhighlight: function(element) {
+    unhighlight: function (element) {
         $(element).removeClass('is-invalid');
     },
     errorElement: 'span',
     errorClass: 'validation-error-message help-block form-helper bold',
-    errorPlacement: function(error, element) {
+    errorPlacement: function (error, element) {
         if (element.parent('.input-group').length) {
             error.insertAfter(element.parent());
         } else {
@@ -163,7 +153,7 @@ $("#previous_employeement_form").validate({
 jQuery.validator.setDefaults({
     errorElement: "span",
     ignore: ":hidden:not(select.chosen-select)",
-    errorPlacement: function(error, element) {
+    errorPlacement: function (error, element) {
         // Add the `help-block` class to the error element
         error.addClass("help-block");
         if (element.prop("type") === "checkbox") {
@@ -177,28 +167,28 @@ jQuery.validator.setDefaults({
             error.insertAfter(element);
         }
     },
-    highlight: function(element, errorClass, validClass) {
+    highlight: function (element, errorClass, validClass) {
         jQuery(element).parents(".validate-parent").addClass("has-error").removeClass("has-success");
     },
-    unhighlight: function(element, errorClass, validClass) {
+    unhighlight: function (element, errorClass, validClass) {
         jQuery(element).parents(".validate-parent").removeClass("has-error");
     }
 });
-jQuery.validator.addMethod("valid_name", function(value, element) {
+jQuery.validator.addMethod("valid_name", function (value, element) {
     return this.optional(element) || /^[a-zA-Z0-9\s\.\&\-():, ]{1,100}$/.test(value);
 }, "Please enter a valid name");
-jQuery.validator.addMethod("valid_email", function(value, element) {
+jQuery.validator.addMethod("valid_email", function (value, element) {
     return this.optional(element) || /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value);
 }, "Please enter a valid email addresss");
-jQuery.validator.addMethod("valid_code", function(value, element) {
+jQuery.validator.addMethod("valid_code", function (value, element) {
     return this.optional(element) || /^[a-zA-Z0-9._%+-@#()^;*!$=, ]{1,40}$/.test(value);
 }, "Please enter a valid password");
-jQuery.validator.addMethod("valid_lk_phone", function(value, element) {
+jQuery.validator.addMethod("valid_lk_phone", function (value, element) {
     return this.optional(element) || /^(\+94)?\d{2,3}[-]?\d{7}$/.test(value);
 }, "Please enter a valid phone number");
-jQuery.validator.addMethod("valid_date", function(value, element) {
+jQuery.validator.addMethod("valid_date", function (value, element) {
     return this.optional(element) || /^\d{4}\-\d{2}\-\d{2}$/.test(value);
 }, "Please enter a valid date ex. 2017-03-27");
-jQuery.validator.addMethod("valid_nic", function(value, element) {
+jQuery.validator.addMethod("valid_nic", function (value, element) {
     return this.optional(element) || /^[0-9+]{12}$/.test(value) || /^[0-9+]{9}[vV|xX]$/.test(value);
 }, "Please enter a valid nic number");

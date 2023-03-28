@@ -38,4 +38,9 @@ class Role extends Model
     {
         return $this->hasMany(OnlineApplicantResponse::class);
     }
+
+    public function ContactResponse()
+    {
+        return $this->hasMany(ContactResponse::class);
+    }
 }

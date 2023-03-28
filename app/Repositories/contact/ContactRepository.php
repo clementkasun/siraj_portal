@@ -65,16 +65,15 @@ class ContactRepository implements ContactInterface
                 'REQUEST_BODY' => $request->all(),
                 'RESPONSE' => $request->getContent()
             ];
-            $logged_user = auth()->user();
+
             Log::channel('daily')->info(json_encode($log));
-            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+            $log['msg'] = 'Saving contact is successful!';
 
             return array('status' => 1, 'msg' => 'Saving contact is successful!');
         } catch (Exception $ex) {
             $log['msg'] = 'Saving contact was unsuccessful!';
             $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
-            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Saving Contact was unsuccessful!');
         }
