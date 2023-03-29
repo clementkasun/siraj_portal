@@ -21,7 +21,10 @@ class CreateContactsTable extends Migration
             $table->string('phone_number', 10);
             $table->string('subject', 255);
             $table->string('file', 255);
+            $table->string('status', 255)->default('New');
             $table->text('message');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

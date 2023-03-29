@@ -17,7 +17,7 @@ class ContactResponseRepository implements ContactResponseInterface
         if (Gate::denies('view-contact-us-resp', auth()->user())) {
             return array('status' => 4, 'msg' => 'You are not authorised to view contact response!');
         }
-        return view('contact.contact_response', ['contact_id' => $id, 'contact_responses' => ContactResponse::with(['Designation', 'AddedBy'])->get()]);
+        return view('contact.contact_response', ['contact_id' => $id, 'contact_responses' => ContactResponse::where('contact_id', $id)->with(['Designation', 'AddedBy'])->get()]);
     }
 
     public function store($request)

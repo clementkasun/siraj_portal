@@ -359,7 +359,8 @@ use Illuminate\Support\Carbon;
                                                 <form id="previous_employeement_form">
                                                     <div class="form-group">
                                                         <label for="job_type">Job type *</label>
-                                                        <div>
+                                                        <input type="text" class="form-control" id="job_type" name="job_type" placeholder="Enter job type of employeement" required/>
+                                                        <!-- <div>
                                                             <select class="form-select form-control" id="job_type" name="job_type" aria-label="Choose a job type" required>
                                                                 <option selected value="">Choose a job category</option>
                                                                 <option value="Home maid (New)">Home maid (New)</option>
@@ -382,7 +383,7 @@ use Illuminate\Support\Carbon;
                                                                 <option value="Sales Manager">Sales Manager</option>
                                                                 <option value="Other">Other</option>
                                                             </select>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="period">Period *</label>
@@ -666,9 +667,9 @@ use Illuminate\Support\Carbon;
                                         </div>
                                         @can('view-commission')
                                         <div class="row float-right">
-                                            <span class="col-4">Promised Total Commission:</span><span class="col-8"><b>{{ $commision_price }}</b></span>
-                                            <span class="col-4">Paid Total Commission:</span><span class="col-8"><b>{{ $paid_total_commision }}</b></span>
-                                            <span class="col-4">Available Commission:</span><span class="col-8"><b>{{ $commision_price - $paid_total_commision }}</b></span>
+                                            <span class="col-4">Promised Total Commission:</span><span class="col-8"><b>{{ number_format($commision_price,2, '.', '') }}</b></span>
+                                            <span class="col-4">Paid Total Commission:</span><span class="col-8"><b>{{ number_format($paid_total_commision,2, '.', '') }}</b></span>
+                                            <span class="col-4">Available Commission:</span><span class="col-8"><b>{{ number_format(($commision_price - $paid_total_commision),2, '.', '') }}</b></span>
                                         </div>
                                         @endcan
                                     </div>

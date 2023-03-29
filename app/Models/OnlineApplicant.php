@@ -24,7 +24,9 @@ class OnlineApplicant extends Model
         'address',
         'phone_no_01',
         'phone_no_02',
-        'job_type'
+        'job_type',
+        'status',
+        'updated_by'
     ];
 
     public function User()
@@ -35,5 +37,10 @@ class OnlineApplicant extends Model
     public function OnlineApplicantResponse()
     {
         return $this->hasMany(OnlineApplicantResponse::class);
+    }
+
+    public function UpdatedBy()
+    {
+        return $this->belongsTo(User::class);
     }
 }

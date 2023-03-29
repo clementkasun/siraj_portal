@@ -90,4 +90,15 @@ class PhoneNumberController extends Controller
     {
         return $this->phoneNumberRepository->destroy($id);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\PhoneNumber  $phoneNumber
+     * @return \Illuminate\Http\Response
+     */
+    public function changePhoneNumberStatus(Request $request, $id)
+    {
+        return $this->phoneNumberRepository->changePhoneNumberStatus($request, $id);
+    }
 }

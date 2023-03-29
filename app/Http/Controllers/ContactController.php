@@ -46,4 +46,15 @@ class ContactController extends Controller
     {
         return $this->contactRepository->show();
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Contact  $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function changeContactStatus(Request $request, $id)
+    {
+        return $this->contactRepository->changeContactStatus($request, $id);
+    }
 }

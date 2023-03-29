@@ -11,8 +11,9 @@ $('#save_comission').click(function(privillages) {
     ulploadFileWithData('/api/save_comission', data, function(result) {
         if (result.status == 1) {
             toastr.success('Comission saving is successful!')
-            $('#comission_form').trigger("reset");
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -33,8 +34,9 @@ $('#update_comission').click(function(privillages) {
     ulploadFileWithData(url, data, function(result) {
         if (result.status == 1) {
             toastr.success('Comission updating is successful!')
-            $('#comission_form').trigger("reset");
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             reset_comission_buttons();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
@@ -67,7 +69,9 @@ delete_comission = (id) => {
         if (result.status == 1) {
             $('#comission_form').trigger("reset");
             reset_comission_buttons();
-            load_comission_tbl($('#save_comission').attr('data-id'), privillages);
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             toastr.success('Deleting comission was successful!');
         } else {
             toastr.error('Deleting comission was failed!');

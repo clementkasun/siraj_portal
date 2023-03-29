@@ -15,13 +15,10 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
 {
     public function store($request)
     {
-        if (Gate::denies('create-previous-emp', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to create previous employeement!');
-        }
-        $log = [
-            'route' => '/api/save_previous_employeement',
-        ];
         try {
+            if (Gate::denies('create-previous-emp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to create previous employeement!');
+            }
 
             $request->validate([
                 'job_type' => 'nullable|sometimes|string|max:255',
@@ -39,17 +36,25 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
                 'added_by' => auth()->user()->id
             ]);
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             $log['msg'] = 'Saving previous employeement is successful!';
             Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));;
 
             return array('status' => 1, 'msg' => 'Saving previous employeement is successful!');
-        } catch (Exception $e) {
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
             $log['msg'] = 'Saving previous employeement was unsuccessful!';
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Saving previous employeement was unsuccessful!');
         }
@@ -57,13 +62,10 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
 
     public function update($request, $id)
     {
-        if (Gate::denies('update-previous-emp', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to update previous employeement!');
-        }
-        $log = [
-            'route' => '/api/update_previous_employeement/id/' . $id,
-        ];
         try {
+            if (Gate::denies('update-previous-emp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to update previous employeement!');
+            }
             $request->validate([
                 'job_type' => 'nullable|sometimes|string|max:255',
                 'period' => 'nullable|sometimes|string|max:255',
@@ -80,17 +82,25 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
             $previous_emp->updated_by = auth()->user()->id;
             $previous_emp->save();
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             $log['msg'] = 'Updating previous employeement is successful!';
             Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 1, 'msg' => 'Updating previous employeement is successful!');
-        } catch (Exception $e) {
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
             $log['msg'] = 'Updating previous employeement was unsuccessful!';
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Updating previous employeement was unsuccessful!');
         }
@@ -98,49 +108,80 @@ class PreviousEmployeementRepository implements PreviousEmployeementInterface
 
     public function getPreviousEmployeement($id)
     {
-        if (Gate::denies('view-previous-emp', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view previous employeement!');
+        try{
+            if (Gate::denies('view-previous-emp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view previous employeement!');
+            }
+            $log = [
+                'URI' => '/api/get_previous_experience/id/' . $id,
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => ApplicantPreviousEmployeement::where('id', $id)->with('AddedBy')->first() 
+            ];
+    
+            $log['msg'] = 'Access previous employeement is successful!';
+            Log::channel('daily')->info(json_encode($log));
+            return ApplicantPreviousEmployeement::where('id', $id)->with('AddedBy')->first();
+        }catch(Exception $ex){
+            $log['msg'] = 'Access previous employeement is successful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        $log = [
-            'route' => '/api/get_previous_experience/id/'.$id,
-            'msg' => 'Successfully accessed the previous employeement!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return ApplicantPreviousEmployeement::where('id', $id)->with('AddedBy')->first();
     }
 
     public function show($id)
     {
-        if (Gate::denies('view-previous-emp', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view previous employeement!');
+        try{
+            if (Gate::denies('view-previous-emp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view previous employeement!');
+            }
+            $log = [
+                'URI' => '/api/get_previous_employeements/id/'. $id,
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => ApplicantPreviousEmployeement::where('applicant_id', $id)->with('AddedBy')->get() 
+            ];
+            $log['msg'] = 'Access previous employeements is successful!';
+            Log::channel('daily')->info(json_encode($log));
+            return ApplicantPreviousEmployeement::where('applicant_id', $id)->with('AddedBy')->get();
+        }catch(Exception $ex){
+            $log['msg'] = 'Access previous employeements is successful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        $log = [
-            'route' => '/api/get_previous_employeements/id/'>$id,
-            'msg' => 'Successfully accessed the previous employeements!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return ApplicantPreviousEmployeement::where('applicant_id', $id)->with('AddedBy')->get();
     }
 
     public function destroy($id)
     {
-        if (Gate::denies('delete-previous-emp', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to delete previous employeement!');
-        }
-        $log = [
-            'route' => '/api/delete_previous_employeement/id/' . $id,
-            'msg' => 'Successfully deleted the previous employeement!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        $delete_record = ApplicantPreviousEmployeement::find($id);
-        $delete_record->deleted_by = auth()->user()->id;
-        $delete_record->save();
-
-        $status = $delete_record->delete();
-        if($status == true){
+        try{
+            if (Gate::denies('delete-previous-emp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to delete previous employeement!');
+            }
+            $delete_record = ApplicantPreviousEmployeement::find($id);
+            $delete_record->deleted_by = auth()->user()->id;
+            $delete_record->save();
+    
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => '/api/delete_previous_employeement/id/' . $id,
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => []
+            ];
+    
+            $delete_record->delete();
+            $log['msg'] = 'Successfully deleted the previous employeement!';
+            Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
             return array('status' => 1, 'msg' => 'Successfully deleted the previous employeement!');
-        }else{
-            return array('status' => 0, 'msg' => 'Previous employeement deletion was unsuccessful!');
+        }catch(Exception $ex){
+            $logged_user = auth()->user();
+            $log['msg'] = 'Deleting previous employeement is unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
+            return array('status' => 0, 'msg' => 'Deleting previous employeement is unsuccessful!');
         }
     }
 }

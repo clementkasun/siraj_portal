@@ -5,8 +5,6 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
-@extends('layouts.footer')
-@section('content')
 <section class="content-header">
     <div class="container-fluid">
         <div class="card card-primary">
@@ -35,12 +33,12 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Designation</th>
-                                <th>Added By</th>
+                                <th>Added By</th>>
                                 <th>Response</th>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td colspan="5" class="text-center text-bold"><span>No Data</span></td>
+                                    <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
                                 </tr>
                             </tbody>
                         </table>

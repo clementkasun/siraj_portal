@@ -264,7 +264,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 45%">HEIGHT</td>
-                                <td colspan="2"> {{ (isset($applicant_details->height)) ? $applicant_details->height. ' cm ' : '-' }} </td>
+                                <td colspan="2"> {{ (isset($applicant_details->height)) ? $applicant_details->height : '-' }} </td>
                                 <!-- <td>Language</td> -->
                             </tr>
                             <tr>

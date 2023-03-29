@@ -328,14 +328,6 @@ class AuthServiceProvider extends ServiceProvider
 
         //Define Gate Privillages for the contact us
         Gate::define('create-contact-us', function ($user) {
-            // $role_privillages =RolePrivillage::where('role_id', $user->role_id)->with('Privillage')->get();
-            // if (isset($role_privillages)) {
-            //     foreach ($role_privillages as $role_privillage) {
-            //         if ($role_privillage->Privillage->name == 'ContactUs' && $role_privillage->is_create == 1) {
-            //             return true;
-            //         }
-            //     }
-            // }
             return true;
         });
         Gate::define('update-contact-us', function ($user) {

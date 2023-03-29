@@ -12,7 +12,9 @@ $('#save_previous_emp').click(function () {
     ulploadFileWithData('/api/save_previous_employeement', data, function (result) {
         if (result.status == 1) {
             toastr.success('Previous employeement saving is successful!')
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -34,7 +36,9 @@ $('#update_previous_emp').click(function () {
     ulploadFileWithData(url, data, function (result) {
         if (result.status == 1) {
             toastr.success('Previous employeement update is successful!')
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -63,8 +67,10 @@ $(document).on('click', '.delete-prev-emp', function () {
 delete_previous_emp = (id) => {
     ajaxRequest('delete', '/api/delete_previous_employeement/id/' + id, null, function (result) {
         if (result.status == 1) {
-            location.reload();
-            toastr.success('Deleting previous employee details is successful!')
+            toastr.success('Deleting previous employee details is successful!');
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
         } else {
             toastr.error('Deleting previous employee details was failed!');
         }

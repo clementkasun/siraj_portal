@@ -166,13 +166,13 @@
                                         <a href="/users/id/{{$user->id}}" class="btn btn-sm btn-primary">Select</a>
                                         @else
                                         <a href="" class="btn btn-sm btn-primary" style="pointer-events: none; cursor: default;">Select</a>
-                                        @endcan 
+                                        @endcan
                                         @can('view-user')
                                         <a href="/user_profile/id/{{$user->id}}" class="btn btn-sm btn-primary">Profile</a>
                                         @else
                                         <a href="#" class="btn btn-sm btn-primary" style="pointer-events: none; cursor: default;">Profile</a>
                                         @endcan
-                                        @can('delete-user') 
+                                        @can('delete-user')
                                         <button class="btn btn-sm btn-danger del" {{ ($user->id == auth()->user()->id) ? 'disabled' : '' }}> Delete </button>
                                         @else
                                         <button class="btn btn-sm btn-danger del" disabled> Delete </button>
@@ -284,7 +284,9 @@
                 ulploadFileWithData('/api/delete_user/id/' + $(this).attr('data-id'), null, function(result) {
                     if (result.status == 1) {
                         toastr.success('User deleting is successful!');
-                        location.reload();
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
                         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                             callBack();
                         }
@@ -324,7 +326,9 @@
                     ulploadFileWithData('/api/save_user', data, function(result) {
                         if (result.status == 1) {
                             toastr.success('User saving is successful!');
-                            location.reload();
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
                             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                                 callBack();
                             }
@@ -338,7 +342,6 @@
 
         password_confirmation = () => {
             if ($('#password').val() != $('#password_confirmation').val()) {
-                ;
                 toastr.error('Password confirmation failed!')
                 return false;
             } else {

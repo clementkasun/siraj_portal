@@ -14,10 +14,16 @@ use Illuminate\Support\Facades\Storage;
 class OnlineApplicantRepository implements OnlineApplicantInterface
 {
     public function index(){
-        if (Gate::denies('view-online-applicant', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to create online applicant!');
+        try{
+            if (Gate::denies('view-online-applicant', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to create online applicant!');
+            }
+            return view('applicant.online_applicants', ['online_applicants' => OnlineApplicant::all()]);
+        }catch(Exception $ex){
+            $log['msg'] = 'Accessing registered online applicant view was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        return view('applicant.online_applicants', ['online_applicants' => OnlineApplicant::all()]);
     }
 
     public function store($request)
@@ -61,6 +67,40 @@ class OnlineApplicantRepository implements OnlineApplicantInterface
             Log::channel('daily')->error(json_encode($log));
 
             return array('status' => 0, 'msg' => 'Saving online applicant was unsuccessful!');
+        }
+    }
+
+    public function changeOnlineAppStatus($request, $id){
+        try {
+            $request->validate([
+                'status' => 'required|string|max:255',
+            ]);
+
+            $online_applicant = OnlineApplicant::find($id);
+            $online_applicant->status = $request->status;
+            $online_applicant->save();
+
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
+            $log['msg'] = 'Changing status of online applicant is successful!';
+            Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+            
+            return array('status' => 1, 'msg' => 'Changing status of online applicant is successful!');
+        } catch (Exception $e) {
+            $logged_user = auth()->user();
+            $log['msg'] = 'Changing status of online applicant was unsuccessful!';
+            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+            Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
+            return array('status' => 0, 'msg' => 'Changing status of online applicant was unsuccessful!');
         }
     }
 }

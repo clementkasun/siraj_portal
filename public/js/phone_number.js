@@ -10,7 +10,9 @@ $('#save_phone_number').click(function (privillages) {
     ulploadFileWithData('/api/save_phone_number', data, function (result) {
         if (result.status == 1) {
             toastr.success('Phone number adding is successful!')
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -33,7 +35,9 @@ $('#update_phone_number').click(function (privillages) {
     ulploadFileWithData('/api/update_phone_number/id/' + id, data, function (result) {
         if (result.status == 1) {
             toastr.success('Phone number updating is successful!');
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -62,8 +66,10 @@ $(document).on('click', '.delete', function () {
 delete_phone_number = (id) => {
     ajaxRequest('delete', '/api/delete_phone_number/id/' + id, null, function (result) {
         if (result.status == 1) {
-            location.reload();
             toastr.success('Deleting phone number was successful!');
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
         } else {
             toastr.error('Deleting phone number was failed!');
         }

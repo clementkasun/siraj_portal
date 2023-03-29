@@ -23,6 +23,7 @@
                         <th>Phone No 01</th>
                         <th>Phone No 02</th>
                         <th>Job Type</th>
+                        <th>Status</th>
                     </thead>
                     <tbody>
                         @forelse($online_applicants as $key => $online_applicant)
@@ -36,11 +37,20 @@
                             <td>{{ $online_applicant->phone_no_01 }}</td>
                             <td>{{ $online_applicant->phone_no_02 }}</td>
                             <td>{{ $online_applicant->job_type }}</td>
-                            @can('update-online-applicant')
-                            <td><a href="/online_applicant_response/id/{{ $online_applicant->id }}" class="btn btn-primary btn-sm m-1">Respond</a></td>
-                            @else
-                            <td><a href="" class="btn btn-primary btn-sm m-1" style="pointer-events: none; cursor: default;">Respond</a></td>
-                            @endcan
+                            <td>
+                                @can('update-online-applicant')
+                                <select id="online_app_status" class="form-control form-control-sm">
+                                    <option value="New"> New </option>
+                                    <option value="Ongoing"> Ongoing </option>
+                                    <option value="Complete"> Complete </option>
+                                </select>
+                                @endcan
+                            </td>
+                            <td>
+                                @can('update-online-applicant')
+                                <a href="/online_applicant_response/id/{{ $online_applicant->id }}" class="btn btn-primary btn-sm">Respond</a>
+                                @endcan
+                            </td>
                         </tr>
                         @empty
                         <tr>
@@ -56,10 +66,47 @@
 @endsection
 @section('pageScripts')
 <script>
-    $('#online_applicants').DataTable({
-        "pageLength": 10,
-        "destroy": true,
-        "retrieve": true
+    var ONLINE_APPLICANT_ID = '{{ (isset($online_applicant)) ? $online_applicant->id : "" }}';
+    var APPLICANT_STATUS = '{{ (isset($online_applicant)) ? $online_applicant->status : "" }}';
+
+    // $('#online_applicants').DataTable({
+    //     "pageLength": 10,
+    //     "destroy": true,
+    //     "retrieve": true
+    // });
+
+    if(APPLICANT_STATUS == 'New'){
+        $('#online_app_status').addClass('bg-primary');
+    }
+
+    if(APPLICANT_STATUS == 'Ongoing'){
+        $('#online_app_status').addClass('bg-warning');
+    }
+
+    if(APPLICANT_STATUS == 'Complete'){
+        $('#online_app_status').addClass('bg-success');
+    }
+
+    $('#online_app_status').val(APPLICANT_STATUS);
+
+    $('#online_app_status').change(function() {
+        let data = {
+            'status': $('#online_app_status').val()
+        };
+        update_online_status(data);
     });
+
+    update_online_status = (data) => {
+        ulploadFileWithData('/api/change_online_app_status/id/' + ONLINE_APPLICANT_ID, data, function(result) {
+            if (result.status) {
+                toastr.success('Online applicant status change is successful!');
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            } else {
+                toastr.error('Online applicant change was unsuccessful!');
+            }
+        });
+    }
 </script>
 @endsection
