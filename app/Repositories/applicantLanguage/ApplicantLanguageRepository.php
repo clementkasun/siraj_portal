@@ -149,8 +149,10 @@ class ApplicantLanguageRepository implements ApplicantLanguageInterface
                 return array('status' => 4, 'msg' => 'You are not authorised to delete applicant language!');
             }
             $log = [
-                'route' => '/api/delete_application_language/id/' . $id,
-                'msg' => 'Successfully deleted the applicant language!',
+                'URI' => '/api/delete_application_language/id/' . $id,
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => ['status' => 1, 'msg' => 'Successfully deleted the applicant language!']
             ];
             Log::channel('daily')->info(json_encode($log));
             $delete_record = ApplicantLanguage::find($id);

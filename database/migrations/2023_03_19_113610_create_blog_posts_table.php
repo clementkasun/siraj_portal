@@ -18,8 +18,6 @@ class CreateBlogPostsTable extends Migration
             $table->string('post_name', 255);
             $table->string('post_image', 255);
             $table->text('description');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->unsignedBigInteger('added_by')->nullable();
             $table->foreign('added_by')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->unsignedBigInteger('deleted_by')->nullable();

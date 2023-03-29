@@ -15,7 +15,6 @@ class CreateContactResponsesTable extends Migration
     {
         Schema::create('contact_responses', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
             $table->string('designation', 255);
             $table->string('response', 255);
             $table->unsignedBigInteger('contact_id');

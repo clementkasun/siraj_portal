@@ -34,12 +34,19 @@
                                 <th>Name</th>
                                 <th>Designation</th>
                                 <th>Response</th>
-                                <th>Action</th>
                             </thead>
                             <tbody>
+                                @forelse($contact_responses as $key => $contact_response)
                                 <tr>
-                                    <td colspan="5" class="text-center text-bold"><span>No Data</span></td>
+                                    <td> {{ ++$key }} </td>
+                                    <td style="width: 15em"> {{ $contact_response->AddedBy->name}} </td>
+                                    <td> {{ $contact_response->Designation->name }} </td>
+                                    <td> {{ $contact_response->response}} </td>
+                                    @empty
+                                <tr>
+                                    <td colspan="4" class="text-center text-bold"><span>No Data</span></td>
                                 </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -53,13 +60,10 @@
 <script src="{{asset('js/contact_response.js')}}"></script>
 <script>
     var CONTACT_ID = '{{$contact_id}}';
-
-    $(document).ready(function() {
-        let privillages = {
-            'is_update' : '{{ Gate::allows("update-contact-response") }}',
-            'is_delete' : '{{ Gate::allows("delete-contact-response") }}'
-        };
-        load_contact_response(privillages);
+    $('#contact_resp_tbl').DataTable({
+        "pageLength": 10,
+        "destroy": true,
+        "retrieve": true
     });
 </script>
 @endsection

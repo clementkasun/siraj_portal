@@ -91,4 +91,9 @@ class User extends Authenticatable {
     {
         return $this->hasMany(OnlineApplicantResponse::class);
     }
+
+    public function Commission()
+    {
+        return $this->hasMany(Commission::class);
+    }
 }

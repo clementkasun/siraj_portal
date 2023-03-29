@@ -1,4 +1,4 @@
-$('#save_language').click(function() {
+$('#save_language').click(function(privillages) {
     if (!jQuery("#languages_form").valid()) {
         return false;
     }
@@ -13,8 +13,7 @@ $('#save_language').click(function() {
     ulploadFileWithData('/api/save_applicant_language', data, function(result) {
         if (result.status == 1) {
             toastr.success('Language saving is successful!')
-            $('#languages_form').trigger("reset");
-            load_language_table($('#save_language').attr('data-id'), privillages);
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -24,7 +23,7 @@ $('#save_language').click(function() {
     });
 });
 
-$('#update_language').click(function() {
+$('#update_language').click(function(privillages) {
     let data = {
         'language': $('#language').val(),
         'poor': $('#poor').is(':checked'),
@@ -36,9 +35,7 @@ $('#update_language').click(function() {
     ulploadFileWithData(url, data, function(result) {
         if (result.status == 1) {
             toastr.success('Language updating is successful!')
-            $('#languages_form').trigger("reset");
-            load_language_table($('#save_language').attr('data-id'), privillages);
-            reset_app_lan_buttons();
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -59,7 +56,6 @@ $(document).on('click', '.delete-app-lan', function() {
     }).then((result) => {
         if (result.value) {
             let id = $(this).attr('data-id');
-            reset_app_lan_buttons();
             delete_language(id);
         }
     });
@@ -68,8 +64,7 @@ $(document).on('click', '.delete-app-lan', function() {
 delete_language = (id) => {
     ajaxRequest('delete', '/api/delete_application_language/id/' + id, null, function(result) {
         if (result.status == 1) {
-            $('#languages_form').trigger("reset");
-            load_language_table($('#save_language').attr('data-id'), privillages);
+            location.reload();
             toastr.success('Deleting language was successful!');
         } else {
             toastr.error('Deleting language was failed!');
@@ -100,48 +95,48 @@ edit_applicant_language = (id) => {
     });
 }
 
-load_language_table = (id, privillages = []) => {
-    let index = 1;
-    let html = '';
-    ajaxRequest('get', '/api/get_applicant_languages/id/'+id, null, function(result) {
-        if (result != '') {
-            result.forEach(language => {
-                let yes_clause = '<span class="badge badge-info pl-2 pr-2">Yes</span>';
-                let no_clause = '<span class="badge badge-warning pl-2 pr-2">No</span>';
-                let poor_status = (language.poor) ?  yes_clause : no_clause;
-                let fair_status = (language.fair) ? yes_clause : no_clause;
-                let fluent_status = (language.fluent) ? yes_clause : no_clause;
+// load_language_table = (id, privillages = []) => {
+//     let index = 1;
+//     let html = '';
+//     ajaxRequest('get', '/api/get_applicant_languages/id/'+id, null, function(result) {
+//         if (result != '') {
+//             result.forEach(language => {
+//                 let yes_clause = '<span class="badge badge-info pl-2 pr-2">Yes</span>';
+//                 let no_clause = '<span class="badge badge-warning pl-2 pr-2">No</span>';
+//                 let poor_status = (language.poor) ?  yes_clause : no_clause;
+//                 let fair_status = (language.fair) ? yes_clause : no_clause;
+//                 let fluent_status = (language.fluent) ? yes_clause : no_clause;
 
-                html += '<tr>';
-                html += '<td>' + index++ + '</td>';
-                html += '<td>' + language.language_name + '</td>';
-                html += '<td>' + poor_status + '</td>';
-                html += '<td>' + fair_status + '</td>';
-                html += '<td>' + fluent_status + '</td>';
-                html += '<td>';
-                if(privillages['is_update'] == '1'){
-                    html += '<button type="button" class="btn btn-primary btn-sm edit-app-lan m-1" data-id="' + language.id + '"> Edit </button>';
-                }else{
-                    html += '<button type="button" class="btn btn-primary btn-sm edit-app-lan m-1" disabled> Edit </button>';
-                }
-                if(privillages['is_delete'] == '1'){
-                    html += '<button type="button" class="btn btn-danger btn-sm delete-app-lan m-1" data-id="' + language.id + '"> Delete </button>';
-                }else{
-                    html += '<button type="button" class="btn btn-danger btn-sm delete-app-lan m-1" disabled> Delete </button>';
-                }
-                html += '</td>';
-            });
-            $('#language_tbl tbody').html(html);
-            $('#language_tbl').DataTable({
-                "pageLength": 10,
-                "destroy": true,
-                "retrieve": true
-            });
-        } else {
-            $('#language_tbl tbody').html('<tr><td colspan="6" class="text-center text-bold"><span>No Data</span></td></tr>');
-        }
-    });
-}
+//                 html += '<tr>';
+//                 html += '<td>' + index++ + '</td>';
+//                 html += '<td>' + language.language_name + '</td>';
+//                 html += '<td>' + poor_status + '</td>';
+//                 html += '<td>' + fair_status + '</td>';
+//                 html += '<td>' + fluent_status + '</td>';
+//                 html += '<td>';
+//                 if(privillages['is_update'] == '1'){
+//                     html += '<button type="button" class="btn btn-primary btn-sm edit-app-lan m-1" data-id="' + language.id + '"> Edit </button>';
+//                 }else{
+//                     html += '<button type="button" class="btn btn-primary btn-sm edit-app-lan m-1" disabled> Edit </button>';
+//                 }
+//                 if(privillages['is_delete'] == '1'){
+//                     html += '<button type="button" class="btn btn-danger btn-sm delete-app-lan m-1" data-id="' + language.id + '"> Delete </button>';
+//                 }else{
+//                     html += '<button type="button" class="btn btn-danger btn-sm delete-app-lan m-1" disabled> Delete </button>';
+//                 }
+//                 html += '</td>';
+//             });
+//             $('#language_tbl tbody').html(html);
+//             $('#language_tbl').DataTable({
+//                 "pageLength": 10,
+//                 "destroy": true,
+//                 "retrieve": true
+//             });
+//         } else {
+//             $('#language_tbl tbody').html('<tr><td colspan="6" class="text-center text-bold"><span>No Data</span></td></tr>');
+//         }
+//     });
+// }
 
 $("#languages_form").validate({
     errorClass: "invalid",

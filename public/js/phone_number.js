@@ -1,4 +1,4 @@
-$('#save_phone_number').click(function () {
+$('#save_phone_number').click(function (privillages) {
     if (!jQuery("#phone_number_form").valid()) {
         return false;
     }
@@ -10,8 +10,7 @@ $('#save_phone_number').click(function () {
     ulploadFileWithData('/api/save_phone_number', data, function (result) {
         if (result.status == 1) {
             toastr.success('Phone number adding is successful!')
-            $('#phone_number_form').trigger("reset");
-            load_phone_number_tbl();
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -21,7 +20,7 @@ $('#save_phone_number').click(function () {
     });
 });
 
-$('#update_phone_number').click(function () {
+$('#update_phone_number').click(function (privillages) {
     let id = $(this).attr('data-id');
     if (!jQuery("#phone_number_form").valid()) {
         return false;
@@ -34,8 +33,7 @@ $('#update_phone_number').click(function () {
     ulploadFileWithData('/api/update_phone_number/id/' + id, data, function (result) {
         if (result.status == 1) {
             toastr.success('Phone number updating is successful!');
-            reset_phone_num_buttons();
-            load_phone_number_tbl();
+            location.reload();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -56,7 +54,6 @@ $(document).on('click', '.delete', function () {
     }).then((result) => {
         if (result.value) {
             let id = $(this).attr('data-id');
-            reset_phone_num_buttons();
             delete_phone_number(id);
         }
     });
@@ -65,19 +62,12 @@ $(document).on('click', '.delete', function () {
 delete_phone_number = (id) => {
     ajaxRequest('delete', '/api/delete_phone_number/id/' + id, null, function (result) {
         if (result.status == 1) {
-            $('#phone_number_form').trigger("reset");
-            reset_phone_num_buttons();
-            load_phone_number_tbl($('#save_phone_number').attr('data-id'));
+            location.reload();
             toastr.success('Deleting phone number was successful!');
         } else {
             toastr.error('Deleting phone number was failed!');
         }
     });
-}
-
-reset_phone_num_buttons = () => {
-    $('#save_phone_number').removeClass('d-none');
-    $('#update_phone_number').addClass('d-none');
 }
 
 $(document).on('click', '.edit', function () {
@@ -96,18 +86,19 @@ edit_phone_number = (id) => {
     });
 }
 
-load_phone_number_tbl = (privillages = []) => {
-    console.log(privillages);
-    let index = 1;
-    let html = '';
-    ajaxRequest('get', '/api/get_phone_numbers', null, function (result) {
-        if (result != '') {
-            result.forEach(phone_number => {
+// load_phone_number_tbl = (privillages = []) => {
+//     console.log(privillages);
+//     let index = 1;
+//     let html = '';
+//     ajaxRequest('get', '/api/get_phone_numbers', null, function (result) {
+//         if (result != '') {
+//             result.forEach(phone_number => {
 
-                let added_name = (phone_number.added_by != null) ? (phone_number.added_by.preffered_name != null) ? phone_number.added_by.preffered_name : '' : '';
-                let assigned_name = (phone_number.assigned_to != null) ? (phone_number.assigned_to.preffered_name != null) ? phone_number.assigned_to.preffered_name : '' : '';
-                let phone_num_response = (phone_number.phone_number_response != null) ? (phone_number.phone_number_response[0] != null) ? phone_number.phone_number_response[0].response : '' : '';  
-                let phone_number_name =  (phone_number.name != null) ? phone_number.name : '';
+//                 let added_name = (phone_number.added_by != null) ? (phone_number.added_by.preffered_name != null) ? phone_number.added_by.preffered_name : '' : '';
+//                 let assigned_name = (phone_number.assigned_to != null) ? (phone_number.assigned_to.preffered_name != null) ? phone_number.assigned_to.preffered_name : '' : '';
+//                 let phone_num_response = (phone_number.phone_number_response != null) ? (phone_number.phone_number_response[0] != null) ? phone_number.phone_number_response[0].response : '' : '';  
+//                 let phone_number_name =  (phone_number.name != null) ? phone_number.name : '';
+
 
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
@@ -146,6 +137,7 @@ load_phone_number_tbl = (privillages = []) => {
         }
     });
 }
+
 
 $("#phone_number_form").validate({
     errorClass: "invalid",

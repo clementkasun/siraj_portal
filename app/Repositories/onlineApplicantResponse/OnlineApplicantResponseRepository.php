@@ -15,21 +15,17 @@ class OnlineApplicantResponseRepository implements OnlineApplicantResponseInterf
 {
     public function index($id)
     {
-        // if (Gate::denies('update-online-applicant', auth()->user())) {
-        //     return array('status' => 4, 'msg' => 'You are not authorised to update online applicant related details!');
-        // }
         return view('applicant.online_applicant_response', ['online_applicant_id' => $id]);
     }
 
     public function store($request)
     {
-        // if (Gate::denies('update-online-applicant', auth()->user())) {
-        //     return array('status' => 4, 'msg' => 'You are not authorised to update online applicant related details!');
-        // }
-        $log = [
-            'route' => '/api/save_online_applicant_resp',
-        ];
         try {
+
+            if (Gate::denies('create-application-staff-resp', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to created online applicant responses!');
+            }
+
             $request->validate([
                 'designation',
                 'response',
@@ -43,30 +39,40 @@ class OnlineApplicantResponseRepository implements OnlineApplicantResponseInterf
                 'added_by' => auth()->user()->id
             ]);
 
-            // $user = auth()->user();
-            // $msg = $log['msg'];
-            // Notification::send($user, new SystemNotification($user, $msg));
-            $log['msg'] = 'Saving online applicant response is successful!';
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
+            $log['msg'] = 'Online Applicant Response created successfully!';
             Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 1, 'msg' => 'Saving online applicant is successful!');
-        } catch (Exception $e) {
-            $log['msg'] = 'Saving online applicant was unsuccessful!';
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
+            $log['msg'] = 'Online Applicant Response creating was failed!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
-            return array('status' => 0, 'msg' => 'Saving online applicant was unsuccessful!');
+            return array('status' => 0, 'msg' => 'Online Applicant Response creating was failed!');
         }
     }
 
     public function show()
     {
-        // if (Gate::denies('update-online-applicant', auth()->user())) {
-        //     return array('status' => 4, 'msg' => 'You are not authorised to update online applicant related details!');
-        // }
-        $log = [
-            'route' => '/api/get_online_applicant_responses',
-        ];
-        return OnlineApplicantResponse::with(['OnlineApplicant', 'Designation', 'AddedBy'])->get();
+        try {
+            $log['msg'] = 'Contact Responses accessed successfully!';
+            Log::channel('daily')->info(json_encode($log));
+            return OnlineApplicantResponse::with(['OnlineApplicant', 'Designation', 'AddedBy'])->get();
+        } catch (Exception $ex) {
+            $log['msg'] = 'Contact Responses accessing was failed!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+        }
     }
 }

@@ -62,8 +62,6 @@ return [
         'web', 
         'auth',
         \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
-        'routeLog',
-        'authLog'
     ],
     
     /*
@@ -78,8 +76,6 @@ return [
     'api_middleware' => [
         \Opcodes\LogViewer\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
-        'routeLog',
-        'authLog'
     ],
 
     /*
@@ -95,12 +91,6 @@ return [
     'hosts' => [
         'local' => [
             'name' => ucfirst(env('APP_ENV', 'local')),
-            'auth' => [      // Example of Bearer token auth
-                'token' => env('APP_KEY'),
-            ],
-            'headers' => [
-                'X-Foo' => 'Bar',
-            ],
         ],
 
         // 'staging' => [

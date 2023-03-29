@@ -15,10 +15,18 @@ class ContactRepository implements ContactInterface
 {
     public function index()
     {
-        if (Gate::denies('view-contact-us', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view contacts!');
+        try {
+            if (Gate::denies('view-contact-us', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view contacts!');
+            }
+            return view('contact.registered_contacts', ['contacts' => Contact::all()]);
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
+            $log['msg'] = 'accessing contact us was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
         }
-        return view('contact.registered_contacts', ['contacts' => Contact::all()]);
     }
 
     public function store($request)
@@ -58,13 +66,13 @@ class ContactRepository implements ContactInterface
                 'RESPONSE' => $request->getContent()
             ];
 
-            $log['msg'] = 'Saving contact is successful!';
             Log::channel('daily')->info(json_encode($log));
+            $log['msg'] = 'Saving contact is successful!';
 
             return array('status' => 1, 'msg' => 'Saving contact is successful!');
-        } catch (Exception $e) {
-            $log['msg'] = 'Saving Contact was unsuccessful!';
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+        } catch (Exception $ex) {
+            $log['msg'] = 'Saving contact was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
 
             return array('status' => 0, 'msg' => 'Saving Contact was unsuccessful!');
@@ -78,10 +86,14 @@ class ContactRepository implements ContactInterface
                 return array('status' => 4, 'msg' => 'You are not authorised to view contacts!');
             }
             $log = [
-                'route' => '/api/get_contacts',
-                'msg' => 'Successfully accessed the contacts!',
+                'URI' => '/api/get_contacts',
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => 'Accessing contact details was unsuccessful!'
             ];
+            $log['msg'] = 'Accessing contact details was unsuccessful!';
             Log::channel('daily')->info(json_encode($log));
+            
             return Contact::all();
         } catch (Exception $ex) {
             $log['msg'] = 'Accessing contact details was unsuccessful!';

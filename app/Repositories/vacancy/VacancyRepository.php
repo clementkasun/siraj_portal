@@ -17,7 +17,7 @@ class VacancyRepository implements VacancyInterface
         if (Gate::denies('view-vacancy', auth()->user())) {
             return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
         }
-        return view('vacancy.registration');
+        return view('vacancy.registration', ['vacancies' => Vacancy::all()]);
     }
 
     public function store($request)

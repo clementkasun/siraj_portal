@@ -17,7 +17,6 @@ class ContactResponse extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
         'designation',
         'response',
         'contact_id',
@@ -30,5 +29,9 @@ class ContactResponse extends Model
 
     public function Designation(){
         return $this->belongsTo(Role::class, 'designation');
+    }
+
+    public function AddedBy(){
+        return $this->belongsTo(Role::class, 'added_by');
     }
 }

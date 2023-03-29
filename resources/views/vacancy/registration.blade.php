@@ -95,7 +95,9 @@
                     </div>
                     <div class="row float-right">
                         <button type="button" class="btn btn-success pl-3 pr-3 m-2" id="save_vacancy"><i class="fas fa-save"></i> Save</button>
+                        @can('update-vacancy')
                         <button type="button" class="btn btn-warning pl-5 pr-5 m-1 d-none" id="update_vacancy">Update</button>
+                        @endcan
                     </div>
                 </form>
             </div>
@@ -118,9 +120,28 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
+                        @forelse($vacancies as $key => $vacancy)
+                        <tr>
+                            <td>{{ ++$key }}</td>
+                            <td><img src="{{ (isset($vacancy->vacancy_image)) ? $vacancy->vacancy_image : './dist/img/no-image.jpg' }}" alt="vacancy image" style="width: 100px; height: 100px" /></td>
+                            <td style="width: 15em"> {{ $vacancy->title }} </td>
+                            <td style="width: 15em"> {{ $vacancy->salary }} </td>
+                            <td style="width: 15em"> {{ $vacancy->period }} </td>
+                            <td style="width: 15em"> {{ $vacancy->location }}</td>
+                            <td>
+                                @can('update-vacancy')
+                                <button type="button" class="btn btn-primary btn-sm edit m-1" data-id="{{$vacancy->id}}"> Edit </button>
+                                @endcan
+                                @can('delete-vacancy')
+                                <button type="button" class="btn btn-danger btn-sm delete m-1" data-id="{{$vacancy->id}}"> Delete </button>
+                                @endcan
+                            </td>
+                        </tr>
+                        @empty
                         <tr>
                             <td colspan="7" class="text-center text-bold"><span>No Data</span></td>
                         </tr>
+                        @endforelse
                     </tbody>
                     <tfoot>
                         <th>#</th>
@@ -186,11 +207,12 @@
 <script>
     $(document).ready(function() {
         bsCustomFileInput.init();
-        let privillages = {
-            'is_update': '{{ Gate::allows("update-vacancy") }}',
-            'is_delete': '{{ Gate::allows("delete-vacancy") }}'
-        };
-        load_vacancy_table(privillages);
+    });
+
+    $('#vacancy_tbl').DataTable({
+        "pageLength": 10,
+        "destroy": true,
+        "retrieve": true
     });
 
     $("#vacancy_image").checkImageSize({

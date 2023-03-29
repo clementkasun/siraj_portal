@@ -169,7 +169,7 @@
         <div class="container-fluid">
         <div class="row">
             @can('view-user')
-            <div class="col-12 col-md-12">
+            <div class="{{ (Gate::denies('create-user')) ? 'col-12' : 'col-12 col-md-9' }}">
                 <?php $status_color_array = ['Active' => 'badge badge-success', 'Inactive' => 'badge badge-danger', 'Archived' => 'badge badge-secondary'] ?>
                 <div class="card card-success">
                     <div class="card-header">
