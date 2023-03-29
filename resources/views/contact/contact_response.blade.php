@@ -5,8 +5,6 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
-@extends('layouts.footer')
-@section('content')
 <section class="content-header">
     <div class="container-fluid">
         <div class="card card-primary">
@@ -42,7 +40,8 @@
                                     <td style="width: 15em"> {{ $contact_response->AddedBy->name}} </td>
                                     <td> {{ $contact_response->Designation->name }} </td>
                                     <td> {{ $contact_response->response}} </td>
-                                    @empty
+                                </tr>
+                                @empty
                                 <tr>
                                     <td colspan="4" class="text-center text-bold"><span>No Data</span></td>
                                 </tr>

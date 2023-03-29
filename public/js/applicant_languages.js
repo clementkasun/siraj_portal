@@ -1,4 +1,4 @@
-$('#save_language').click(function(privillages) {
+$('#save_language').click(function (privillages) {
     if (!jQuery("#languages_form").valid()) {
         return false;
     }
@@ -10,20 +10,22 @@ $('#save_language').click(function(privillages) {
         'applicant_id': $(this).attr('data-id')
     };
 
-    ulploadFileWithData('/api/save_applicant_language', data, function(result) {
+    ulploadFileWithData('/api/save_applicant_language', data, function (result) {
         if (result.status == 1) {
             toastr.success('Language saving is successful!')
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
-        } else{
+        } else {
             toastr.error('Language saving was unsuccessful!');
         }
     });
 });
 
-$('#update_language').click(function(privillages) {
+$('#update_language').click(function (privillages) {
     let data = {
         'language': $('#language').val(),
         'poor': $('#poor').is(':checked'),
@@ -32,10 +34,12 @@ $('#update_language').click(function(privillages) {
     };
 
     let url = '/api/update_applicant_language/id/' + $(this).attr('data-id');
-    ulploadFileWithData(url, data, function(result) {
+    ulploadFileWithData(url, data, function (result) {
         if (result.status == 1) {
             toastr.success('Language updating is successful!')
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -45,7 +49,7 @@ $('#update_language').click(function(privillages) {
     });
 });
 
-$(document).on('click', '.delete-app-lan', function() {
+$(document).on('click', '.delete-app-lan', function () {
     Swal.fire({
         title: 'Are you sure?',
         text: "Record will be deleted!",
@@ -62,10 +66,12 @@ $(document).on('click', '.delete-app-lan', function() {
 });
 
 delete_language = (id) => {
-    ajaxRequest('delete', '/api/delete_application_language/id/' + id, null, function(result) {
+    ajaxRequest('delete', '/api/delete_application_language/id/' + id, null, function (result) {
         if (result.status == 1) {
-            location.reload();
             toastr.success('Deleting language was successful!');
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
         } else {
             toastr.error('Deleting language was failed!');
         }
@@ -77,18 +83,18 @@ reset_app_lan_buttons = () => {
     $('#update_language').addClass('d-none');
 }
 
-$(document).on('click', '.edit-app-lan', function() {
+$(document).on('click', '.edit-app-lan', function () {
     let id = $(this).attr('data-id');
     edit_applicant_language(id);
 });
 
 edit_applicant_language = (id) => {
     let url = '/api/get_applicant_language/id/' + id;
-    ajaxRequest('get', url, null, function(result) {
+    ajaxRequest('get', url, null, function (result) {
         $('#language').val(result.language_name);
-        (result.poor == '1') ? $('#poor').prop( "checked", true ) : '';
-        (result.fair == '1') ? $('#fair').prop( "checked", true ) : '';
-        (result.fluent == '1') ? $('#fluent').prop( "checked", true ) : '';
+        (result.poor == '1') ? $('#poor').prop("checked", true) : '';
+        (result.fair == '1') ? $('#fair').prop("checked", true) : '';
+        (result.fluent == '1') ? $('#fluent').prop("checked", true) : '';
         $('#save_language').addClass('d-none');
         $('#update_language').removeClass('d-none');
         $('#update_language').attr('data-id', result.id);
@@ -140,15 +146,15 @@ edit_applicant_language = (id) => {
 
 $("#languages_form").validate({
     errorClass: "invalid",
-    highlight: function(element) {
+    highlight: function (element) {
         $(element).addClass('is-invalid');
     },
-    unhighlight: function(element) {
+    unhighlight: function (element) {
         $(element).removeClass('is-invalid');
     },
     errorElement: 'span',
     errorClass: 'validation-error-message help-block form-helper bold',
-    errorPlacement: function(error, element) {
+    errorPlacement: function (error, element) {
         if (element.parent('.input-group').length) {
             error.insertAfter(element.parent());
         } else {
@@ -160,7 +166,7 @@ $("#languages_form").validate({
 jQuery.validator.setDefaults({
     errorElement: "span",
     ignore: ":hidden:not(select.chosen-select)",
-    errorPlacement: function(error, element) {
+    errorPlacement: function (error, element) {
         // Add the `help-block` class to the error element
         error.addClass("help-block");
         if (element.prop("type") === "checkbox") {
@@ -174,28 +180,28 @@ jQuery.validator.setDefaults({
             error.insertAfter(element);
         }
     },
-    highlight: function(element, errorClass, validClass) {
+    highlight: function (element, errorClass, validClass) {
         jQuery(element).parents(".validate-parent").addClass("has-error").removeClass("has-success");
     },
-    unhighlight: function(element, errorClass, validClass) {
+    unhighlight: function (element, errorClass, validClass) {
         jQuery(element).parents(".validate-parent").removeClass("has-error");
     }
 });
-jQuery.validator.addMethod("valid_name", function(value, element) {
+jQuery.validator.addMethod("valid_name", function (value, element) {
     return this.optional(element) || /^[a-zA-Z0-9\s\.\&\-():, ]{1,100}$/.test(value);
 }, "Please enter a valid name");
-jQuery.validator.addMethod("valid_email", function(value, element) {
+jQuery.validator.addMethod("valid_email", function (value, element) {
     return this.optional(element) || /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value);
 }, "Please enter a valid email addresss");
-jQuery.validator.addMethod("valid_code", function(value, element) {
+jQuery.validator.addMethod("valid_code", function (value, element) {
     return this.optional(element) || /^[a-zA-Z0-9._%+-@#()^;*!$=, ]{1,40}$/.test(value);
 }, "Please enter a valid password");
-jQuery.validator.addMethod("valid_lk_phone", function(value, element) {
+jQuery.validator.addMethod("valid_lk_phone", function (value, element) {
     return this.optional(element) || /^(\+94)?\d{2,3}[-]?\d{7}$/.test(value);
 }, "Please enter a valid phone number");
-jQuery.validator.addMethod("valid_date", function(value, element) {
+jQuery.validator.addMethod("valid_date", function (value, element) {
     return this.optional(element) || /^\d{4}\-\d{2}\-\d{2}$/.test(value);
 }, "Please enter a valid date ex. 2017-03-27");
-jQuery.validator.addMethod("valid_nic", function(value, element) {
+jQuery.validator.addMethod("valid_nic", function (value, element) {
     return this.optional(element) || /^[0-9+]{12}$/.test(value) || /^[0-9+]{9}[vV|xX]$/.test(value);
 }, "Please enter a valid nic number");

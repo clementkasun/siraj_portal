@@ -29,13 +29,13 @@ load_online_app_response_tbl = () => {
             result.forEach(online_applicant_resp => {
                 let created_at = new Date(online_applicant_resp.created_at);
                 let formatted_created_at = created_at.getFullYear()+'-'+created_at.getMonth()+'-'+created_at.getDate();
-                let user_name = (online_applicant_resp.added_by != null) ? (online_applicant_resp.added_by.preffered_name != null) ? online_applicant_resp.added_by.preffered_name : '-' : '-';
+                let added_by = (online_applicant_resp.added_by != null) ? (online_applicant_resp.added_by.preffered_name != null) ? online_applicant_resp.added_by.preffered_name : '-' : '-';
                 html += '<tr>';
                 html += '<td>' + index++ + '</td>';
-                html += '<td>' + online_applicant_resp.response + '</td>';
                 html += '<td>' + online_applicant_resp.designation.name + '</td>';
-                html += '<td>' + user_name + '</td>';
+                html += '<td>' + added_by + '</td>';
                 html += '<td>' + formatted_created_at + '</td>';
+                html += '<td>' + online_applicant_resp.response + '</td>';
                 html += '</tr>';
             });
             $('#online_applicant_resp_tbl tbody').html(html);
@@ -45,7 +45,7 @@ load_online_app_response_tbl = () => {
                 "retrieve": true
             });
         } else {
-            $('#online_applicant_resp_tbl tbody').html('<tr><td colspan="5" class="text-center text-bold"><span>No Data</span></td></tr>');
+            $('#online_applicant_resp_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
         }
     });
 }

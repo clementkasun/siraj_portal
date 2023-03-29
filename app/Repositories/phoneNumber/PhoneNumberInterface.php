@@ -10,4 +10,5 @@ interface PhoneNumberInterface{
    public function show();
    public function getPhoneNumberDetails($id);
    public function destroy($id);
+   public function changePhoneNumberStatus($request, $id);
 }

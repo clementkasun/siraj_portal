@@ -12,7 +12,9 @@ $('#save_blog_post').click(function (privillages) {
     ulploadFileWithData('/api/save_blog_post', data, function (result) {
         if (result.status == 1) {
             toastr.success('Blog post saving is successful!')
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -32,7 +34,9 @@ $('#update_blog_post').click(function (privillages) {
     ulploadFileWithData('/api/update_blog_post/id/' + $('#update_blog_post').attr('data-id'), data, function (result) {
         if (result.status == 1) {
             toastr.success('Blog post updating is successful!');
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -102,7 +106,9 @@ $(document).on('click', '.del', function () {
 delete_blog_post = (id) => {
     ajaxRequest('delete', '/api/delete_blog_post/id/' + id, null, function (result) {
         if (result.status == 1) {
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             toastr.success('Deleting blog post was successful!');
         } else {
             toastr.error('Deleting blog post was failed!');

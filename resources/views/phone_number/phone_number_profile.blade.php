@@ -5,8 +5,6 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
-@extends('layouts.footer')
-@section('content')
 <!-- Content Header (Page header) -->
 <!-- datatables -->
 <link rel="stylesheet" href="https://portal.sirajmanpower.lk/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -69,14 +67,15 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#timeline" data-toggle="tab">Timeline</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="#phone_resp_history" data-toggle="tab">Phone Number Responses</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#status_change" data-toggle="tab">Status Change</a></li>
                         </ul>
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">
                             <!-- /.tab-pane -->
-                            <div class="tab-pane active" id="timeline">
-                                <table class="table table-striped" id="example1">
+                            <div class="tab-pane active" id="phone_resp_history">
+                                <table class="table table-striped" id="phone_number_response_tbl">
                                     <thead>
                                         <th>#</th>
                                         <th>Response</th>
@@ -100,6 +99,30 @@
                                         @endforelse
                                     </tbody>
                                 </table>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="status_change">
+                                @can('update-phone-number')
+                                <form id="status_change_form">
+                                    <div class="row">
+                                        <div class="form-group col-12 col-md-4">
+                                            <label>Phone Number Status</label>
+                                            <select class="custom-select" id="phone_number_status">
+                                                <option value=""> Select the status of the phone number </option>
+                                                <option value="New"> New </option>
+                                                <option value="Ongoing"> Ongoing </option>
+                                                <option value="Complete"> Complete </option>
+                                            </select>
+                                            <button type="button" class="btn btn-warning mt-2" id="phone_status_change" data-id="{{ $phone_number_details->id }}">Update</button>
+                                        </div>
+                                        <?php $status_color_arr = ['New' => 'badge-primary', 'Ongoing' => 'badge-warning', 'Complete' => 'badge-success']; ?>
+                                        <div class="col-12 col-md-4 text-center">
+                                            <label for="current_status">Current Status</label></br>
+                                            <span id="current_status" class="badge {{ $status_color_arr[$phone_number_details->status] }} text-center" style="width: 100px; height: 40px; padding-top: 12px">{{ $phone_number_details->status }}</span>
+                                        </div>
+                                    </div>
+                                </form>
+                                @endcan
                             </div>
                             <!-- /.tab-pane -->
                         </div>
@@ -157,10 +180,50 @@
 <!-- end datatables -->
 <!-- 
 <script>
-    $('#phone_number_response_tbl').DataTable({
-        "pageLength": 10,
-        "destroy": true,
-        "retrieve": true
+    // $('#phone_number_response_tbl').DataTable({
+    //     "pageLength": 10,
+    //     "destroy": true,
+    //     "retrieve": true
+    // });
+
+    let PHONE_NUMBER_STATUS = '{{ $phone_number_details->status }}';
+
+    $('#phone_number_status').val(PHONE_NUMBER_STATUS);
+
+    $('#phone_status_change').click(function() {
+        let phone_number_id = $(this).attr('data-id');
+        change_phone_num_status(phone_number_id);
     });
-</script> -->
+
+    change_phone_num_status = (phone_number_id) => {
+        let data = {
+            'status': $('#phone_number_status').val()
+        };
+        ulploadFileWithData('/api/change_phone_num_status/id/' + phone_number_id, data, function(result) {
+            if (result.status) {
+                toastr.success('Phone number satus change is successful!');
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            } else {
+                toastr.error('Phone number satus change is unsuccessful!')
+            }
+        });
+    }
+
+    $('a[data-toggle="tab"]').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+    $('a[data-toggle="tab"]').on("shown.bs.tab", function(e) {
+        var id = $(e.target).attr("href");
+        localStorage.setItem('selectedTab', id)
+    });
+
+    var selectedTab = localStorage.getItem('selectedTab');
+    if (selectedTab != null) {
+        $('a[data-toggle="tab"][href="' + selectedTab + '"]').tab('show');
+    }
+</script>
 @endsection

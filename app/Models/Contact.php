@@ -23,7 +23,9 @@ class Contact extends Model
         'phone_number',
         'subject',
         'file',
-        'message'
+        'message',
+        'status',
+        'updated_by'
     ];
 
     public function User(){

@@ -66,11 +66,11 @@ class OnlineApplicantResponseRepository implements OnlineApplicantResponseInterf
     public function show()
     {
         try {
-            $log['msg'] = 'Contact Responses accessed successfully!';
+            $log['msg'] = 'Online applicant response accessed successfully!';
             Log::channel('daily')->info(json_encode($log));
             return OnlineApplicantResponse::with(['OnlineApplicant', 'Designation', 'AddedBy'])->get();
         } catch (Exception $ex) {
-            $log['msg'] = 'Contact Responses accessing was failed!';
+            $log['msg'] = 'Online applicant response accessing was failed!';
             $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
         }

@@ -5,8 +5,6 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
-@extends('layouts.footer')
-@section('content')
 <section class="content-header">
     <div class="container-fluid">
         <div class="card card-primary">
@@ -16,7 +14,7 @@
             <div class="card-body">
                 <div class="row">
                    @can('create-phone-number-resp') 
-                   <div class="col-md-3">
+                   <div class="{{ (Gate::denies('view-phone-number-resp')) ? 'col-12' : 'col-12 col-md-3' }}">
                         <form id="phone_number_respone_form">
                             <div class="form-group">
                                 <label for="response"> Response *</label>
@@ -29,7 +27,7 @@
                     </div>
                     @endcan
                     @can('view-phone-number-resp')
-                    <div class="col-md-9">
+                    <div class="{{ (Gate::denies('create-phone-number-resp')) ? 'col-12' : 'col-12 col-md-8' }}">
                         <table class="table table-striped" id="phone_number_response_tbl">
                             <thead>
                                 <th>#</th>

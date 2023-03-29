@@ -397,7 +397,7 @@ class ApplicantRepository implements ApplicantInterface
 
     public function applicantProfile($id)
     {
-        // try {
+        try {
             if (Gate::denies('view-offline-applicant', auth()->user())) {
                 return array('status' => 4, 'msg' => 'You are not authorised to view applicant as staff!');
             }
@@ -417,11 +417,11 @@ class ApplicantRepository implements ApplicantInterface
                 'post_status_array' => Applicant::find($id)->post_status_array,
                 'previous_emp_count' => ApplicantPreviousEmployeement::where('applicant_id', $id)->count()
             ]);
-        // } catch (Exception $ex) {
-        //     $log['msg'] = 'accessing applicant profile was unsuccessful!';
-        //     $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
-        //     Log::channel('daily')->error(json_encode($log));
-        // }
+        } catch (Exception $ex) {
+            $log['msg'] = 'accessing applicant profile was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+        }
     }
 
     public function viewApplication($id)

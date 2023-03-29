@@ -101,4 +101,41 @@ class ContactRepository implements ContactInterface
             Log::channel('daily')->error(json_encode($log));
         }
     }
+
+    public function changeContactStatus($request, $id){
+        try{
+            if (Gate::denies('update-contact-us', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to update contact status!');
+            }
+            $request->validate([
+                'status' => 'required|string|max:255',
+            ]);
+
+            $contact = Contact::find($id);
+            $contact->status = $request->status;
+            $contact->updated_by = auth()->user()->id;
+            $contact->save();
+
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
+            $log['msg'] = 'Contact status change is successful!';
+            Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
+            return array('status' => 1, 'msg' => 'Contact status change is successful!');
+        }catch(Exception $ex){
+            $logged_user = auth()->user();
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            $log['msg'] = 'Contact status change was unsuccessful!';
+            Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+            return array('status' => 0, 'msg' => 'Contact status change was unsuccessful!');
+        }
+    }
 }

@@ -35,4 +35,15 @@ class OnlineApplicantController extends Controller
     {
         return $this->onlineApplicantRepository->store($request);
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changeOnlineAppStatus(Request $request, $id)
+    {
+        return $this->onlineApplicantRepository->changeOnlineAppStatus($request, $id);
+    }
 }

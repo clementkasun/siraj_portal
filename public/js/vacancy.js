@@ -12,7 +12,9 @@ $('#save_vacancy').click(function() {
     ulploadFileWithData('/api/save_vacancy', data, function(result) {
         if (result.status == 1) {
             toastr.success('Vacancy saving was successful!')
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -37,7 +39,9 @@ $('#update_vacancy').click(function() {
     ulploadFileWithData('/api/update_vacancy/id/' + $(this).attr('data-id'), data, function(result) {
         if (result.status == 1) {
             toastr.success('Vacancy updating was successful!')
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }
@@ -74,8 +78,10 @@ load_edit_form = (vacancy_id) => {
 delete_vacancy = (vacancy_id) => {
     ajaxRequest('delete', '/api/delete_vacancy/id/' + vacancy_id, null, function(result) {
         if (result.status == 1) {
-            location.reload();
             toastr.success('Deleting vacancy was successful!')
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
         } else {
             toastr.error('Deleting vacancy was failed!');
         }

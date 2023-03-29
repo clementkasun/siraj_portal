@@ -23,6 +23,7 @@ class PhoneNumber extends Model
         'updated_by',
         'deleted_by',
         'assigned_staff_member',
+        'status'
     ];
 
     public function PhoneNumberResponse()

@@ -48,7 +48,8 @@ Route::middleware(['auth:sanctum', 'routeLog'])->post('/update_user/id/{user_id}
 Route::middleware('routeLog')->post('/is_nic_or_email_exist', [UserController::class, 'is_nic_or_email_exist']);
 
 //contacts api's
-Route::middleware('routeLog')->post('/save_contact', [ContactController::class, 'store']);
+Route::middleware('auth:sanctum', 'routeLog')->post('/save_contact', [ContactController::class, 'store']);
+Route::middleware('auth:sanctum', 'routeLog')->post('/change_contact_status/id/{contact_id}', [ContactController::class, 'changeContactStatus']);
 Route::middleware(['auth:sanctum', 'routeLog'])->get('/get_contacts', [ContactController::class, 'show']);
 
 //contacts response api's
@@ -113,6 +114,7 @@ Route::middleware('routeLog')->get('/get_counts', [DashboardController::class, '
 
 //online applicant api's
 Route::middleware('routeLog')->post('/save_online_applicant', [OnlineApplicantController::class, 'store']);
+Route::middleware('auth:sanctum','routeLog')->post('/change_online_app_status/id/{online_applicant_id}', [OnlineApplicantController::class, 'changeOnlineAppStatus']);
 
 //online applicant response api's
 Route::middleware(['auth:sanctum', 'routeLog'])->post('/save_online_applicant_resp', [OnlineApplicantResponseController::class, 'store']);
@@ -129,6 +131,7 @@ Route::middleware(['auth:sanctum', 'routeLog'])->delete('/delete_blog_post/id/{b
 //phone number api's
 Route::middleware(['auth:sanctum', 'routeLog'])->post('/save_phone_number', [PhoneNumberController::class, 'store']);
 Route::middleware(['auth:sanctum', 'routeLog'])->post('/update_phone_number/id/{phone_number_id}', [PhoneNumberController::class, 'update']);
+Route::middleware(['auth:sanctum', 'routeLog'])->post('/change_phone_num_status/id/{phone_number_id}', [PhoneNumberController::class, 'changePhoneNumberStatus']);
 Route::middleware(['auth:sanctum', 'routeLog'])->get('/get_phone_numbers', [PhoneNumberController::class, 'show']);
 Route::middleware(['auth:sanctum', 'routeLog'])->get('/get_phone_number/id/{phone_number_id}', [PhoneNumberController::class, 'getPhoneNumberDetails']);
 Route::middleware(['auth:sanctum', 'routeLog'])->delete('/delete_phone_number/id/{phone_number_id}', [PhoneNumberController::class, 'destroy']);

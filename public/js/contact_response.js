@@ -10,7 +10,9 @@ $('#save_contact_response').click(function (privillages) {
     ulploadFileWithData('/api/save_contact_response', data, function (result) {
         if (result.status == 1) {
             toastr.success('Contact response saving is successful!');
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack();
             }

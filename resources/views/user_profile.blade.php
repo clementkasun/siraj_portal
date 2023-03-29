@@ -5,8 +5,6 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
-@extends('layouts.footer')
-@section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">

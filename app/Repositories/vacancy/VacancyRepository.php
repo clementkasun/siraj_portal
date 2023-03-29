@@ -14,22 +14,23 @@ class VacancyRepository implements VacancyInterface
 {
     public function index()
     {
-        if (Gate::denies('view-vacancy', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
+        try {
+            if (Gate::denies('view-vacancy', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
+            }
+            return view('vacancy.registration', ['vacancies' => Vacancy::all()]);
+        } catch (Exception $ex) {
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
         }
-        return view('vacancy.registration', ['vacancies' => Vacancy::all()]);
     }
 
     public function store($request)
     {
-        if (Gate::denies('create-vacancy', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to create vacancy!');
-        }
-        $log = [
-            'route' => '/api/save_vacancy',
-        ];
         try {
-
+            if (Gate::denies('create-vacancy', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to create vacancy!');
+            }
             $request->validate([
                 'title' => 'required|string|max:255',
                 'salary' => 'required|string|max:255',
@@ -63,15 +64,25 @@ class VacancyRepository implements VacancyInterface
 
             $vacancy->save();
 
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             $log['msg'] = 'Saving vacancy is successful!';
-            // Notification::send(auth()->user(), new SystemNotification(auth()->user(), $log['msg']));
             Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 1, 'msg' => 'Saving vacancy is successful!');
-        } catch (Exception $e) {
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
             $log['msg'] = 'Saving vacancy was unsuccessful!';
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Saving vacancy was unsuccessful!');
         }
@@ -79,14 +90,10 @@ class VacancyRepository implements VacancyInterface
 
     public function update($request, $id)
     {
-        if (Gate::denies('update-vacancy', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to update vacancy!');
-        }
-        $log = [
-            'route' => '/api/update_vacancy/id/'.$id,
-        ];
         try {
-
+            if (Gate::denies('update-vacancy', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to update vacancy!');
+            }
             $request->validate([
                 'title' => 'required|string|max:255',
                 'salary' => 'required|string|max:255',
@@ -118,15 +125,26 @@ class VacancyRepository implements VacancyInterface
             }
 
             $vacancy->save();
-            // Notification::send($user, new SystemNotification($user, $msg));
+
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
             $log['msg'] = 'Updating vacancy is successful!';
             Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 1, 'msg' => 'Updating vacancy is successful!');
-        } catch (Exception $e) {
+        } catch (Exception $ex) {
+            $logged_user = auth()->user();
             $log['msg'] = 'Updating vacancy was unsuccessful!';
-            $log['error'] = $e->getMessage() . ' in line ' . $e->getLine() . ' of file ' . $e->getFile();
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
             Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
 
             return array('status' => 0, 'msg' => 'Updating vacancy was unsuccessful!');
         }
@@ -134,214 +152,144 @@ class VacancyRepository implements VacancyInterface
 
     public function getVacancy($id)
     {
-        // if (Gate::denies('view-vacancy', auth()->user())) {
-        //     return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
-        // }
-        $log = [
-            'route' => '/api/get_vacancy/id/' . $id,
-            'msg' => 'Successfully accessed the vacancy record!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return Vacancy::find($id);
+        try {
+            $log = [
+                'URI' => '/api/get_vacancy/id/' . $id,
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => Vacancy::find($id)
+            ];
+
+            $log['msg'] = 'Accessing vacancy is successful!';
+            Log::channel('daily')->info(json_encode($log));
+            return Vacancy::find($id);
+        } catch (Exception $ex) {
+            $log['msg'] = 'Accessing vacancy is unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->info(json_encode($log));
+        }
     }
 
     public function getPaginatedVacancy($request)
     {
-        // if (Gate::denies('view-vacancy', auth()->user())) {
-        //     return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
-        // }
-        $log = [
-            'route' => '/api/get_paginated_vacancy',
-            'msg' => 'Successfully accessed the vacancy record!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        $page = $request->page;
-        $limit = 6;
-        $offset = ($page - 1) * $limit;
-        $vacancyArr = array();
+        try {
+            $page = $request->page;
+            $limit = 6;
+            $offset = ($page - 1) * $limit;
+            $vacancyArr = array();
 
-        $vacancy = Vacancy::where('deleted_at', null);
-       
-        $vacancy = $vacancy->when(isset($request->key_word), function ($v) use ($request) {
-            return $v->where('vacancies.title', 'like', '%' . $request->key_word . '%')
-                ->orWhere('vacancies.location', 'like', '%' . $request->key_word . '%')
-                ->orWhere('vacancies.salary', 'like', '%' . $request->key_word . '%')
-                ->orWhere('vacancies.period', 'like', '%' . $request->key_word . '%');
-        });
-        $vacancy = $vacancy->when(isset($request->title), function ($v) use ($request) {
-            return $v->where('vacancies.title', 'like', '%' . $request->title . '%');
-        });
-        // $vacancy = $vacancy->when(isset($request->salary), function ($v) use ($request) {
-        //     return $v->where('vacancies.salary', 'like', '%' . $request->salary . '%');
-        // });
-        $vacancy = $vacancy->when(isset($request->period), function ($v) use ($request) {
-            return $v->where('vacancies.period', 'like', '%' . $request->period . '%');
-        });
-        $vacancy = $vacancy->when(isset($request->location), function ($v) use ($request) {
-            return $v->where('vacancies.location', 'like', '%' . $request->location . '%');
-        });
-        $vacancy = $vacancy->when(isset($request->job_type), function ($v) use ($request) {
-            return $v->where('vacancies.title', 'like', '%' . $request->job_type . '%');
-        });
+            $vacancy = Vacancy::where('deleted_at', null);
 
-        $itemCount = $vacancy->count();
-        $pages = ceil($itemCount / $limit);
+            $vacancy = $vacancy->when(isset($request->key_word), function ($v) use ($request) {
+                return $v->where('vacancies.title', 'like', '%' . $request->key_word . '%')
+                    ->orWhere('vacancies.location', 'like', '%' . $request->key_word . '%')
+                    ->orWhere('vacancies.salary', 'like', '%' . $request->key_word . '%')
+                    ->orWhere('vacancies.period', 'like', '%' . $request->key_word . '%');
+            });
+            $vacancy = $vacancy->when(isset($request->title), function ($v) use ($request) {
+                return $v->where('vacancies.title', 'like', '%' . $request->title . '%');
+            });
+            // $vacancy = $vacancy->when(isset($request->salary), function ($v) use ($request) {
+            //     return $v->where('vacancies.salary', 'like', '%' . $request->salary . '%');
+            // });
+            $vacancy = $vacancy->when(isset($request->period), function ($v) use ($request) {
+                return $v->where('vacancies.period', 'like', '%' . $request->period . '%');
+            });
+            $vacancy = $vacancy->when(isset($request->location), function ($v) use ($request) {
+                return $v->where('vacancies.location', 'like', '%' . $request->location . '%');
+            });
+            $vacancy = $vacancy->when(isset($request->job_type), function ($v) use ($request) {
+                return $v->where('vacancies.title', 'like', '%' . $request->job_type . '%');
+            });
 
-        $filtered_vacancies = $vacancy->offset($offset)->limit($limit)->get();
+            $itemCount = $vacancy->count();
+            $pages = ceil($itemCount / $limit);
 
-        $vacancyArr["body"] = $filtered_vacancies;
-        $vacancyArr["itemCount"] = $itemCount;
-        $vacancyArr["pages"] = $pages;
-        $vacancyArr["current_page"] =  $page;
-        return $vacancyArr;
+            $filtered_vacancies = $vacancy->offset($offset)->limit($limit)->get();
+
+            $vacancyArr["body"] = $filtered_vacancies;
+            $vacancyArr["itemCount"] = $itemCount;
+            $vacancyArr["pages"] = $pages;
+            $vacancyArr["current_page"] =  $page;
+
+            $log = [
+                'URI' => $request->getUri(),
+                'METHOD' => $request->getMethod(),
+                'REQUEST_BODY' => $request->all(),
+                'RESPONSE' => $request->getContent()
+            ];
+
+            $log['msg'] = 'Successfully generated the paginated vacancy!';
+            Log::channel('daily')->info(json_encode($log));
+
+            return $vacancyArr;
+        } catch (Exception $ex) {
+            $log['msg'] = 'Paginated vacancy generating was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+        }
     }
-
-    // public function getFilPagedVacancies($request)
-    // {
-    //     // if (Gate::denies('view-vacancy', auth()->user())) {
-    //     //     return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
-    //     // }
-    //     $log = [
-    //         'route' => '/api/get_filtered_vacancy',
-    //         'msg' => 'Successfully accessed the filtered vacancy records!',
-    //     ];
-    //     Log::channel('daily')->info(json_encode($log));
-    //     $page = $request->page;
-    //     $limit = 6;
-    //     $start_from = ($page - 1) * $limit;
-    //     $itemCount = Vacancy::all()->count() + 1;
-    //     $pages = ceil($itemCount / $limit);
-    //     $vacancyArr = array();
-
-    //     // if (isset($country) && isset($keyword) && isset($salary) && isset($job_type)) {
-    //     //     $sql = \DB::select("SELECT title, salary, period, location, vacancy_image FROM vacancies where deleted_at IS NULL ORDER BY id ASC LIMIT $start_from, $limit");
-    //     // }
-
-    //     // if (isset($country)) {
-    //     //     $sql = \DB::select(
-    //     //         "SELECT
-    //     //             vacancies.title, 
-    //     //             vacancies.salary, 
-    //     //             vacancies.period, 
-    //     //             vacancies.location, 
-    //     //             vacancies.vacancy_image
-    //     //         FROM
-    //     //             vacancies
-    //     //         WHERE
-    //     //             vacancies.deleted_at IS null AND
-    //     //             vacancies.location LIKE '%$country%'
-    //     //         GROUP BY
-    //     //             vacancies.id
-    //     //         ORDER BY
-    //     //             vacancies.id ASC
-    //     //         LIMIT $start_from, $limit;"
-    //     //     );
-    //     // }
-
-    //     // if (isset($keyword)) {
-    //     //     $sql = \DB::select(
-    //     //         "SELECT
-    //     //             vacancies.title, 
-    //     //             vacancies.salary, 
-    //     //             vacancies.period, 
-    //     //             vacancies.location, 
-    //     //             vacancies.vacancy_image
-    //     //         FROM
-    //     //             vacancies
-    //     //         WHERE
-    //     //             vacancies.deleted_at IS null AND
-    //     //             vacancies.title LIKE '%$keyword%' OR
-    //     //             vacancies.salary LIKE '%$keyword%' OR
-    //     //             vacancies.period LIKE '%$keyword%' OR
-    //     //             vacancies.location LIKE '%$keyword%' 
-    //     //         GROUP BY
-    //     //             vacancies.id
-    //     //         ORDER BY
-    //     //             vacancies.id ASC
-    //     //         LIMIT $start_from, $limit;"
-    //     //     );
-    //     // }
-
-    //     // if (isset($salary)) {
-    //     //     $sql = \DB::select(
-    //     //         "SELECT
-    //     //             vacancies.title, 
-    //     //             vacancies.salary, 
-    //     //             vacancies.period, 
-    //     //             vacancies.location, 
-    //     //             vacancies.vacancy_image
-    //     //         FROM
-    //     //             vacancies
-    //     //         WHERE
-    //     //             vacancies.salary LIKE '%$salary%' OR
-    //     //         GROUP BY
-    //     //             vacancies.id
-    //     //         ORDER BY
-    //     //             vacancies.id ASC
-    //     //         LIMIT $start_from, $limit;"
-    //     //     );
-    //     // }
-
-    //     // if (isset($job_type)) {
-    //     //     $sql = \DB::select(
-    //     //         "SELECT
-    //     //             vacancies.title, 
-    //     //             vacancies.salary, 
-    //     //             vacancies.period, 
-    //     //             vacancies.location, 
-    //     //             vacancies.vacancy_image
-    //     //         FROM
-    //     //             vacancies
-    //     //         WHERE
-    //     //             vacancies.title LIKE '%$job_type%' OR
-    //     //         GROUP BY
-    //     //             vacancies.id
-    //     //         ORDER BY
-    //     //             vacancies.id ASC
-    //     //         LIMIT $start_from, $limit;"
-    //     //     );
-    //     // }
-
-    //     $vacancyArr["body"] = $sql;
-    //     $vacancyArr["itemCount"] = $itemCount;
-    //     $vacancyArr["pages"] = $pages;
-    //     $vacancyArr["current_page"] =  $page;
-    //     return $vacancyArr;
-    // }
 
     public function show()
     {
-        // if (Gate::denies('view-vacancy', auth()->user())) {
-        //     return array('status' => 4, 'msg' => 'You are not authorised to view vacancy!');
-        // }
-        $log = [
-            'route' => '/api/get_vacancies',
-            'msg' => 'Successfully accessed the vacancies!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        return Vacancy::all();
+        try {
+            $log = [
+                'route' => '/api/get_vacancies',
+                'msg' => 'Successfully accessed the vacancies!',
+            ];
+            $log = [
+                'URI' => '/api/get_vacancies',
+                'METHOD' => 'GET',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => Vacancy::all()
+            ];
+            $log['msg'] = 'Successfully accessed  the vacancy details!';
+            Log::channel('daily')->info(json_encode($log));
+            return Vacancy::all();
+        } catch (Exception $ex) {
+            $log['msg'] = 'Vacancy detail access was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+        }
     }
 
     public function destroy($id)
     {
-        if (Gate::denies('delete-vacancy', auth()->user())) {
-            return array('status' => 4, 'msg' => 'You are not authorised to delete vacancies!');
-        }
-        $log = [
-            'route' => '/api/delete_vacancy/id/' . $id,
-            'msg' => 'Successfully deleted the vacancy!',
-        ];
-        Log::channel('daily')->info(json_encode($log));
-        $vacancy =  Vacancy::find($id);
-        $vacancy->deleted_by = auth()->user()->id;
-        $vacancy->save();
+        try{
+            if (Gate::denies('delete-vacancy', auth()->user())) {
+                return array('status' => 4, 'msg' => 'You are not authorised to delete vacancies!');
+            }
+            $log = [
+                'route' => '/api/delete_vacancy/id/' . $id,
+                'msg' => 'Successfully deleted the vacancy!',
+            ];
+            Log::channel('daily')->info(json_encode($log));
+            $vacancy =  Vacancy::find($id);
+            $vacancy->deleted_by = auth()->user()->id;
+            $vacancy->save();
+            $vacancy->delete();
 
-        $status = $vacancy->delete();
+            $logged_user = auth()->user();
+            $log = [
+                'URI' => '/api/delete_vacancy/id/' . $id,
+                'METHOD' => 'DELETE',
+                'REQUEST_BODY' => [],
+                'RESPONSE' => []
+            ];
 
-        if ($status == true) {
+            $log['msg'] = 'Deleting vacancy is successful!';
+            Log::channel('daily')->info(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
             return array('status' => 1, 'msg' => 'Successfully deleted the vacancy!');
-        } else {
-            return array('status' => 0, 'msg' => 'Vacancy record deletion was unsuccessful!');
+        }catch(Exception $ex){
+            $logged_user = auth()->user();
+            $log['msg'] = 'Deleting vacancy was unsuccessful!';
+            $log['error'] = $ex->getMessage() . ' in line ' . $ex->getLine() . ' of file ' . $ex->getFile();
+            Log::channel('daily')->error(json_encode($log));
+            Notification::send($logged_user, new SystemNotification($logged_user, $log['msg']));
+
+            return array('status' => 0, 'msg' => 'Vacancy deletion was unsuccessful!');
         }
     }
 }
