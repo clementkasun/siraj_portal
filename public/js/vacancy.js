@@ -116,11 +116,10 @@ load_vacancy_table = (privillages = []) => {
                 }
             });
             $('#vacancy_tbl tbody').html(html);
-            $('#vacancy_tbl').DataTable({
-                "pageLength": 10,
-                "destroy": true,
-                "retrieve": true
-            });;
+            $("#vacancy_tbl").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print"]
+    }).buttons().container().appendTo('#vacancy_tbl_wrapper .col-md-6:eq(0)');;
         }else{
             $('#vacancy_tbl tbody').html('<tr><td colspan="7" class="text-center text-bold"><span>No Data</span></td></tr>');
         }
