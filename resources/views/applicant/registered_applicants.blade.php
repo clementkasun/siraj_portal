@@ -6,11 +6,11 @@
 @extends('layouts.footer')
 @section('content')
 <?php use Illuminate\Support\Carbon; ?>
-<!-- start link from staff livish -->
-<link rel="stylesheet" href="https://staff.livish.lk/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="https://staff.livish.lk/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="https://staff.livish.lk/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-<!-- end link from staff livish -->
+<!-- datatables -->
+<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<!-- end datatables -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="card card-primary">
@@ -86,7 +86,7 @@
 @endsection
 
 @section('pageScripts')
-<!-- start script from staff livish -->
+<!-- start datatables -->
 <script>
   $(function () {
     $("#example1").DataTable({
@@ -112,17 +112,17 @@
     });
 </script> -->
 <!-- DataTables  & Plugins -->
-<script src="https://staff.livish.lk/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="https://staff.livish.lk/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://staff.livish.lk/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="https://staff.livish.lk/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="https://staff.livish.lk/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="https://staff.livish.lk/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="https://staff.livish.lk/plugins/jszip/jszip.min.js"></script>
-<script src="https://staff.livish.lk/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="https://staff.livish.lk/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="https://staff.livish.lk/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="https://staff.livish.lk/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="https://staff.livish.lk/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- end script from staff livish -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- end datatables -->
 @endsection

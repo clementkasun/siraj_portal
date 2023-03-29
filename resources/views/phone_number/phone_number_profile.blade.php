@@ -8,6 +8,11 @@
 @extends('layouts.footer')
 @section('content')
 <!-- Content Header (Page header) -->
+<!-- datatables -->
+<link rel="stylesheet" href="https://portal.sirajmanpower.lk/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://portal.sirajmanpower.lk/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="https://portal.sirajmanpower.lk/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<!-- end datatables -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -71,7 +76,7 @@
                         <div class="tab-content">
                             <!-- /.tab-pane -->
                             <div class="tab-pane active" id="timeline">
-                                <table class="table table-striped" id="phone_number_response_tbl">
+                                <table class="table table-striped" id="example1">
                                     <thead>
                                         <th>#</th>
                                         <th>Response</th>
@@ -111,11 +116,51 @@
 <!-- /.content -->
 @endsection
 @section('pageScripts')
+<!-- start datatables -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+<!-- <script>
+    $('#applicant_tbl').DataTable({
+        "pageLength": 10,
+        "destroy": true,
+        "retrieve": true
+    });
+</script> -->
+<!-- DataTables  & Plugins -->
+<script src="https://portal.sirajmanpower.lk/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/jszip/jszip.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- end datatables -->
+<!-- 
 <script>
     $('#phone_number_response_tbl').DataTable({
         "pageLength": 10,
         "destroy": true,
         "retrieve": true
     });
-</script>
+</script> -->
 @endsection

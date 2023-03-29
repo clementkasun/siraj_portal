@@ -12,7 +12,26 @@ use App\Models\Candidate;
         <img src="/dist/img/sirajmanpower-round-logo.png" alt="siraj manpower logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">SIRAJ - PORTAL</span>
     </a>
-
+        <?php
+            function isNavActive($pageName) {
+            $currentPage = basename($_SERVER['PHP_SELF']);
+            if ($currentPage == $pageName) {
+                return "active";
+            } else {
+                return "";
+            }
+            }
+        ?>
+        <?php
+            function isNavMenuopen($pageName) {
+            $currentPage = basename($_SERVER['PHP_SELF']);
+            if ($currentPage == $pageName) {
+                return "menu-open";
+            } else {
+                return "";
+            }
+            }
+        ?>
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
@@ -42,8 +61,8 @@ use App\Models\Candidate;
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                <li class="nav-item menu-open">
-                    <a href="{{ url('./dashboard') }}" class="nav-link active">
+                <li class="nav-item">
+                    <a href="{{ url('./dashboard') }}" class="nav-link <?php echo isNavActive('dashboard'); ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -51,8 +70,8 @@ use App\Models\Candidate;
                     </a>
                 </li>
                 <li class="nav-header">APPLICANT MANAGEMENT</li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item <?php echo isNavMenuopen('applicant_registration'); ?><?php echo isNavMenuopen('registered_applicants'); ?>">
+                    <a href="#" class="nav-link <?php echo isNavActive('applicant_registration'); ?><?php echo isNavActive('registered_applicants'); ?>">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Applicants
@@ -79,8 +98,8 @@ use App\Models\Candidate;
                     </ul>
                 </li>
                 <li class="nav-header">CALL CENTER</li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item <?php echo isNavMenuopen('phone_number_registration'); ?>">
+                    <a href="#" class="nav-link <?php echo isNavActive('phone_number_registration'); ?>">
                         <i class="nav-icon fas fa-mobile-alt"></i>
                         <p>
                             Mobile Numbers
@@ -99,8 +118,8 @@ use App\Models\Candidate;
                     @endcan
                 </li>
                 <li class="nav-header">USER MANAGEMENT</li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item <?php echo isNavMenuopen('users_list'); ?>">
+                    <a href="#" class="nav-link <?php echo isNavActive('users_list'); ?>">
                         <i class="nav-icon fas fa-user-friends"></i>
                         <p>
                             Users

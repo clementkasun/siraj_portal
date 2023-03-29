@@ -5,30 +5,35 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('content')
+<!-- datatables -->
+<link rel="stylesheet" href="https://portal.sirajmanpower.lk/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://portal.sirajmanpower.lk/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="https://portal.sirajmanpower.lk/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<!-- end datatables -->
 <section class="content-header">
     <div class="container-fluid">
         @can('create-vacancy')
         <div class="card card-primary">
             <div class="card-header">
-                <h2>Vacancy Registration</h2>
+                <h5>Create New Vacancy</h5>
             </div>
             <div class="card-body">
                 <form id="vacancy_form">
                     <div class="row">
                         <div class="form-group col-md-3 col-12">
-                            <label for="title">Title *</label>
+                            <label for="title">Title <span style="color: red;">*</span></label>
                             <input type="text" id="title" name="title" class="form-control" placeholder="Please enter the vacancy title" required>
                         </div>
                         <div class="form-group col-md-2 col-12">
-                            <label for="salary">Salary *</label>
+                            <label for="salary">Salary <span style="color: red;">*</span></label>
                             <input type="text" id="salary" name="salary" class="form-control" placeholder="Please enter the salary" required>
                         </div>
                         <div class="form-group col-md-2 col-12">
-                            <label for="period">Period *</label>
+                            <label for="period">Period <span style="color: red;">*</span></label>
                             <input type="text" id="period" name="period" class="form-control" placeholder="Please enter the period" required>
                         </div>
                         <div class="form-group col-md-2 col-12">
-                            <label for="location">Country *</label>
+                            <label for="location">Country <span style="color: red;">*</span></label>
                             <select class="form-select form-control" aria-label="Select the country" id="location" name="location">
                                 <option selected value="">Choose Country</option>
                                 <option value="Sri Lanka">Sri Lanka</option>
@@ -79,17 +84,17 @@
                             </select>
                         </div>
                         <div class="form-group col-md-3 col-12">
-                            <label for="vacancy_image">Vacancy Image * <code> ( 850 pixel x 540 pixel ) </code> </label>
+                            <label for="vacancy_image">Vacancy Image <span style="color: red;">*</span><code style="font-size:11px;color: red;">(850 pixel x 540 pixel)</code></label>
                             <div class="input-group">
                                 <div class="custom-file">
                                     <input type="file" id="vacancy_image" name="vacancy_image" class="form-control" accept=".jpeg, .jpg, .png">
-                                    <label class="custom-file-label" for="vacancy_image">Applicant Image </label>
+                                    <label class="custom-file-label" for="vacancy_image">Vacancy Image </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row float-right">
-                        <button type="button" class="btn btn-success pl-5 pr-5 m-1" id="save_vacancy">Save</button>
+                        <button type="button" class="btn btn-success pl-3 pr-3 m-2" id="save_vacancy"><i class="fas fa-save"></i> Save</button>
                         @can('update-vacancy')
                         <button type="button" class="btn btn-warning pl-5 pr-5 m-1 d-none" id="update_vacancy">Update</button>
                         @endcan
@@ -101,17 +106,17 @@
         @can('view-vacancy')
         <div class="card card-success">
             <div class="card-header">
-                <h2>Vacancies</h2>
+                <h5>All Vacancies</h5>
             </div>
             <div class="card-body">
                 <table class="table table-striped" id="vacancy_tbl">
                     <thead>
                         <th>#</th>
-                        <th>image</th>
-                        <th>title</th>
-                        <th>salary</th>
-                        <th>period</th>
-                        <th>location</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Salary</th>
+                        <th>Period</th>
+                        <th>Location</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
@@ -138,6 +143,15 @@
                         </tr>
                         @endforelse
                     </tbody>
+                    <tfoot>
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Salary</th>
+                        <th>Period</th>
+                        <th>Location</th>
+                        <th>Action</th>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -147,6 +161,45 @@
 @endsection
 
 @section('pageScripts')
+<!-- start datatables -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+<!-- <script>
+    $('#applicant_tbl').DataTable({
+        "pageLength": 10,
+        "destroy": true,
+        "retrieve": true
+    });
+</script> -->
+<!-- DataTables  & Plugins -->
+<script src="https://portal.sirajmanpower.lk/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/jszip/jszip.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- end datatables -->
 <!-- bs-custom-file-input -->
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('js/vacancy.js')}}"></script>
