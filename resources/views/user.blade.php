@@ -10,144 +10,183 @@
         color: red;
     }
 </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/fontawesome-free/css/all.min.css">
+
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/daterangepicker/daterangepicker.css">
+
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/bs-stepper/css/bs-stepper.min.css">
+
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/dropzone/min/dropzone.min.css">
+
+<link rel="stylesheet" href="https://adminlte.io/themes/v3/dist/css/adminlte.min.css?v=3.2.0">
+<!-- datatables -->
+<link rel="stylesheet" href="https://portal.sirajmanpower.lk/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://portal.sirajmanpower.lk/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="https://portal.sirajmanpower.lk/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<!-- end datatables -->
 @endsection
 @section('content')
 <section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-12 col-sm-6">
-                <h1>System Users</h1>
-            </div>
-        </div>
-    </div>
 </section>
 <section class="content-header">
     <div class="container-fluid">
+        @can('create-user')
+        <div class="card card-primary">
+        <div class="card-header">
+        <h3 class="card-title">Create New System User </h3>
+        </div>
+        <form id="user_registration_form">
+            @csrf
+        <div class="card-body">
         <div class="row">
-            @can('create-user')
-            <div class="col-12 col-md-3">
-                <div class="card card-success">
-                    <div class="card-header">
-                        <label>User Register</label>
-                    </div>
-                    <form id="user_registration_form">
-                        @csrf
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label>First Name*</label>
-                                <input id="firstName" name="firstName" type="text" class="form-control form-control-sm" placeholder="Enter First Name" value="{{old('firstName')}}" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Last Name*</label>
-                                <input id="lastName" name="lastName" type="text" class="form-control form-control-sm" placeholder="Enter Last Name" value="{{old('lastName')}}" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Full Name</label>
-                                <input id="fullName" name="fullName" type="text" class="form-control form-control-sm" placeholder="Enter Full Name" value="{{old('fullName')}}">
-                            </div>
-                            <div class="form-group">
-                                <label>Preffered Name</label>
-                                <input id="prefferedName" name="prefferedName" type="text" class="form-control form-control-sm" placeholder="Enter Preffered Name" value="{{old('prefferedName')}}" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Email*</label>
-                                <input id="email" name="email" type="text" class="form-control form-control-sm" placeholder="Enter Email" value="{{old('email')}}" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Address</label>
-                                <textarea id="address" class="form-control form-control-sm" rows="3" placeholder="Enter Address" name="address">{{old('address')}}</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Mobile No</label>
-                                <input id="mobileNo" name="mobileNo" maxlength="10" type="text" class="form-control form-control-sm" placeholder="Enter mobile No" value="{{old('mobileNo')}}">
-                            </div>
-                            <div class="form-group">
-                                <label>Land No</label>
-                                <input id="landNo" name="landNo" type="text" maxlength="12" class="form-control form-control-sm" placeholder="Enter land no" value="{{old('landNo')}}">
-                            </div>
-                            <div class="form-group">
-                                <label>NIC*</label>
-                                <input id="nic" name="nic" type="text" maxlength="12" class="form-control form-control-sm" placeholder="Enter nic no" value="{{old('nic')}}" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Birth Date</label>
-                                <input id="birthDate" name="birthDate" type="date" maxlength="12" class="form-control form-control-sm" placeholder="Enter Birth Date" value="{{old('birthDate')}}">
-                            </div>
-                            <div class="form-group">
-                                <label>Nic Image Front side <code>(500*500)</code></label>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input id="nicImageFront" type="file" name="nicImageFront" class="form-control image form-control-sm" accept=".png, .jpeg, .jpg">
-                                        <label class="custom-file-label" for="nicImageFront">Nic Image Front side </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Nic Image Back side <code>(500*500)</code></label>
-                                <div class="custom-file">
-                                    <input id="nicImageBack" type="file" name="nicImageBack" class="form-control image form-control-sm" accept=".png, .jpeg, .jpg">
-                                    <label class="custom-file-label" for="nicImageBack">Nic Image Back side </label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>User Image</label>
-                                <div class="custom-file">
-                                    <input id="userImage" type="file" name="userImage" class="form-control image form-control-sm" accept=".png, .jpeg, .jpg">
-                                    <label class="custom-file-label" for="userImage"> User Image </label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>User Level</label>
-                                <select id="level" class="form-control select2 select2-purple levelCombo" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
-                                    @foreach($levels as $level)
-                                    @if (old('level') == $level['id'])
-                                    <option value="{{$level['id']}}" selected>{{$level['name']}}</option>
-                                    @else
-                                    <option value="{{$level['id']}}">{{$level['name']}}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>User Role</label>
-                                <select id="role" class="form-control select2 select2-purple rollCombo" data-dropdown-css-class="select2-purple" style="width: 100%;" name="role">
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input id="password" name="password" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password')}}" minlength="4" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Confirm Password</label>
-                                <input id="password_confirmation" name="password_confirmation" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password_confirmation')}}" minlength="4" required>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <button id="register_user" type="button" class="btn btn-success">Register</button>
-                        </div>
-                    </form>
-                </div>
+        <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">First Name <span style="color: red;">*</span></label>
+        <input id="firstName" name="firstName" type="text" class="form-control" placeholder="Enter First Name" value="{{old('firstName')}}" required>
+        </div>
+        <div class="form-group col-md-4">
+        <label for="exampleInputPassword1">Last Name <span style="color: red;">*</span></label>
+        <input id="lastName" name="lastName" type="text" class="form-control" placeholder="Enter Last Name" value="{{old('lastName')}}" required>
+        </div>
+        <div class="form-group col-md-4">
+        <label for="exampleInputPassword1">Preffered Name <span style="color: red;">*</span></label>
+        <input id="prefferedName" name="prefferedName" type="text" class="form-control" placeholder="Enter Preffered Name" value="{{old('prefferedName')}}" required>
+        </div>
+        </div>
+        <div class="row">
+        <div class="form-group col-md-12">
+        <label for="exampleInputPassword1">Full Name</label>
+        <input id="fullName" name="fullName" type="text" class="form-control" placeholder="Enter Full Name" value="{{old('fullName')}}">
+        </div>
+        </div>
+        <div class="row">
+        <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">Email <span style="color: red;">*</span></label>
+        <input id="email" name="email" type="text" class="form-control" placeholder="Enter Email" value="{{old('email')}}" required>
+        </div>
+        <div class="form-group col-md-4">
+        <label for="exampleInputPassword1">Mobile No</label>
+        <input id="mobileNo" name="mobileNo" maxlength="10" type="text" class="form-control" placeholder="Enter Mobile No" value="{{old('mobileNo')}}">
+        </div>
+        <div class="form-group col-md-4">
+        <label for="exampleInputPassword1">Land Phone No</label>
+        <input id="landNo" name="landNo" type="text" maxlength="12" class="form-control" placeholder="Enter Land Phone No" value="{{old('landNo')}}">
+        </div>
+        </div>
+        <div class="row">
+        <div class="form-group col-md-12">
+        <label for="exampleInputPassword1">Address</label>
+        <textarea id="address" class="form-control" rows="3" placeholder="Enter Address" name="address">{{old('address')}}</textarea>
+        </div>
+        </div>
+        <div class="row">
+        <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">NIC <span style="color: red;">*</span></label>
+        <input id="nic" name="nic" type="text" maxlength="12" class="form-control" placeholder="Enter NIC No" value="{{old('nic')}}" required>
+        </div>
+        <div class="form-group col-md-4">
+        <label for="exampleInputPassword1">Birth Date</label>
+        <input id="birthDate" name="birthDate" type="date" maxlength="12" class="form-control" placeholder="Enter Birth Date" value="{{old('birthDate')}}">
+        </div>
+        </div>
+        <div class="row">
+        <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">NIC Front Page Image <span style="color: red;">*</span> <code style="color: red;font-size: 12px;">(500 pixel * 500 pixel)</code></label>
+        <div class="input-group">
+            <div class="custom-file">
+            <input id="nicImageFront" type="file" name="nicImageFront" class="custom-file-input" accept=".png, .jpeg, .jpg">
+            <label class="custom-file-label" for="nicImageFront">Nic Image Front side </label>
             </div>
-            @endcan
+        </div>
+        </div>
+        <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">NIC Back Page Image <span style="color: red;">*</span> <code style="color: red;font-size: 12px;">(500 pixel * 500 pixel)</code></label>
+        <div class="input-group">
+            <div class="custom-file">
+            <input id="nicImageBack" type="file" name="nicImageBack" class="custom-file-input" accept=".png, .jpeg, .jpg">
+            <label class="custom-file-label" for="nicImageBack">Nic Image Back side </label>
+            </div>
+        </div>
+        </div>
+        <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">User Profile Image <span style="color: red;">*</span> <code style="color: red;font-size: 12px;">(500 pixel * 500 pixel)</code></label>
+        <div class="input-group">
+            <div class="custom-file">
+            <input id="userImage" type="file" name="userImage" class="custom-file-input" accept=".png, .jpeg, .jpg">
+            <label class="custom-file-label" for="userImage"> User Image </label>
+            </div>
+        </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="form-group col-md-3">
+        <label for="exampleInputEmail1">User Level</label>
+        <select id="level" class="form-control select2 select2-purple levelCombo" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
+            @foreach($levels as $level)
+            @if (old('level') == $level['id'])
+            <option value="{{$level['id']}}" selected>{{$level['name']}}</option>
+            @else
+            <option value="{{$level['id']}}">{{$level['name']}}</option>
+            @endif
+            @endforeach
+        </select>
+        </div>
+        <div class="form-group col-md-3">
+        <label for="exampleInputPassword1">User Role</label>
+        <select id="role" class="form-control select2 select2-purple rollCombo" data-dropdown-css-class="select2-purple" style="width: 100%;" name="role">
+        </select>
+        </div>
+        <div class="form-group col-md-3">
+        <label for="exampleInputPassword1">Password <span style="color: red;">*</span></label>
+        <input id="password" name="password" type="password" class="form-control" placeholder="Enter Password" value="{{old('password')}}" minlength="4" required>
+        </div>
+        <div class="form-group col-md-3">
+        <label for="exampleInputPassword1">Confirm Password <span style="color: red;">*</span></label>
+        <input id="password_confirmation" name="password_confirmation" type="password" class="form-control" placeholder="Enter Password" value="{{old('password_confirmation')}}" minlength="4" required>
+        </div>
+        </div>
+        </div>
+        <div class="card-footer">
+        <button id="register_user" type="button" class="btn btn-success">Register</button>
+        </div>
+        </form>
+        </div>
+        @endcan
+    </div>
+
+        <div class="container-fluid">
+        <div class="row">
             @can('view-user')
             <div class="{{ (Gate::denies('create-user')) ? 'col-12' : 'col-12 col-md-9' }}">
                 <?php $status_color_array = ['Active' => 'badge badge-success', 'Inactive' => 'badge badge-danger', 'Archived' => 'badge badge-secondary'] ?>
                 <div class="card card-success">
                     <div class="card-header">
-                        <h3 class="card-title">All Users</h3>
+                        <h3 class="card-title">All System Users</h3>
                     </div>
                     <div class="card-body">
-                        <table class="table table-condensed assignedPrivilages" id="tblUsers">
+                        <table class="table table-bordered table-striped" id="example1">
                             <thead>
                                 <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th style="width: 200px">Image</th>
-                                    <th style="width: 200px">First Name</th>
-                                    <th style="width: 200px">Last Name</th>
-                                    <th style="width: 200px">Roll</th>
-                                    <th style="width: 200px">E-mail</th>
-                                    <th style="width: 200px">Status</th>
-                                    <th style="width: 200px">Action</th>
+                                    <th>#</th>
+                                    <th>Image</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Roll</th>
+                                    <th>E-mail</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -155,7 +194,7 @@
                                 @if(isset($user->role_id ))
                                 <tr>
                                     <td>{{$indexKey+1}}.</td>
-                                    <td><img src="{{($user->user_image != null) ? $user->user_image : url('/dist/img/avatar5.png')}}" width="100px" height="100px" alt="User Image" /></td>
+                                    <td><img src="{{($user->user_image != null) ? $user->user_image : url('/dist/img/avatar5.png')}}" width="70px" height="70px" alt="User Image" /></td>
                                     <td>{{ ($user->first_name != null) ? $user->first_name : '-' }}</td>
                                     <td>{{ ($user->last_name != null) ? $user->last_name : '-'}}</td>
                                     <td>{{ $user->Role->name }}</td>
@@ -182,14 +221,24 @@
                                 @endif
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Image</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Roll</th>
+                                    <th>E-mail</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
                         </table>
-
                     </div>
                 </div>
             </div>
             @endcan
         </div>
-    </div>
     </div>
     <div class="modal fade" id="modal-lg" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -239,6 +288,7 @@
 </section>
 @endsection
 @section('pageScripts')
+
 <script src="{{ asset('js/userjs/get.js') }}"></script>
 <script src="{{ asset('js/userjs/submit.js') }}"></script>
 <script src="{{ asset('js/userjs/user_nic_validation.js') }}"></script>
@@ -451,4 +501,53 @@
 
     })
 </script>
+<script src="https://adminlte.io/themes/v3/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="https://adminlte.io/themes/v3/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="https://adminlte.io/themes/v3/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script>
+$(function () {
+  bsCustomFileInput.init();
+});
+</script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+<!-- <script>
+    $('#applicant_tbl').DataTable({
+        "pageLength": 10,
+        "destroy": true,
+        "retrieve": true
+    });
+</script> -->
+<!-- DataTables  & Plugins -->
+<script src="https://portal.sirajmanpower.lk/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/jszip/jszip.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="https://portal.sirajmanpower.lk/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- end datatables -->
+
 @endsection
