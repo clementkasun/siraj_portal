@@ -4,13 +4,19 @@
 @extends('layouts.navbar')
 @extends('layouts.sidebar')
 @extends('layouts.footer')
+@section('pageStyles')
+<!-- start link from staff livish -->
+<link rel="stylesheet" href="https://staff.livish.lk/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://staff.livish.lk/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="https://staff.livish.lk/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+@endsection
 @section('content')
-<?php use Illuminate\Support\Carbon; ?>
-<!-- datatables -->
-<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-<link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-<!-- end datatables -->
+<?php
+
+use Illuminate\Support\Carbon; ?>
 <section class="content-header">
     <div class="container-fluid">
         <div class="card card-primary">
@@ -18,13 +24,13 @@
                 <h2>Registered Applicants</h2>
             </div>
             <div class="card-body">
-                <table class="table table-striped" id="example1">
+                <table class="table table-striped display responsive nowrap" id="applicant_tbl" style="width:100%">
                     <thead>
-                        <th>#</th>
+                        <th style="font-size: 14px;">#</th>
                         <th style="font-size: 14px;">Reff. No</th>
-                        <th>Profile</th>
+                        <th style="font-size: 14px;">User Image</th>
                         <th style="font-size: 14px;">Full Name</th>
-                        <th style="font-size: 14px;">Phone No</th>
+                        <th style="font-size: 14px;">Tel No 1</th>
                         <th style="font-size: 14px;">NIC</th>
                         <th style="font-size: 14px;">Passport No</th>
                         <th style="font-size: 14px;">Status</th>
@@ -86,29 +92,43 @@
 @endsection
 
 @section('pageScripts')
-<!-- start datatables -->
+<script src="https://staff.livish.lk/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="https://staff.livish.lk/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://staff.livish.lk/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="https://staff.livish.lk/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="https://staff.livish.lk/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="https://staff.livish.lk/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="https://staff.livish.lk/plugins/jszip/jszip.min.js"></script>
+<script src="https://staff.livish.lk/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="https://staff.livish.lk/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="https://staff.livish.lk/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="https://staff.livish.lk/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="https://staff.livish.lk/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
 <script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
-</script>
-<!-- <script>
-    $('#applicant_tbl').DataTable({
-        "pageLength": 10,
-        "destroy": true,
-        "retrieve": true
+    // $('#applicant_tbl').DataTable({
+    //     "responsive": true,
+    //     "lengthChange": false,
+    //     "autoWidth": false,
+    //     "buttons": ["copy", "csv", "excel", "pdf", "print"]
+    // })
+
+    $(function() {
+        $("#applicant_tbl").DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons()
+            .container()
+            .appendTo('#applicant_tbl_wrapper .col-md-6:eq(0)');
     });
 </script> -->
 <!-- DataTables  & Plugins -->
