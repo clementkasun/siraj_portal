@@ -21,6 +21,7 @@
         "laravel/nexmo-notification-channel": "^3.2",
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
+        "laravel/ui": "^3.4",
         "livewire/livewire": "^2.0",
         "opcodesio/log-viewer": "^2.3",
         "tightenco/ziggy": "^0.9.4"
